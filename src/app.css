@@ -1,477 +1,252 @@
-/* Google Fonts - Pixel Font (must be first) */
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Inter:wght@400;500;600;700&display=swap');
+/* Fonts: pixel display + CRT terminal + readable mono body (must be first) */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');
 
 @import "tailwindcss";
 
-/* ========================================
-   PIXEL PORTFOLIO - Custom Theme
-   Backend Engineer in a Pixel World
-   ======================================== */
+/* ============================================================
+   FIELD CONSOLE — design tokens
+   A backend engineer's portfolio styled as the kind of
+   industrial monitoring console he actually builds.
+   Palette is deliberately small: ink, phosphor, amber, alert.
+   ============================================================ */
 
-/* ========================================
-   CSS Custom Properties (Design Tokens)
-   ======================================== */
 :root {
-  /* Color Palette - Retro Terminal */
-  --color-bg-primary: #0d1117;
-  --color-bg-secondary: #161b22;
-  --color-bg-tertiary: #21262d;
+	/* Surfaces (green-black, not GitHub navy) */
+	--night: #0b0e09;
+	--void: #070905;
+	--panel: #12160e;
+	--slot: #1a2114;
+	--seam: #2b3522;
 
-  --color-text-primary: #e6edf3;
-  --color-text-secondary: #8b949e;
-  --color-text-muted: #6e7681;
+	/* Ink & text */
+	--ink: #eae6d2;
+	--fog: #b4bda6;
+	--moss: #7d8870;
 
-  --color-accent-primary: #58a6ff;
-  --color-accent-secondary: #3fb950;
-  --color-accent-warning: #d29922;
-  --color-accent-danger: #f85149;
+	/* Accents */
+	--phosphor: #5ee05e;
+	--amber: #ffb938;
+	--alert: #ff6b4a;
 
-  /* Pixel-specific colors */
-  --color-pixel-green: #00ff00;
-  --color-pixel-cyan: #00ffff;
-  --color-pixel-magenta: #ff00ff;
-  --color-pixel-yellow: #ffff00;
+	/* Solid pixel shadow */
+	--shadow: #000000;
 
-  /* NES.css color overrides */
-  --color-nes-black: #212529;
-  --color-nes-dark: #0d1117;
-
-  /* Typography */
-  --font-pixel: 'Press Start 2P', monospace;
-  --font-terminal: 'VT323', monospace;
-  --font-body: 'Inter', system-ui, sans-serif;
-
-  /* Spacing (8px grid for pixel-perfect) */
-  --space-1: 0.25rem;  /* 4px */
-  --space-2: 0.5rem;   /* 8px */
-  --space-3: 1rem;     /* 16px */
-  --space-4: 1.5rem;   /* 24px */
-  --space-5: 2rem;     /* 32px */
-  --space-6: 3rem;     /* 48px */
-  --space-7: 4rem;     /* 64px */
-
-  /* Animation */
-  --duration-fast: 150ms;
-  --duration-normal: 300ms;
-  --duration-slow: 500ms;
-
-  /* Shadows - Pixel style */
-  --shadow-pixel: 4px 4px 0px rgba(0, 0, 0, 0.5);
-  --shadow-pixel-sm: 2px 2px 0px rgba(0, 0, 0, 0.5);
-  --shadow-pixel-lg: 8px 8px 0px rgba(0, 0, 0, 0.5);
+	/* Dither + scanline tints */
+	--dither: rgba(234, 230, 210, 0.07);
+	--scan: rgba(0, 0, 0, 0.16);
 }
 
-/* ========================================
-   Theme: Light Mode
-   ======================================== */
-[data-theme="light"] {
-  --color-bg-primary: #ffffff;
-  --color-bg-secondary: #f6f8fa;
-  --color-bg-tertiary: #eaeef2;
+/* Paper-console light theme: warm print on cream, same accents darkened */
+[data-theme='light'] {
+	--night: #ece6d3;
+	--void: #e0d9c2;
+	--panel: #f5f0e0;
+	--slot: #e4ddc7;
+	--seam: #c9c0a4;
 
-  --color-text-primary: #1f2328;
-  --color-text-secondary: #656d76;
-  --color-text-muted: #8c959f;
+	--ink: #23281b;
+	--fog: #424b35;
+	--moss: #6e7a58;
 
-  --color-accent-primary: #0969da;
-  --color-accent-secondary: #1a7f37;
+	--phosphor: #157a38;
+	--amber: #a16500;
+	--alert: #bf3a1f;
+
+	--shadow: #23281b;
+
+	--dither: rgba(35, 40, 27, 0.1);
+	--scan: rgba(35, 40, 27, 0.05);
 }
 
-/* ========================================
-   Base Styles
-   ======================================== */
+@theme inline {
+	--color-night: var(--night);
+	--color-void: var(--void);
+	--color-panel: var(--panel);
+	--color-slot: var(--slot);
+	--color-seam: var(--seam);
+	--color-ink: var(--ink);
+	--color-fog: var(--fog);
+	--color-moss: var(--moss);
+	--color-phosphor: var(--phosphor);
+	--color-amber: var(--amber);
+	--color-alert: var(--alert);
+	--color-shadow: var(--shadow);
+
+	--font-pixel: 'Press Start 2P', monospace;
+	--font-terminal: 'VT323', monospace;
+	--font-body: 'IBM Plex Mono', monospace;
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
 html {
-  scroll-behavior: smooth;
-  font-size: 16px;
+	scroll-behavior: smooth;
 }
 
 body {
-  font-family: var(--font-body);
-  background-color: var(--color-bg-primary);
-  color: var(--color-text-primary);
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+	font-family: var(--font-body);
+	background-color: var(--night);
+	color: var(--fog);
+	line-height: 1.65;
+	-webkit-font-smoothing: antialiased;
 }
 
-/* Pixel Font Classes */
+/* Pixel font needs extra leading to breathe */
 .font-pixel {
-  font-family: var(--font-pixel);
-  line-height: 1.8;
-  letter-spacing: 0.05em;
+	font-family: var(--font-pixel);
+	line-height: 1.9;
+	letter-spacing: 0.04em;
 }
 
 .font-terminal {
-  font-family: var(--font-terminal);
-  font-size: 1.25em;
-  line-height: 1.4;
+	font-family: var(--font-terminal);
+	line-height: 1.35;
 }
 
-/* ========================================
-   NES.css Styles (inline to avoid @import issues)
-   ======================================== */
-.nes-container {
-  position: relative;
-  padding: 1.5rem 2rem;
-  border: 4px solid #212529;
-  background-color: var(--color-bg-secondary);
-  color: var(--color-text-primary);
+/* One global focus style: thick amber outline, keyboard-friendly */
+:focus-visible {
+	outline: 3px solid var(--amber);
+	outline-offset: 3px;
 }
 
-.nes-container.is-dark {
-  border-color: #e7e7e7;
-  background-color: var(--color-bg-tertiary);
-  color: var(--color-text-primary);
-}
-
-.nes-container.is-rounded {
-  border-radius: 8px;
-  border-image: none;
-}
-
-.nes-container.with-title > .title {
-  position: absolute;
-  top: -0.75rem;
-  left: 1rem;
-  padding: 0 0.5rem;
-  background-color: var(--color-bg-primary);
-  color: var(--color-accent-primary);
-  font-family: var(--font-pixel);
-  font-size: 0.65rem;
-}
-
-/* NES Buttons */
-.nes-btn {
-  position: relative;
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  border: 4px solid #212529;
-  background-color: #e7e7e7;
-  color: #212529;
-  font-family: var(--font-pixel);
-  font-size: 0.65rem;
-  text-align: center;
-  cursor: pointer;
-  user-select: none;
-  transition: all 0.1s ease;
-}
-
-.nes-btn:hover {
-  transform: translateY(-2px);
-}
-
-.nes-btn:active {
-  transform: translateY(2px);
-}
-
-.nes-btn.is-primary {
-  background-color: var(--color-accent-primary);
-  color: white;
-  border-color: #1a5fb4;
-}
-
-.nes-btn.is-success {
-  background-color: var(--color-accent-secondary);
-  color: white;
-  border-color: #1a7f37;
-}
-
-.nes-btn.is-warning {
-  background-color: var(--color-accent-warning);
-  color: var(--color-bg-primary);
-  border-color: #9a6700;
-}
-
-.nes-btn.is-error {
-  background-color: var(--color-accent-danger);
-  color: white;
-  border-color: #cf222e;
-}
-
-.nes-btn.is-disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* NES Badge */
-.nes-badge {
-  display: inline-block;
-  padding: 0.25rem 0.5rem;
-  border: 2px solid #212529;
-  font-family: var(--font-pixel);
-  font-size: 0.5rem;
-}
-
-.nes-badge.is-dark,
-.nes-badge span.is-dark {
-  background-color: var(--color-bg-tertiary);
-  color: var(--color-text-primary);
-  border-color: #444;
-}
-
-.nes-badge.is-primary,
-.nes-badge span.is-primary {
-  background-color: var(--color-accent-primary);
-  color: white;
-}
-
-.nes-badge.is-success,
-.nes-badge span.is-success {
-  background-color: var(--color-accent-secondary);
-  color: white;
-}
-
-/* NES Progress */
-.nes-progress {
-  width: 100%;
-  height: 1rem;
-  border: 2px solid #212529;
-  background-color: var(--color-bg-tertiary);
-  appearance: none;
-}
-
-.nes-progress::-webkit-progress-bar {
-  background-color: var(--color-bg-tertiary);
-}
-
-.nes-progress::-webkit-progress-value {
-  background-color: var(--color-text-secondary);
-}
-
-.nes-progress.is-primary::-webkit-progress-value {
-  background-color: var(--color-accent-primary);
-}
-
-.nes-progress.is-success::-webkit-progress-value {
-  background-color: var(--color-accent-secondary);
-}
-
-.nes-progress.is-warning::-webkit-progress-value {
-  background-color: var(--color-accent-warning);
-}
-
-.nes-progress.is-error::-webkit-progress-value {
-  background-color: var(--color-accent-danger);
-}
-
-.nes-progress.is-pattern::-webkit-progress-value {
-  background: repeating-linear-gradient(
-    90deg,
-    var(--color-pixel-green) 0px,
-    var(--color-pixel-green) 4px,
-    transparent 4px,
-    transparent 8px
-  );
-}
-
-/* NES Input/Textarea */
-.nes-input,
-.nes-textarea {
-  width: 100%;
-  padding: 0.5rem;
-  border: 4px solid #212529;
-  background-color: var(--color-bg-tertiary);
-  color: var(--color-text-primary);
-  font-family: var(--font-terminal);
-  font-size: 1rem;
-}
-
-.nes-input:focus,
-.nes-textarea:focus {
-  outline: none;
-  border-color: var(--color-accent-primary);
-}
-
-.nes-field {
-  margin-bottom: 1rem;
-}
-
-.nes-field label {
-  display: block;
-  margin-bottom: 0.5rem;
-}
-
-/* NES Icons (simplified - emoji fallback) */
-.nes-icon {
-  display: inline-block;
-  width: 32px;
-  height: 32px;
-}
-
-.nes-icon.is-small {
-  width: 16px;
-  height: 16px;
-}
-
-.nes-icon.is-medium {
-  width: 24px;
-  height: 24px;
-}
-
-.nes-icon.github::before { content: '🐙'; }
-.nes-icon.linkedin::before { content: '💼'; }
-.nes-icon.gmail::before { content: '📧'; }
-.nes-icon.star::before { content: '⭐'; }
-
-/* ========================================
-   Pixel Art Animation Utilities
-   ======================================== */
-@keyframes pixel-blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-@keyframes pixel-float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
-}
-
-@keyframes terminal-cursor {
-  0%, 100% { border-color: var(--color-pixel-green); }
-  50% { border-color: transparent; }
-}
-
-@keyframes scan-line {
-  0% { transform: translateY(-100%); }
-  100% { transform: translateY(100vh); }
-}
-
-.animate-blink {
-  animation: pixel-blink 1s step-end infinite;
-}
-
-.animate-float {
-  animation: pixel-float 2s ease-in-out infinite;
-}
-
-.animate-cursor {
-  border-right: 2px solid var(--color-pixel-green);
-  animation: terminal-cursor 1s step-end infinite;
-}
-
-/* ========================================
-   Pixel Grid Background
-   ======================================== */
-.bg-pixel-grid {
-  background-image:
-    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-  background-size: 8px 8px;
-}
-
-/* CRT Scanline Effect (subtle) */
-.crt-effect::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    rgba(0, 0, 0, 0.1),
-    rgba(0, 0, 0, 0.1) 1px,
-    transparent 1px,
-    transparent 2px
-  );
-  pointer-events: none;
-  z-index: 10;
-}
-
-/* ========================================
-   Scrollbar Styling (Pixel Style)
-   ======================================== */
-::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--color-bg-secondary);
-  border: 2px solid var(--color-bg-tertiary);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--color-accent-primary);
-  border: 2px solid var(--color-bg-secondary);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-accent-secondary);
-}
-
-/* ========================================
-   Selection Styling
-   ======================================== */
 ::selection {
-  background-color: var(--color-accent-primary);
-  color: white;
+	background-color: var(--amber);
+	color: var(--night);
 }
 
-/* ========================================
-   Utility Classes
-   ======================================== */
-.pixel-border {
-  border: 4px solid var(--color-text-primary);
-  box-shadow: var(--shadow-pixel);
+/* Square scrollbar, no rounding anywhere */
+::-webkit-scrollbar {
+	width: 12px;
+	height: 12px;
+}
+::-webkit-scrollbar-track {
+	background: var(--void);
+}
+::-webkit-scrollbar-thumb {
+	background: var(--seam);
+	border: 2px solid var(--void);
+}
+::-webkit-scrollbar-thumb:hover {
+	background: var(--moss);
 }
 
-.pixel-border-sm {
-  border: 2px solid var(--color-text-primary);
-  box-shadow: var(--shadow-pixel-sm);
-}
+/* ============================================================
+   Pixel utilities
+   ============================================================ */
 
-.text-glow {
-  text-shadow: 0 0 10px currentColor;
-}
-
-.text-glow-green {
-  text-shadow: 0 0 10px var(--color-pixel-green);
-  color: var(--color-pixel-green);
-}
-
-/* Image rendering for pixel art */
+/* Crisp upscaling for pixel art */
 .pixel-art {
-  image-rendering: pixelated;
-  image-rendering: crisp-edges;
+	image-rendering: pixelated;
+	image-rendering: crisp-edges;
 }
 
-/* ========================================
-   Animation Utilities (GSAP + CSS)
-   ======================================== */
-@keyframes pixel-glow {
-  0%, 100% { text-shadow: 0 0 5px currentColor; }
-  50% { text-shadow: 0 0 20px currentColor, 0 0 40px currentColor; }
+/* Solid offset shadows — the whole site uses these, never blur */
+.px-shadow {
+	box-shadow: 5px 5px 0 0 var(--shadow);
+}
+.px-shadow-sm {
+	box-shadow: 3px 3px 0 0 var(--shadow);
+}
+.px-shadow-lg {
+	box-shadow: 8px 8px 0 0 var(--shadow);
 }
 
-@keyframes pixel-glitch {
-  0%, 100% { transform: translate(0); filter: none; }
-  20% { transform: translate(-2px, 2px); filter: hue-rotate(90deg); }
-  40% { transform: translate(2px, -2px); filter: hue-rotate(-90deg); }
-  60% { transform: translate(-1px, -1px); }
-  80% { transform: translate(1px, 1px); }
+/* 2px checkerboard — used for section seams and decorative strips */
+.dither {
+	background-image: conic-gradient(
+		var(--dither) 25%,
+		transparent 0 50%,
+		var(--dither) 0 75%,
+		transparent 0
+	);
+	background-size: 4px 4px;
 }
 
-.animate-glow {
-  animation: pixel-glow 3s ease-in-out infinite;
+/* Subtle CRT scanlines (hero + thumbnails only, never over body text) */
+.scanlines {
+	background-image: repeating-linear-gradient(
+		0deg,
+		var(--scan),
+		var(--scan) 1px,
+		transparent 1px,
+		transparent 3px
+	);
 }
 
-.animate-glitch {
-  animation: pixel-glitch 0.3s ease-in-out;
+/* Faint blueprint grid for the page backdrop */
+.console-grid {
+	background-image:
+		linear-gradient(var(--dither) 1px, transparent 1px),
+		linear-gradient(90deg, var(--dither) 1px, transparent 1px);
+	background-size: 24px 24px;
 }
 
-/* Hover scale for project thumbnails */
-.project-thumbnail {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+/* Square status LED. Pair with a color class: bg-phosphor etc. */
+.led {
+	display: inline-block;
+	width: 8px;
+	height: 8px;
+	flex: none;
+}
+.led-blink {
+	animation: led-blink 1.4s step-end infinite;
 }
 
-.project-thumbnail:hover {
-  transform: scale(1.02);
-  box-shadow: 0 0 15px var(--color-accent-primary), var(--shadow-pixel);
+@keyframes led-blink {
+	0%,
+	100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.25;
+	}
 }
 
-/* Timeline dot pulse */
-.timeline-dot {
-  transition: box-shadow 0.3s ease;
+/* Blinking block cursor for terminal lines */
+.cursor-block::after {
+	content: '▮';
+	margin-left: 2px;
+	color: var(--phosphor);
+	animation: led-blink 1s step-end infinite;
 }
 
-.timeline-dot.active {
-  box-shadow: 0 0 10px var(--color-accent-primary), 0 0 20px var(--color-accent-primary);
+/* Tiny idle float for decorative sprites */
+.sprite-float {
+	animation: sprite-float 2.4s ease-in-out infinite;
+}
+@keyframes sprite-float {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-5px);
+	}
+}
+
+/* Nudge-on-hover for cards: lift against the solid shadow */
+.px-hover {
+	transition: transform 120ms steps(2, end), box-shadow 120ms steps(2, end);
+}
+.px-hover:hover {
+	transform: translate(-2px, -2px);
+	box-shadow: 7px 7px 0 0 var(--shadow);
+}
+
+/* Respect reduced motion: kill the toys, keep the content */
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+	.led-blink,
+	.cursor-block::after,
+	.sprite-float {
+		animation: none;
+	}
+	.px-hover,
+	.px-hover:hover {
+		transition: none;
+		transform: none;
+	}
 }

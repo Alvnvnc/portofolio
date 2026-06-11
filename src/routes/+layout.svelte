@@ -58,7 +58,6 @@
 					"addressCountry": "ID"
 				},
 				"sameAs": [
-					"https://github.com/Alvnvnc",
 					"https://linkedin.com/in/alvin-reba-88a857279"
 				]
 			},

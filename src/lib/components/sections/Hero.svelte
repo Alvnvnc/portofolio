@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
-	import { personalInfo, sectionMeta } from '$lib/data/portfolio';
-	import Container from '$lib/components/ui/Container.svelte';
+	import { personalInfo } from '$lib/data/portfolio';
+	import PixelButton from '$lib/components/ui/PixelButton.svelte';
 	import { onMount } from 'svelte';
-	import { heroEntrance, typewriter, pulseGlow } from '$lib/utils/animations';
+	import { heroEntrance } from '$lib/utils/animations';
 
 	interface Props {
 		class?: string;
@@ -11,15 +11,21 @@
 
 	let { class: className = '' }: Props = $props();
 
-	const heroMeta = sectionMeta.find((s) => s.id === 'hero');
+	// Boot sequence — typed out with CSS steps(), one line at a time
+	const bootLines = [
+		{ prompt: true, text: './alvin --init' },
+		{ prompt: false, text: 'loading modules ........ go postgres influxdb [ok]' },
+		{ prompt: false, text: 'mounting systems ....... pome portal lecsens [ok]' },
+		{ prompt: false, text: 'freelance daemon ....... ACCEPTING REQUESTS' },
+		{ prompt: false, text: 'ready. look around, nothing here bites.' }
+	];
 
-	let badgeEl: HTMLElement;
-	let heroImgEl: HTMLElement;
+	let statusEl: HTMLElement;
 	let nameEl: HTMLElement;
-	let titleEl: HTMLElement;
-	let taglineEl: HTMLElement;
+	let roleEl: HTMLElement;
+	let bootEl: HTMLElement;
 	let ctaEl: HTMLElement;
-	let scrollEl: HTMLElement;
+	let crtEl: HTMLElement;
 
 	function scrollTo(e: MouseEvent, selector: string) {
 		e.preventDefault();
@@ -27,164 +33,152 @@
 	}
 
 	onMount(() => {
-		const elements = [badgeEl, heroImgEl, nameEl, titleEl, taglineEl, ctaEl, scrollEl].filter(Boolean);
-		heroEntrance(elements);
-
-		setTimeout(() => {
-			typewriter(taglineEl, personalInfo.tagline, { speed: 0.03, delay: 0 });
-		}, 1600);
-
-		setTimeout(() => {
-			pulseGlow(nameEl);
-		}, 2000);
+		heroEntrance([statusEl, nameEl, roleEl, bootEl, ctaEl, crtEl].filter(Boolean));
 	});
 </script>
 
 <section
 	id="hero"
 	class={cn(
-		'min-h-screen flex items-center justify-center',
-		'bg-pixel-grid relative overflow-hidden',
-		'px-4 py-20',
+		'console-grid relative flex min-h-[100svh] items-center overflow-hidden',
+		'px-4 pt-28 pb-20 sm:px-6',
 		className
 	)}
 >
-	<!-- Background decoration -->
-	<div class="absolute inset-0 pointer-events-none">
-		<div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[var(--color-bg-primary)]"></div>
-	</div>
+	<div class="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
+		<!-- Left: identity + boot log -->
+		<div>
+			<!-- Status row -->
+			<div bind:this={statusEl} class="mb-7 flex flex-wrap items-center gap-x-5 gap-y-2">
+				<span class="flex items-center gap-2">
+					<span class="led led-blink bg-phosphor"></span>
+					<span class="font-pixel text-[0.5rem] text-phosphor uppercase">Systems nominal</span>
+				</span>
+				<span class="flex items-center gap-2">
+					<span class="led bg-amber"></span>
+					<span class="font-pixel text-[0.5rem] text-amber uppercase">Open for freelance</span>
+				</span>
+				<span class="font-terminal text-base text-moss">SURABAYA · UTC+7</span>
+			</div>
 
-	<div class="relative z-10 max-w-4xl mx-auto text-center">
-		<!-- System Status Badge -->
-		<div bind:this={badgeEl} style="opacity: 0;">
-			<Container variant="dark" class="inline-block mb-8">
-				<div class="flex items-center gap-3 px-4 py-2">
-					<span class="w-2 h-2 bg-[var(--color-pixel-green)] rounded-full animate-blink"></span>
-					<span class="font-pixel text-[0.6rem] text-[var(--color-pixel-green)] uppercase">
-						{heroMeta?.subtitle || 'System Status: Online'}
+			<!-- Name -->
+			<h1
+				bind:this={nameEl}
+				class="font-pixel text-2xl leading-relaxed text-ink sm:text-3xl lg:text-4xl"
+			>
+				ALVIN<br />VINCENT
+			</h1>
+
+			<!-- Role plate -->
+			<p bind:this={roleEl} class="mt-4 mb-6 flex flex-wrap items-center gap-x-3 gap-y-2">
+				<span class="px-shadow-sm inline-block border-2 border-ink bg-amber px-3 py-2 font-pixel text-[0.6rem] text-night uppercase">
+					Backend Engineer
+				</span>
+				<span class="font-terminal text-lg text-moss">{personalInfo.fullName}</span>
+			</p>
+
+			<!-- Boot log -->
+			<div
+				bind:this={bootEl}
+				class="px-shadow mb-8 max-w-xl border-[3px] border-ink bg-void p-4"
+			>
+				<div class="mb-3 flex items-center justify-between border-b-2 border-seam pb-2">
+					<span class="font-pixel text-[0.45rem] text-moss uppercase">boot.log</span>
+					<span class="flex gap-[5px]" aria-hidden="true">
+						<span class="led bg-alert"></span>
+						<span class="led bg-amber"></span>
+						<span class="led bg-phosphor"></span>
 					</span>
 				</div>
-			</Container>
-		</div>
+				<div class="font-terminal text-base leading-relaxed sm:text-lg" aria-label={personalInfo.tagline}>
+					{#each bootLines as line, i (i)}
+						<div class={cn('overflow-hidden whitespace-nowrap', i === bootLines.length - 1 && 'cursor-block text-ink')}>
+							{#if line.prompt}<span class="text-phosphor">$&nbsp;</span>{/if}<span
+								class="boot-type align-bottom"
+								style="--len:{line.text.length}; --delay:{0.9 + i * 0.55}s"
+								class:text-fog={!line.prompt}
+								class:text-phosphor={line.prompt}>{line.text}</span>
+						</div>
+					{/each}
+				</div>
+			</div>
 
-		<!-- Hero Pixel Art Scene -->
-		<div bind:this={heroImgEl} class="mb-8 flex justify-center" style="opacity: 0;">
-			<div class="hero-scene">
-				<img
-					src="/images/hero-pixel-scene.png"
-					alt="Pixel art coding workspace"
-					class="w-48 h-48 md:w-64 md:h-64 pixel-art object-cover rounded-lg"
-				/>
-				<!-- Scan line overlay -->
-				<div class="scan-line"></div>
-				<!-- Glow border -->
-				<div class="glow-border"></div>
+			<!-- Tagline for humans (and crawlers) -->
+			<p class="sr-only">{personalInfo.tagline}</p>
+
+			<!-- CTAs -->
+			<div bind:this={ctaEl} class="flex flex-wrap items-center gap-4">
+				<PixelButton variant="primary" size="md" onclick={(e) => scrollTo(e, '#projects')}>
+					Inspect systems <span aria-hidden="true">▸</span>
+				</PixelButton>
+				<PixelButton variant="ghost" size="md" onclick={(e) => scrollTo(e, '#contact')}>
+					Open channel
+				</PixelButton>
 			</div>
 		</div>
 
-		<!-- Main Title -->
-		<h1
-			bind:this={nameEl}
-			class="font-pixel text-2xl md:text-3xl lg:text-4xl text-[var(--color-accent-primary)] mb-4 leading-relaxed"
-			style="opacity: 0;"
-		>
-			{personalInfo.name}
-		</h1>
+		<!-- Right: CRT monitor -->
+		<div bind:this={crtEl} class="relative mx-auto w-full max-w-md lg:max-w-none">
+			<!-- Stray pixels drifting around the monitor -->
+			<span class="sprite-float absolute -top-6 left-8 h-[10px] w-[10px] bg-amber" style="animation-delay:.3s" aria-hidden="true"></span>
+			<span class="sprite-float absolute -top-2 right-4 h-[7px] w-[7px] bg-phosphor" style="animation-delay:1.1s" aria-hidden="true"></span>
+			<span class="sprite-float absolute -bottom-5 left-1/4 h-[8px] w-[8px] bg-seam" style="animation-delay:.7s" aria-hidden="true"></span>
 
-		<!-- Title / Role -->
-		<h2
-			bind:this={titleEl}
-			class="font-terminal text-2xl md:text-3xl text-[var(--color-text-primary)] mb-6"
-			style="opacity: 0;"
-		>
-			{personalInfo.title}
-		</h2>
-
-		<!-- Tagline (typewriter target) -->
-		<p
-			bind:this={taglineEl}
-			class="font-terminal text-lg md:text-xl text-[var(--color-text-secondary)] mb-8 max-w-2xl mx-auto animate-cursor"
-			style="opacity: 0;"
-		>
-			&nbsp;
-		</p>
-
-		<!-- CTA Buttons -->
-		<div bind:this={ctaEl} class="flex flex-wrap items-center justify-center gap-4" style="opacity: 0;">
-			<button class="nes-btn is-primary font-pixel text-[0.65rem] px-4 py-2 transition-transform active:translate-y-1" onclick={(e) => scrollTo(e, '#projects')}>
-				View Projects
-			</button>
-			<button class="nes-btn font-pixel text-[0.65rem] px-4 py-2 transition-transform active:translate-y-1" onclick={(e) => scrollTo(e, '#contact')}>
-				Get In Touch
-			</button>
-		</div>
-
-		<!-- Scroll Indicator -->
-		<div bind:this={scrollEl} class="mt-16 animate-float" style="opacity: 0;">
-			<a
-				href="#about"
-				onclick={(e) => scrollTo(e, '#about')}
-				class="inline-block text-[var(--color-text-muted)] hover:text-[var(--color-accent-primary)] transition-colors"
-			>
-				<span class="font-pixel text-xs block mb-2">Scroll</span>
-				<span class="text-2xl">↓</span>
-			</a>
+			<div class="px-shadow-lg border-[3px] border-ink bg-void p-3 sm:p-4">
+				<div class="relative overflow-hidden border-2 border-seam">
+					<img
+						src="/images/hero-pixel-scene.png"
+						alt="Pixel art of a CRT workstation running green terminal code"
+						class="pixel-art block aspect-square w-full object-cover"
+						width="512"
+						height="512"
+						fetchpriority="high"
+					/>
+					<div class="scanlines pointer-events-none absolute inset-0" aria-hidden="true"></div>
+				</div>
+				<div class="mt-3 flex items-center justify-between">
+					<span class="font-pixel text-[0.45rem] text-moss uppercase">CH-01 · Field console</span>
+					<span class="flex items-center gap-2">
+						<span class="led led-blink bg-alert"></span>
+						<span class="font-pixel text-[0.45rem] text-alert uppercase">rec</span>
+					</span>
+				</div>
+			</div>
 		</div>
 	</div>
+
+	<!-- Scroll hint -->
+	<a
+		href="#about"
+		onclick={(e) => scrollTo(e, '#about')}
+		class="sprite-float absolute bottom-6 left-1/2 -translate-x-1/2 font-pixel text-[0.5rem] text-moss uppercase transition-colors hover:text-ink"
+	>
+		▼ system overview
+	</a>
+
+	<!-- Section seam -->
+	<div class="dither absolute bottom-0 left-0 h-2 w-full" aria-hidden="true"></div>
 </section>
 
 <style>
-	.hero-scene {
-		position: relative;
+	/* CSS-only typewriter: width snaps per character via steps() */
+	.boot-type {
 		display: inline-block;
-		animation: hero-float 4s ease-in-out infinite;
+		overflow: hidden;
+		white-space: nowrap;
+		max-width: 0;
+		animation: boot-type 0.7s steps(24, end) forwards;
+		animation-delay: var(--delay);
 	}
-
-	.hero-scene img {
-		display: block;
-		box-shadow:
-			0 0 15px rgba(0, 255, 170, 0.3),
-			0 0 30px rgba(0, 255, 170, 0.15);
-	}
-
-	/* Scan line CRT effect */
-	.scan-line {
-		position: absolute;
-		inset: 0;
-		background: repeating-linear-gradient(
-			0deg,
-			transparent,
-			transparent 2px,
-			rgba(0, 0, 0, 0.15) 2px,
-			rgba(0, 0, 0, 0.15) 4px
-		);
-		pointer-events: none;
-		border-radius: 0.5rem;
-	}
-
-	/* Animated glow border */
-	.glow-border {
-		position: absolute;
-		inset: -3px;
-		border: 2px solid transparent;
-		border-radius: 0.6rem;
-		pointer-events: none;
-		animation: border-glow 3s ease-in-out infinite;
-	}
-
-	@keyframes hero-float {
-		0%, 100% { transform: translateY(0); }
-		50% { transform: translateY(-10px); }
-	}
-
-	@keyframes border-glow {
-		0%, 100% {
-			border-color: rgba(0, 255, 170, 0.2);
-			box-shadow: 0 0 8px rgba(0, 255, 170, 0.1);
+	@keyframes boot-type {
+		to {
+			max-width: calc(var(--len) * 1ch);
 		}
-		50% {
-			border-color: rgba(0, 255, 170, 0.6);
-			box-shadow: 0 0 20px rgba(0, 255, 170, 0.3);
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.boot-type {
+			animation: none;
+			max-width: none;
 		}
 	}
 </style>

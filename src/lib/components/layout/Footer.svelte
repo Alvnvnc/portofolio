@@ -9,77 +9,57 @@
 	let { class: className = '' }: Props = $props();
 
 	const currentYear = new Date().getFullYear();
+
+	const links = [
+		{ tag: 'IN', label: 'LinkedIn', href: personalInfo.linkedin },
+		{ tag: '@', label: 'Email', href: `mailto:${personalInfo.email}` }
+	];
 </script>
 
-<footer
-	class={cn(
-		'bg-[var(--color-bg-secondary)] border-t-4 border-[var(--color-bg-tertiary)]',
-		'py-8 px-4',
-		className
-	)}
->
-	<div class="max-w-6xl mx-auto">
-		<div class="flex flex-col md:flex-row items-center justify-between gap-4">
-			<!-- Logo & Copyright -->
-			<div class="text-center md:text-left">
-				<span class="font-pixel text-sm text-[var(--color-accent-primary)]">
-					{'<ALV/>'}
+<footer class={cn('border-t-[3px] border-ink bg-void', className)}>
+	<div class="dither h-2 w-full" aria-hidden="true"></div>
+
+	<div class="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+		<div class="flex flex-col items-center justify-between gap-6 md:flex-row">
+			<!-- ID plate + copyright -->
+			<div class="flex items-center gap-3">
+				<span class="flex items-center gap-2 border-2 border-ink bg-panel px-2 py-[6px]">
+					<span class="led bg-phosphor"></span>
+					<span class="font-pixel text-[0.5rem] leading-none text-ink">ALV-01</span>
 				</span>
-				<p class="font-terminal text-sm text-[var(--color-text-secondary)] mt-2">
-					&copy; {currentYear} {personalInfo.name}. All rights reserved.
+				<p class="font-terminal text-base text-moss">
+					© {currentYear} {personalInfo.fullName}
 				</p>
 			</div>
 
-			<!-- Social Links -->
-			<div class="flex items-center gap-4">
-				{#if personalInfo.github}
+			<!-- Channels -->
+			<div class="flex items-center gap-3">
+				{#each links as link (link.tag)}
 					<a
-						href={personalInfo.github}
-						target="_blank"
-						rel="noopener noreferrer"
-						class="text-[var(--color-text-secondary)] hover:text-[var(--color-accent-primary)] transition-colors"
-						aria-label="GitHub"
+						href={link.href}
+						target={link.href?.startsWith('mailto') ? undefined : '_blank'}
+						rel={link.href?.startsWith('mailto') ? undefined : 'noopener noreferrer'}
+						class="font-pixel flex h-9 w-9 items-center justify-center border-2 border-seam text-[0.5rem] text-moss uppercase transition-colors hover:border-ink hover:bg-amber hover:text-night"
+						aria-label={link.label}
 					>
-						<span class="nes-icon github is-small"></span>
+						{link.tag}
 					</a>
-				{/if}
-
-				{#if personalInfo.linkedin}
-					<a
-						href={personalInfo.linkedin}
-						target="_blank"
-						rel="noopener noreferrer"
-						class="text-[var(--color-text-secondary)] hover:text-[var(--color-accent-primary)] transition-colors"
-						aria-label="LinkedIn"
-					>
-						<span class="nes-icon linkedin is-small"></span>
-					</a>
-				{/if}
-
-				{#if personalInfo.email}
-					<a
-						href="mailto:{personalInfo.email}"
-						class="text-[var(--color-text-secondary)] hover:text-[var(--color-accent-primary)] transition-colors"
-						aria-label="Email"
-					>
-						<span class="nes-icon gmail is-small"></span>
-					</a>
-				{/if}
+				{/each}
 			</div>
 
-			<!-- Tech Stack Badge -->
-			<div class="font-pixel text-[0.5rem] text-[var(--color-text-muted)] text-center md:text-right">
-				<p>Built with</p>
-				<p class="text-[var(--color-accent-secondary)]">
-					SvelteKit + Tailwind + NES.css
-				</p>
-			</div>
+			<!-- Build plate -->
+			<p class="font-pixel text-center text-[0.45rem] leading-relaxed text-moss uppercase md:text-right">
+				Hand-built with SvelteKit<br />
+				<span class="text-phosphor">no template was used or harmed</span>
+			</p>
 		</div>
 
-		<!-- Easter Egg / Fun Message -->
-		<div class="mt-6 pt-4 border-t border-[var(--color-bg-tertiary)] text-center">
-			<p class="font-terminal text-xs text-[var(--color-text-muted)]">
-				<span class="text-[var(--color-pixel-green)]">$</span> echo "Thanks for visiting!" && exit 0
+		<!-- Last transmission -->
+		<div class="mt-7 border-t-2 border-seam pt-4 text-center">
+			<p class="font-terminal text-base text-moss">
+				<span class="text-phosphor">$</span> uptime
+				<span class="text-fog">→ online since {currentYear}, made in Surabaya</span>
+				· <span class="text-phosphor">$</span> exit 0
 			</p>
 		</div>
 	</div>

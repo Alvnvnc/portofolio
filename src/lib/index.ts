@@ -11,19 +11,17 @@ export * from './utils';
 export type {
 	ButtonSize,
 	ButtonVariant,
-	CharacterConfig,
-	CharacterState,
 	Education,
 	Experience,
 	NavItem,
 	PersonalInfo,
 	Project,
+	ProjectStatus,
 	SectionId,
 	SectionMeta,
 	Service,
 	Skill,
-	SkillCategory,
-	SpriteConfig
+	SkillCategory
 } from './types';
 
 // Data

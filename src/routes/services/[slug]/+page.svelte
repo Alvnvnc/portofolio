@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { cn } from '$lib/utils';
-	import Container from '$lib/components/ui/Container.svelte';
-	import Button from '$lib/components/ui/Button.svelte';
-	import Badge from '$lib/components/ui/Badge.svelte';
+	import PixelPanel from '$lib/components/ui/PixelPanel.svelte';
+	import PixelButton from '$lib/components/ui/PixelButton.svelte';
+	import PixelBadge from '$lib/components/ui/PixelBadge.svelte';
+	import PixelIcon from '$lib/components/ui/PixelIcon.svelte';
 	import { onMount } from 'svelte';
 	import { scrollFadeIn, scrollStagger } from '$lib/utils/animations';
 
@@ -17,13 +17,12 @@
 	let projectsRef = $state<HTMLElement>(undefined!);
 	let ctaRef = $state<HTMLElement>(undefined!);
 
-
 	onMount(() => {
 		if (heroRef) scrollFadeIn(heroRef);
-		if (detailRef) scrollFadeIn(detailRef, { delay: 0.2 });
-		if (featuresRef) scrollStagger(featuresRef, ':scope > *', { stagger: 0.1, y: 20 });
-		if (processRef) scrollStagger(processRef, ':scope > *', { stagger: 0.15, y: 25 });
-		if (projectsRef) scrollStagger(projectsRef, ':scope > *', { stagger: 0.12, y: 25 });
+		if (detailRef) scrollFadeIn(detailRef, { delay: 0.15 });
+		if (featuresRef) scrollStagger(featuresRef, ':scope > *', { stagger: 0.08, y: 20 });
+		if (processRef) scrollStagger(processRef, ':scope > *', { stagger: 0.12, y: 25 });
+		if (projectsRef) scrollStagger(projectsRef, ':scope > *', { stagger: 0.1, y: 25 });
 		if (ctaRef) scrollFadeIn(ctaRef, { delay: 0.1 });
 	});
 </script>
@@ -65,70 +64,70 @@
 	})}</script>`}
 </svelte:head>
 
-<!-- Hero -->
-<section bind:this={heroRef} class="pt-24 pb-16 px-4 bg-pixel-grid relative">
-	<div class="max-w-4xl mx-auto text-center">
+<!-- Spec sheet header -->
+<section bind:this={heroRef} class="console-grid px-4 pt-28 pb-14 sm:px-6">
+	<div class="mx-auto max-w-4xl">
 		<a
-			href="/"
-			class="inline-block mb-6 font-pixel text-[0.5rem] text-[var(--color-text-muted)] hover:text-[var(--color-accent-primary)] transition-colors uppercase"
+			href="/#services"
+			class="font-pixel mb-8 inline-block text-[0.5rem] text-moss uppercase transition-colors hover:text-amber"
 		>
-			&larr; Back to Home
+			◂ back to console
 		</a>
 
-		<span class="text-5xl mb-4 block">{service.icon}</span>
-
-		<Container variant="dark" class="inline-block mb-4">
-			<span class="font-pixel text-[0.5rem] text-[var(--color-accent-primary)] px-3 py-1 uppercase">
-				Service Module
+		<div class="flex flex-wrap items-center gap-4">
+			<span class="px-shadow-sm flex h-12 w-12 items-center justify-center border-[3px] border-ink bg-slot text-amber">
+				<PixelIcon name={service.icon} size={22} />
 			</span>
-		</Container>
+			<span class="font-pixel text-[0.55rem] text-amber uppercase">{service.code} · spec sheet</span>
+		</div>
 
-		<h1 class="font-pixel text-xl md:text-2xl text-[var(--color-text-primary)] mb-4">
+		<h1 class="font-pixel mt-5 mb-4 text-lg leading-relaxed text-ink uppercase sm:text-xl">
 			{service.title}
 		</h1>
-
-		<p class="font-terminal text-lg text-[var(--color-text-secondary)] max-w-2xl mx-auto">
+		<p class="max-w-2xl text-base leading-relaxed text-fog">
 			{service.description}
 		</p>
 	</div>
+	<div class="dither mx-auto mt-12 h-2 max-w-4xl" aria-hidden="true"></div>
 </section>
 
-<!-- Details + Tech Stack -->
-<section bind:this={detailRef} class="py-16 px-4 bg-[var(--color-bg-secondary)]">
-	<div class="max-w-4xl mx-auto grid md:grid-cols-3 gap-8">
+<!-- Details + stack -->
+<section bind:this={detailRef} class="bg-void px-4 py-14 sm:px-6">
+	<div class="mx-auto grid max-w-4xl gap-8 md:grid-cols-3">
 		<div class="md:col-span-2">
-			<Container variant="dark" title="service.details">
-				<p class="font-terminal text-base text-[var(--color-text-secondary)] leading-relaxed">
+			<PixelPanel title="service.details" variant="panel" class="h-full p-6 pt-7">
+				<p class="text-[0.9rem] leading-relaxed text-fog sm:text-base">
 					{service.longDescription ?? service.description}
 				</p>
-			</Container>
+			</PixelPanel>
 		</div>
 		<div>
-			<Container variant="dark" title="tech.stack">
+			<PixelPanel title="stack" accent="phosphor" variant="night" class="h-full p-5 pt-7">
 				<div class="flex flex-wrap gap-2">
-					{#each service.techStack as tech}
-						<Badge text={tech} variant="dark" />
+					{#each service.techStack as tech (tech)}
+						<PixelBadge text={tech} variant="ghost" />
 					{/each}
 				</div>
-			</Container>
+			</PixelPanel>
 		</div>
 	</div>
 </section>
 
-<!-- Features -->
+<!-- What's included -->
 {#if service.features?.length}
-	<section class="py-16 px-4 bg-[var(--color-bg-primary)]">
-		<div class="max-w-4xl mx-auto">
-			<h2 class="font-pixel text-lg text-[var(--color-text-primary)] mb-8 text-center">
-				What's Included
+	<section class="bg-night px-4 py-14 sm:px-6">
+		<div class="mx-auto max-w-4xl">
+			<h2 class="font-pixel mb-8 text-sm text-ink uppercase">
+				<span class="text-amber">▸</span> What's included
 			</h2>
-			<div bind:this={featuresRef} class="grid sm:grid-cols-2 gap-4">
-				{#each service.features as feature}
-					<Container variant="dark" class="p-4">
-						<p class="font-terminal text-[var(--color-text-secondary)]">
-							<span class="text-[var(--color-pixel-green)]">&gt;</span> {feature}
+			<div bind:this={featuresRef} class="grid gap-4 sm:grid-cols-2">
+				{#each service.features as feature (feature)}
+					<div class="px-shadow-sm border-[3px] border-ink bg-panel p-4">
+						<p class="flex items-start gap-2 text-sm leading-relaxed text-fog">
+							<span class="font-terminal text-phosphor">+</span>
+							{feature}
 						</p>
-					</Container>
+					</div>
 				{/each}
 			</div>
 		</div>
@@ -137,58 +136,62 @@
 
 <!-- Process -->
 {#if service.process?.length}
-	<section class="py-16 px-4 bg-[var(--color-bg-secondary)]">
-		<div class="max-w-4xl mx-auto">
-			<h2 class="font-pixel text-lg text-[var(--color-text-primary)] mb-8 text-center">
-				Process
+	<section class="bg-void px-4 py-14 sm:px-6">
+		<div class="mx-auto max-w-4xl">
+			<h2 class="font-pixel mb-8 text-sm text-ink uppercase">
+				<span class="text-amber">▸</span> How it runs
 			</h2>
 			<div bind:this={processRef} class="space-y-4">
-				{#each service.process as step, i}
-					<Container variant="dark">
-						<div class="flex items-start gap-4 p-2">
-							<span class="font-pixel text-[var(--color-accent-primary)] text-sm">
-								{String(i + 1).padStart(2, '0')}
-							</span>
-							<p class="font-terminal text-[var(--color-text-secondary)]">{step}</p>
-						</div>
-					</Container>
+				{#each service.process as step, i (step)}
+					<div class="px-shadow-sm flex items-start gap-4 border-[3px] border-ink bg-panel p-4">
+						<span class="font-pixel border-2 border-amber px-2 py-[6px] text-[0.55rem] leading-none text-amber">
+							{String(i + 1).padStart(2, '0')}
+						</span>
+						<p class="pt-[2px] text-sm leading-relaxed text-fog">{step}</p>
+					</div>
 				{/each}
 			</div>
 		</div>
 	</section>
 {/if}
 
-<!-- Related Projects -->
+<!-- Field evidence -->
 {#if relatedProjects.length > 0}
-	<section class="py-16 px-4 bg-[var(--color-bg-primary)]">
-		<div class="max-w-4xl mx-auto">
-			<h2 class="font-pixel text-lg text-[var(--color-text-primary)] mb-8 text-center">
-				Related Projects
+	<section class="bg-night px-4 py-14 sm:px-6">
+		<div class="mx-auto max-w-4xl">
+			<h2 class="font-pixel mb-3 text-sm text-ink uppercase">
+				<span class="text-amber">▸</span> Field evidence
 			</h2>
-			<div bind:this={projectsRef} class="grid sm:grid-cols-2 gap-6">
-				{#each relatedProjects as project}
-					<Container variant="dark" class="h-full">
-						<div class="p-2">
-							{#if project.thumbnail}
+			<p class="font-terminal mb-8 text-lg text-moss">
+				&gt;&gt; systems where this service is already running
+			</p>
+			<div bind:this={projectsRef} class="grid gap-6 sm:grid-cols-2">
+				{#each relatedProjects as project (project.id)}
+					<a href="/#projects" class="px-shadow px-hover block border-[3px] border-ink bg-panel">
+						{#if project.thumbnail}
+							<div class="relative overflow-hidden border-b-[3px] border-ink">
 								<img
 									src={project.thumbnail}
-									alt={project.title}
-									class="w-full h-32 object-cover rounded mb-3 pixel-art"
+									alt="Pixel art illustration for {project.title}"
+									class="pixel-art block aspect-[2/1] w-full object-cover"
+									loading="lazy"
 								/>
-							{/if}
-							<h3 class="font-pixel text-[0.65rem] text-[var(--color-accent-primary)] mb-3 uppercase">
+								<div class="scanlines pointer-events-none absolute inset-0" aria-hidden="true"></div>
+							</div>
+						{/if}
+						<div class="p-4">
+							<p class="font-pixel mb-2 text-[0.45rem] text-amber uppercase">{project.code}</p>
+							<h3 class="font-pixel mb-3 text-[0.55rem] leading-relaxed text-ink uppercase">
 								{project.title}
 							</h3>
-							<p class="font-terminal text-sm text-[var(--color-text-secondary)] mb-4">
-								{project.description}
-							</p>
+							<p class="mb-4 text-sm leading-relaxed text-moss">{project.description}</p>
 							<div class="flex flex-wrap gap-2">
-								{#each project.techStack.slice(0, 4) as tech}
-									<Badge text={tech} variant="dark" />
+								{#each project.techStack.slice(0, 4) as tech (tech)}
+									<PixelBadge text={tech} variant="outline" />
 								{/each}
 							</div>
 						</div>
-					</Container>
+					</a>
 				{/each}
 			</div>
 		</div>
@@ -196,20 +199,19 @@
 {/if}
 
 <!-- CTA -->
-<section bind:this={ctaRef} class="py-20 px-4 bg-[var(--color-bg-secondary)]">
-	<div class="max-w-2xl mx-auto text-center">
-		<Container variant="dark">
-			<div class="p-4">
-				<h2 class="font-pixel text-lg text-[var(--color-text-primary)] mb-4">
-					Interested in {service.title}?
-				</h2>
-				<p class="font-terminal text-[var(--color-text-secondary)] mb-6">
-					Let's discuss your project requirements.
-				</p>
-				<Button variant="primary" href="/#contact">
-					Get In Touch
-				</Button>
-			</div>
-		</Container>
+<section bind:this={ctaRef} class="console-grid bg-void px-4 py-20 sm:px-6">
+	<div class="mx-auto max-w-2xl">
+		<PixelPanel title="open.channel" accent="amber" variant="night" class="p-7 pt-8 text-center">
+			<h2 class="font-pixel mb-3 text-sm leading-relaxed text-ink uppercase">
+				Need {service.title.toLowerCase()}?
+			</h2>
+			<p class="mb-7 text-sm leading-relaxed text-moss">
+				Tell me what you're building. You'll get an honest answer about scope, timeline, and
+				whether I'm the right operator for it.
+			</p>
+			<PixelButton variant="primary" size="md" href="/#contact">
+				Open channel <span aria-hidden="true">▸</span>
+			</PixelButton>
+		</PixelPanel>
 	</div>
 </section>

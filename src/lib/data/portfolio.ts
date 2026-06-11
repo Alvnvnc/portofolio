@@ -13,12 +13,13 @@ import type {
 // Personal Information
 // ========================================
 export const personalInfo: PersonalInfo = {
-	name: 'Alvin',
+	name: 'Alvin Vincent',
+	fullName: 'Alvin Vincent Oswald Reba',
 	title: 'Backend Engineer',
-	tagline: 'Building robust backend systems, APIs, and scalable solutions. Available for freelance projects.',
+	tagline:
+		'I build the layer you never see: APIs, data pipelines, and the deploy scripts that keep them honest.',
 	location: 'Surabaya, Indonesia',
 	email: 'alvnvincent30@gmail.com',
-	github: 'https://github.com/Alvnvnc',
 	linkedin: 'https://linkedin.com/in/alvin-reba-88a857279'
 };
 
@@ -26,162 +27,180 @@ export const personalInfo: PersonalInfo = {
 // Navigation Items
 // ========================================
 export const navItems: NavItem[] = [
-	{ id: 'hero', label: 'Home', href: '#hero' },
-	{ id: 'about', label: 'About', href: '#about' },
+	{ id: 'about', label: 'Operator', href: '#about' },
 	{ id: 'services', label: 'Services', href: '#services' },
-	{ id: 'skills', label: 'Skills', href: '#skills' },
-	{ id: 'projects', label: 'Projects', href: '#projects' },
-	{ id: 'experience', label: 'Experience', href: '#experience' },
-	{ id: 'contact', label: 'Contact', href: '#contact' }
+	{ id: 'skills', label: 'Loadout', href: '#skills' },
+	{ id: 'projects', label: 'Systems', href: '#projects' },
+	{ id: 'experience', label: 'Log', href: '#experience' },
+	{ id: 'contact', label: 'Channel', href: '#contact' }
 ];
 
 // ========================================
-// Section Metadata (System Metaphor)
+// Section Metadata (console headers)
 // ========================================
 export const sectionMeta: SectionMeta[] = [
 	{
-		id: 'hero',
-		title: 'Entry Point',
-		systemName: 'API Gateway',
-		subtitle: 'System Status: Online'
-	},
-	{
 		id: 'about',
-		title: 'About',
-		systemName: 'System Overview',
-		subtitle: 'Architecture & Philosophy'
+		index: '01',
+		title: 'Operator File',
+		readout: 'cat /etc/operator — who is driving this console'
 	},
 	{
 		id: 'services',
-		title: 'Services',
-		systemName: 'Microservices',
-		subtitle: 'Available Endpoints'
+		index: '02',
+		title: 'Service Catalog',
+		readout: 'five things I can build for you. no filler.'
 	},
 	{
 		id: 'skills',
-		title: 'Skills',
-		systemName: 'Tech Stack',
-		subtitle: 'Core Modules & Dependencies'
+		index: '03',
+		title: 'Loadout',
+		readout: 'tools ranked honestly — no 90% skill bars here'
 	},
 	{
 		id: 'projects',
-		title: 'Projects',
-		systemName: 'Services',
-		subtitle: 'Production Systems'
+		index: '04',
+		title: 'Deployed Systems',
+		readout: 'real platforms, running in the field right now'
 	},
 	{
 		id: 'experience',
-		title: 'Experience',
-		systemName: 'System Evolution',
-		subtitle: 'Version History'
+		index: '05',
+		title: 'Career Log',
+		readout: 'changelog of the operator, oldest entry 2022'
 	},
 	{
 		id: 'contact',
-		title: 'Contact',
-		systemName: 'Interface',
-		subtitle: 'Open Connection'
+		index: '06',
+		title: 'Open Channel',
+		readout: 'avg response < 24h · timezone WIB (UTC+7)'
 	}
 ];
 
 // ========================================
-// Skills Data
+// Skills — the loadout
 // ========================================
 export const skills: Skill[] = [
-	// Core Languages
-	{ name: 'Golang', category: 'core', level: 'advanced', icon: 'go' },
-	{ name: 'Python', category: 'core', level: 'advanced', icon: 'python' },
-	{ name: 'JavaScript', category: 'core', level: 'intermediate', icon: 'javascript' },
-	{ name: 'Java', category: 'core', level: 'intermediate', icon: 'java' },
-	{ name: 'TypeScript', category: 'core', level: 'intermediate', icon: 'typescript' },
-	{ name: 'SQL', category: 'core', level: 'advanced', icon: 'database' },
+	// Core languages
+	{ name: 'Golang', category: 'core', level: 'advanced', primary: true },
+	{ name: 'Python', category: 'core', level: 'advanced' },
+	{ name: 'SQL', category: 'core', level: 'advanced' },
+	{ name: 'TypeScript', category: 'core', level: 'intermediate' },
+	{ name: 'JavaScript', category: 'core', level: 'intermediate' },
+	{ name: 'Java', category: 'core', level: 'intermediate' },
 
-	// Databases
-	{ name: 'PostgreSQL', category: 'database', level: 'advanced', icon: 'postgresql' },
-	{ name: 'InfluxDB', category: 'database', level: 'advanced', icon: 'influxdb' },
-	{ name: 'Redis', category: 'database', level: 'intermediate', icon: 'redis' },
-	{ name: 'MongoDB', category: 'database', level: 'intermediate', icon: 'mongodb' },
+	// Data stores
+	{ name: 'PostgreSQL', category: 'database', level: 'advanced', primary: true },
+	{ name: 'InfluxDB', category: 'database', level: 'advanced' },
+	{ name: 'Redis', category: 'database', level: 'intermediate' },
+	{ name: 'MongoDB', category: 'database', level: 'intermediate' },
 
 	// Infrastructure
-	{ name: 'Docker', category: 'infrastructure', level: 'advanced', icon: 'docker' },
-	{ name: 'CI/CD', category: 'infrastructure', level: 'advanced', icon: 'cicd' },
-	{ name: 'Linux', category: 'infrastructure', level: 'advanced', icon: 'linux' },
-	{ name: 'Nginx', category: 'infrastructure', level: 'intermediate', icon: 'nginx' },
+	{ name: 'Docker', category: 'infrastructure', level: 'advanced', primary: true },
+	{ name: 'CI/CD', category: 'infrastructure', level: 'advanced' },
+	{ name: 'Linux', category: 'infrastructure', level: 'advanced' },
+	{ name: 'Kubernetes', category: 'infrastructure', level: 'intermediate' },
+	{ name: 'Nginx', category: 'infrastructure', level: 'intermediate' },
 
-	// AI & ML
-	{ name: 'LLM APIs', category: 'ai', level: 'intermediate', icon: 'ai' },
-	{ name: 'Vector Search', category: 'ai', level: 'intermediate', icon: 'search' },
-	{ name: 'RAG Systems', category: 'ai', level: 'intermediate', icon: 'rag' },
+	// AI & LLM
+	{ name: 'LLM APIs', category: 'ai', level: 'intermediate' },
+	{ name: 'RAG Systems', category: 'ai', level: 'intermediate' },
+	{ name: 'Vector Search', category: 'ai', level: 'intermediate' },
 
-	// Tools
-	{ name: 'Git', category: 'tools', level: 'advanced', icon: 'git' },
-	{ name: 'Clean Architecture', category: 'tools', level: 'advanced', icon: 'architecture' },
-	{ name: 'REST API Design', category: 'tools', level: 'advanced', icon: 'api' }
+	// Practices
+	{ name: 'Clean Architecture', category: 'tools', level: 'advanced', primary: true },
+	{ name: 'REST API Design', category: 'tools', level: 'advanced' },
+	{ name: 'Git', category: 'tools', level: 'advanced' },
+	{ name: 'gRPC', category: 'tools', level: 'intermediate' }
 ];
 
+export const skillCategories = [
+	{ id: 'core', name: 'Core Langs', icon: 'bolt' },
+	{ id: 'database', name: 'Data Stores', icon: 'drop' },
+	{ id: 'infrastructure', name: 'Infra', icon: 'stack' },
+	{ id: 'ai', name: 'AI / LLM', icon: 'chip' },
+	{ id: 'tools', name: 'Practices', icon: 'shield' }
+] as const;
+
+/** Honest level names — shown in the loadout legend */
+export const levelMeta: Record<Skill['level'], { dots: number; label: string; hint: string }> = {
+	expert: { dots: 4, label: 'Daily driver', hint: 'reach for it without thinking' },
+	advanced: { dots: 3, label: 'Production', hint: 'shipped and maintained real systems with it' },
+	intermediate: { dots: 2, label: 'Working', hint: 'comfortable, still keeps the docs open' },
+	beginner: { dots: 1, label: 'Learning', hint: 'actively leveling up' }
+};
+
 // ========================================
-// Projects Data
+// Projects — deployed systems (the real ones)
 // ========================================
 export const projects: Project[] = [
 	{
-		id: 'lecsens',
-		title: 'IoT Water Quality Monitoring Platform',
+		id: 'pome',
+		code: 'SYS-01',
+		title: 'POME — IoT & ML Ops Platform',
+		classification: 'Industrial IoT / ML',
+		status: 'live',
 		description:
-			'End-to-end backend platform for real-time environmental sensor monitoring and automation. Features Clean Architecture, JWT auth with RBAC, dual-database design, and CI/CD automation — similar to industrial POME monitoring systems.',
+			'Microservices platform that watches palm-oil mill effluent sensors in real time: multi-protocol ingestion, flow automation, and ML inference — all behind a Kong gateway.',
 		problem:
-			'Managing high-frequency sensor data at scale with secure multi-tenant access, real-time analytics, and reliable automated deployment.',
+			'Field sensors speak five different protocols (MQTT, CoAP, Modbus, Serial, WebSocket). The platform has to ingest all of them, run ML on the stream, and stay debuggable when something misbehaves at 2 a.m.',
 		architecture:
-			'Clean Architecture separating domain, application, and infrastructure layers. PostgreSQL for operational data, InfluxDB for time-series sensor readings, Redis for caching and sessions.',
+			'Go (Gin) services in Clean Architecture, plus a Python ML service spoken to over gRPC. Kong fronts the cluster, RabbitMQ carries async events, PostgreSQL keeps the facts and InfluxDB swallows the firehose. Runs on Kubernetes with Prometheus and Grafana watching.',
 		keyDecisions: [
-			'Dual database design: PostgreSQL for metadata + InfluxDB for high-frequency time-series',
-			'Implemented RBAC with JWT authentication for multi-tenant security isolation',
-			'Redis caching and session management, improving response times by 40%',
-			'Docker deployment with CI/CD automation, Trivy and gosec security scanning'
+			'ML inference isolated in its own gRPC service — models redeploy without touching the API',
+			'RabbitMQ for async events, so sensor bursts never block request paths',
+			'PostgreSQL for metadata + InfluxDB for time-series: each database does what it is good at',
+			'Multi-stage Docker builds and k8s manifests; Prometheus alerts fire before users notice'
 		],
-		techStack: ['Golang', 'PostgreSQL', 'InfluxDB', 'Redis', 'Docker', 'Nginx', 'JWT'],
-		featured: true,
-		thumbnail: '/images/project-lecsens.png'
+		techStack: ['Go', 'Python', 'Kong', 'gRPC', 'MQTT', 'RabbitMQ', 'PostgreSQL', 'InfluxDB', 'Kubernetes'],
+		thumbnail: '/images/project-backend-template.png'
 	},
 	{
-		id: 'ai-workflow',
-		title: 'AI Workflow Engine',
+		id: 'portal',
+		code: 'SYS-02',
+		title: 'Portal — IoT Access Gateway',
+		classification: 'Multi-Tenant SSO',
+		status: 'live',
 		description:
-			'LLM integration platform for automating document processing and intelligent routing.',
+			'The front door for a fleet of IoT apps (LecSens, POME, Dronemeq): single sign-on, multi-tenant organizations, and fine-grained RBAC behind Traefik and Kong.',
 		problem:
-			'Orchestrating multiple LLM providers with fallback strategies and cost optimization.',
-		architecture: 'Event-driven architecture with message queues for async processing.',
+			'Several IoT products, one login. Every request must answer "who are you, which org, what may you touch" — without each app re-implementing auth from scratch.',
+		architecture:
+			'Traefik terminates TLS and routes into Kong (JWT verification, rate limiting, ACL). Behind it sit Go microservices for user management, access management, service registry, and SSO — each owning its own PostgreSQL database via GORM.',
 		keyDecisions: [
-			'Provider-agnostic LLM abstraction layer',
-			'Vector search for semantic document retrieval',
-			'Rate limiting and cost tracking per tenant',
-			'Structured output parsing with validation'
+			'Database-per-service, so tenants and permissions evolve independently',
+			'Kong enforces JWT and rate limits at the edge — services stay thin',
+			'Service registry keeps app metadata dynamic; new IoT apps dock without redeploys',
+			'Invitation and subscription flows built into tenant management'
 		],
-		techStack: ['Python', 'FastAPI', 'Redis', 'PostgreSQL', 'OpenAI', 'Anthropic'],
-		featured: true,
+		techStack: ['Go', 'Kong', 'Traefik', 'PostgreSQL', 'GORM', 'JWT', 'Docker'],
 		thumbnail: '/images/project-ai-workflow.png'
 	},
 	{
-		id: 'backend-template',
-		title: 'Go Backend Template',
+		id: 'lecsens',
+		code: 'SYS-03',
+		title: 'LecSens — Water Quality Monitor',
+		classification: 'Environmental Monitoring',
+		status: 'live',
 		description:
-			'Production-ready Golang backend template with Clean Architecture patterns.',
+			'Backend platform for environmental sensor compliance: asset management, violation detection, and regulator-facing reporting on live water-quality data.',
 		problem:
-			'Reducing boilerplate and enforcing consistent patterns across microservices.',
+			'High-frequency sensor data across multiple tenants, with one hard rule: when a reading crosses a regulatory threshold, the right people must know — with an audit trail.',
 		architecture:
-			'Hexagonal architecture with dependency injection and interface-driven design.',
+			'Go services in Clean Architecture: asset management, user management, regulator and violation modules. PostgreSQL for operational data, InfluxDB for sensor streams, Redis for sessions and hot paths.',
 		keyDecisions: [
-			'Repository pattern for database abstraction',
-			'Middleware chain for cross-cutting concerns',
-			'Structured logging with correlation IDs',
-			'Health checks and graceful shutdown'
+			'JWT + RBAC with per-tenant isolation designed in from day one',
+			'Violation engine evaluates thresholds on ingest — not in nightly batches',
+			'Redis caching cut common dashboard queries by ~40%',
+			'CI/CD pipeline runs Trivy and gosec security scans on every build'
 		],
-		techStack: ['Golang', 'PostgreSQL', 'Docker', 'GitHub Actions'],
-		featured: false,
-		thumbnail: '/images/project-backend-template.png'
+		techStack: ['Go', 'PostgreSQL', 'InfluxDB', 'Redis', 'Docker', 'Nginx', 'JWT'],
+		thumbnail: '/images/project-lecsens.png'
 	}
 ];
 
 // ========================================
-// Experience Data
+// Experience
 // ========================================
 export const experiences: Experience[] = [
 	{
@@ -194,19 +213,19 @@ export const experiences: Experience[] = [
 		},
 		location: 'Remote, Indonesia',
 		description:
-			'Designing and developing production-style backend systems independently, from architecture to deployment. Focused on IoT monitoring platforms and scalable REST APIs.',
+			'Designing and operating production backend systems end-to-end — including the POME, Portal, and LecSens platforms above — from first schema to Kubernetes deploy.',
 		achievements: [
-			'Designed and built multiple production backend systems independently from scratch to deployment',
-			'Delivered secure, scalable RESTful APIs supporting real-time sensor data ingestion and visualization',
-			'Applied CI/CD pipelines, automated testing, linting, and security scanning (Trivy, gosec)',
-			'Collaborated with frontend developers to integrate APIs into dashboards and monitoring tools'
+			'Built three production IoT platforms solo: architecture, implementation, deployment, monitoring',
+			'Delivered secure multi-tenant REST APIs handling real-time sensor ingestion and visualization',
+			'Wired CI/CD with automated tests, linting, and security scanning (Trivy, gosec) into every repo',
+			'Collaborated with frontend developers to land APIs in dashboards without integration drama'
 		],
-		techStack: ['Golang', 'PostgreSQL', 'InfluxDB', 'Redis', 'Docker', 'CI/CD']
+		techStack: ['Golang', 'PostgreSQL', 'InfluxDB', 'Redis', 'Docker', 'Kubernetes', 'CI/CD']
 	}
 ];
 
 // ========================================
-// Education Data
+// Education
 // ========================================
 export const education: Education[] = [
 	{
@@ -218,32 +237,22 @@ export const education: Education[] = [
 			end: '2026'
 		},
 		achievements: [
-			'Relevant Coursework: Data Structures & Algorithms, Database Systems, Operating Systems, Software Engineering, Machine Learning'
+			'Coursework: Data Structures & Algorithms, Database Systems, Operating Systems, Software Engineering, Machine Learning'
 		]
 	}
 ];
 
 // ========================================
-// Skill Categories for Display
-// ========================================
-export const skillCategories = [
-	{ id: 'core', name: 'Core', icon: 'star' },
-	{ id: 'database', name: 'Data', icon: 'database' },
-	{ id: 'infrastructure', name: 'Infra', icon: 'server' },
-	{ id: 'ai', name: 'AI', icon: 'brain' },
-	{ id: 'tools', name: 'Tools', icon: 'wrench' }
-] as const;
-
-// ========================================
-// Services Data
+// Services — the catalog
 // ========================================
 export const services: Service[] = [
 	{
 		id: 'backend-dev',
+		code: 'SVC-01',
 		title: 'Backend Development',
 		description:
-			'Production-grade backend systems with Clean Architecture, secure REST APIs, and scalable database design.',
-		icon: '⚙️',
+			'APIs and services built to be maintained, not just shipped — Clean Architecture, tests, and logs you can actually read.',
+		icon: 'stack',
 		techStack: ['Golang', 'Python', 'PostgreSQL', 'Redis'],
 		longDescription:
 			'I build production-grade backend systems from scratch using Clean Architecture principles. Every system is designed for maintainability, testability, and scalability — from database schema design to deployment automation. Whether you need a monolith or microservices, I deliver secure, well-structured backends that your team can confidently maintain and extend.',
@@ -260,20 +269,27 @@ export const services: Service[] = [
 			'Implementation with Clean Architecture patterns',
 			'Testing, security review, and production deployment'
 		],
-		relatedProjects: ['lecsens', 'backend-template'],
+		relatedProjects: ['pome', 'lecsens'],
 		seo: {
 			title: 'Backend Development Services | Golang & Python | Alvin Vincent',
 			description:
 				'Freelance backend developer specializing in Golang, Python, PostgreSQL. Clean Architecture, REST APIs, and scalable systems. Available for projects worldwide.',
-			keywords: ['backend developer', 'golang developer', 'freelance backend engineer', 'REST API development', 'clean architecture']
+			keywords: [
+				'backend developer',
+				'golang developer',
+				'freelance backend engineer',
+				'REST API development',
+				'clean architecture'
+			]
 		}
 	},
 	{
 		id: 'api-design',
+		code: 'SVC-02',
 		title: 'API Design & Integration',
 		description:
-			'RESTful API design with authentication, rate limiting, and third-party service integration.',
-		icon: '🔌',
+			'REST endpoints with auth, rate limits, and docs — your web or mobile team plugs in and stops thinking about it.',
+		icon: 'plug',
 		techStack: ['REST', 'JWT', 'OAuth', 'WebSocket'],
 		longDescription:
 			'I design and build RESTful APIs that are secure, well-documented, and easy to integrate. From authentication systems with JWT and OAuth to real-time WebSocket connections, I create APIs that serve as reliable foundations for web and mobile applications. I also handle third-party API integrations, payment gateways, and webhook systems.',
@@ -290,23 +306,30 @@ export const services: Service[] = [
 			'Implementation with comprehensive documentation',
 			'Integration testing and performance optimization'
 		],
-		relatedProjects: ['lecsens', 'ai-workflow'],
+		relatedProjects: ['portal', 'pome'],
 		seo: {
 			title: 'API Design & Integration Services | REST API Developer | Alvin Vincent',
 			description:
 				'Professional REST API design and integration services. JWT authentication, OAuth, WebSocket, third-party integrations. Freelance API developer in Indonesia.',
-			keywords: ['API design', 'REST API developer', 'API integration', 'JWT authentication', 'freelance API engineer']
+			keywords: [
+				'API design',
+				'REST API developer',
+				'API integration',
+				'JWT authentication',
+				'freelance API engineer'
+			]
 		}
 	},
 	{
 		id: 'iot-data',
+		code: 'SVC-03',
 		title: 'IoT & Data Systems',
 		description:
-			'Sensor data ingestion, time-series databases, real-time monitoring dashboards, and analytics pipelines.',
-		icon: '📡',
+			'Sensor-to-dashboard pipelines: MQTT in, time-series storage, alerts out. Built on real industrial deployments.',
+		icon: 'drop',
 		techStack: ['InfluxDB', 'PostgreSQL', 'MQTT', 'Grafana'],
 		longDescription:
-			'I build backend systems for IoT and sensor monitoring — from data ingestion pipelines to real-time analytics dashboards. With experience in industrial monitoring platforms similar to POME water quality systems, I handle high-frequency sensor data at scale using time-series databases, automated alerting, and visualization tools.',
+			'I build backend systems for IoT and sensor monitoring — from data ingestion pipelines to real-time analytics dashboards. With production experience on industrial monitoring platforms (palm-oil mill effluent, water quality compliance), I handle high-frequency sensor data at scale using time-series databases, automated alerting, and visualization tools.',
 		features: [
 			'High-frequency sensor data ingestion pipelines',
 			'Time-series database design (InfluxDB, TimescaleDB)',
@@ -320,28 +343,35 @@ export const services: Service[] = [
 			'Pipeline implementation with real-time processing',
 			'Dashboard setup, alerting, and deployment'
 		],
-		relatedProjects: ['lecsens'],
+		relatedProjects: ['lecsens', 'pome'],
 		seo: {
 			title: 'IoT Backend & Data Systems | Sensor Monitoring Developer | Alvin Vincent',
 			description:
 				'IoT backend developer building sensor monitoring platforms, time-series data pipelines, and real-time dashboards. InfluxDB, MQTT, Grafana. Freelance in Indonesia.',
-			keywords: ['IoT developer', 'sensor monitoring backend', 'time-series database', 'InfluxDB developer', 'real-time monitoring']
+			keywords: [
+				'IoT developer',
+				'sensor monitoring backend',
+				'time-series database',
+				'InfluxDB developer',
+				'real-time monitoring'
+			]
 		}
 	},
 	{
 		id: 'ai-integration',
-		title: 'AI/LLM Integration',
+		code: 'SVC-04',
+		title: 'AI / LLM Integration',
 		description:
-			'LLM-powered automation, RAG systems, vector search, and intelligent document processing workflows.',
-		icon: '🤖',
-		techStack: ['OpenAI', 'Anthropic', 'Vector DB', 'RAG'],
+			'LLM features wired into real backends — RAG, vector search, structured outputs, with fallbacks and a cost ceiling.',
+		icon: 'chip',
+		techStack: ['LLM APIs', 'Vector DB', 'RAG', 'gRPC'],
 		longDescription:
 			'I integrate large language models into your backend workflows — from RAG (Retrieval-Augmented Generation) systems for intelligent document search to automated content processing pipelines. I build provider-agnostic LLM abstraction layers with fallback strategies, cost optimization, and structured output parsing.',
 		features: [
 			'RAG systems with vector search for document retrieval',
-			'Provider-agnostic LLM integration (OpenAI, Anthropic, etc.)',
+			'Provider-agnostic LLM integration with fallback strategies',
 			'Automated document processing and classification',
-			'Cost optimization with fallback strategies',
+			'Cost tracking and optimization per tenant',
 			'Structured output parsing and validation'
 		],
 		process: [
@@ -350,21 +380,28 @@ export const services: Service[] = [
 			'Integration implementation with error handling',
 			'Testing, cost monitoring, and production deployment'
 		],
-		relatedProjects: ['ai-workflow'],
+		relatedProjects: ['pome'],
 		seo: {
 			title: 'AI/LLM Integration Services | RAG Systems Developer | Alvin Vincent',
 			description:
-				'AI and LLM integration developer building RAG systems, vector search, and automated document processing. OpenAI, Anthropic API integration. Freelance AI engineer.',
-			keywords: ['LLM integration', 'RAG system developer', 'AI backend developer', 'vector search', 'OpenAI integration']
+				'AI and LLM integration developer building RAG systems, vector search, and automated document processing. Provider-agnostic LLM integration. Freelance AI engineer.',
+			keywords: [
+				'LLM integration',
+				'RAG system developer',
+				'AI backend developer',
+				'vector search',
+				'LLM API integration'
+			]
 		}
 	},
 	{
 		id: 'devops',
+		code: 'SVC-05',
 		title: 'DevOps & Deployment',
 		description:
-			'Docker containerization, CI/CD pipelines, Linux server management, and cloud infrastructure setup.',
-		icon: '🚀',
-		techStack: ['Docker', 'CI/CD', 'Linux', 'Cloudflare'],
+			'Docker, CI/CD, security scans, zero-downtime deploys — the unglamorous work that keeps the pager quiet.',
+		icon: 'bolt',
+		techStack: ['Docker', 'Kubernetes', 'CI/CD', 'Linux'],
 		longDescription:
 			'I set up production deployment infrastructure — from Docker containerization and CI/CD pipelines to Linux server management and Cloudflare tunnels. I automate the entire build-test-deploy cycle with security scanning, health checks, and zero-downtime deployments so your applications run reliably in production.',
 		features: [
@@ -380,12 +417,18 @@ export const services: Service[] = [
 			'CI/CD pipeline configuration with security scanning',
 			'Deployment, monitoring, and documentation'
 		],
-		relatedProjects: ['lecsens', 'backend-template'],
+		relatedProjects: ['pome', 'portal'],
 		seo: {
 			title: 'DevOps & Deployment Services | Docker & CI/CD | Alvin Vincent',
 			description:
 				'DevOps services including Docker containerization, CI/CD pipelines, Linux server management, and Cloudflare setup. Freelance DevOps engineer in Indonesia.',
-			keywords: ['DevOps services', 'Docker deployment', 'CI/CD pipeline', 'Linux server management', 'freelance DevOps']
+			keywords: [
+				'DevOps services',
+				'Docker deployment',
+				'CI/CD pipeline',
+				'Linux server management',
+				'freelance DevOps'
+			]
 		}
 	}
 ];

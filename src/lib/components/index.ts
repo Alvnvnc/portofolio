@@ -1,16 +1,14 @@
-// UI Components
-export { default as Button } from './ui/Button.svelte';
-export { default as Container } from './ui/Container.svelte';
-export { default as Badge } from './ui/Badge.svelte';
-export { default as Progress } from './ui/Progress.svelte';
+// Pixel UI Components
+export { default as PixelButton } from './ui/PixelButton.svelte';
+export { default as PixelPanel } from './ui/PixelPanel.svelte';
+export { default as PixelBadge } from './ui/PixelBadge.svelte';
+export { default as PixelIcon } from './ui/PixelIcon.svelte';
+export { default as LevelDots } from './ui/LevelDots.svelte';
+export { default as SectionHeader } from './ui/SectionHeader.svelte';
 
 // Layout Components
 export { default as Navbar } from './layout/Navbar.svelte';
 export { default as Footer } from './layout/Footer.svelte';
-
-// Pixel Components
-export { default as Character } from './pixel/Character.svelte';
-export { default as Terminal } from './pixel/Terminal.svelte';
 
 // Section Components
 export { default as Hero } from './sections/Hero.svelte';

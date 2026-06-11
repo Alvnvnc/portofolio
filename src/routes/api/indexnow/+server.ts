@@ -1,0 +1,34 @@
+import { services } from '$lib/data/portfolio';
+import { json } from '@sveltejs/kit';
+import type { RequestHandler } from './$types';
+
+const INDEXNOW_KEY = 'b7f3e9a1c5d2k8m4';
+const BASE_URL = 'https://alvnvnc.site';
+
+export const POST: RequestHandler = async () => {
+	const allUrls = [
+		BASE_URL,
+		...services.map((s) => `${BASE_URL}/services/${s.id}`)
+	];
+
+	try {
+		const response = await fetch('https://api.indexnow.org/indexnow', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({
+				host: 'alvnvnc.site',
+				key: INDEXNOW_KEY,
+				keyLocation: `${BASE_URL}/${INDEXNOW_KEY}.txt`,
+				urlList: allUrls
+			})
+		});
+
+		return json({
+			success: response.ok,
+			status: response.status,
+			urlsSubmitted: allUrls.length
+		});
+	} catch (err) {
+		return json({ success: false, error: String(err) }, { status: 500 });
+	}
+};

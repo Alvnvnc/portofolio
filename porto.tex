@@ -1,0 +1,215 @@
+%-------------------------
+% Professional Resume - Alvin Vincent Oswald Reba
+% LaTeX Template for International Internship Applications
+%-------------------------
+
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\usepackage{multicol}
+\setlength{\multicolsep}{-3.0pt}
+\setlength{\columnsep}{-1pt}
+\input{glyphtounicode}
+
+%----------FONT OPTIONS----------
+\usepackage{lmodern}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.6in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1.19in}
+\addtolength{\topmargin}{-.7in}
+\addtolength{\textheight}{1.4in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large\bfseries
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+% Ensure that generate pdf is machine readable/ATS parsable
+\pdfgentounicode=1
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\classesList}[4]{
+    \item\small{
+        {#1 #2 #3 #4 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{1.0\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & \textbf{\small #2} \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubSubheading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textit{\small#1} & \textit{\small #2} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{1.001\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & \textbf{\small #2}\\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
+
+\renewcommand\labelitemi{$\vcenter{\hbox{\tiny$\bullet$}}$}
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.0in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    {\Huge \scshape Alvin Vincent Oswald Reba} \\ \vspace{1pt}
+    \small Backend / AI Platform Engineer Intern \\ \vspace{8pt}
+    \small 
+    \href{mailto:alvnvincent30@gmail.com}{\underline{alvnvincent30@gmail.com}} $|$ 
+    \href{https://linkedin.com/in/alvin-reba-88a857279}{\underline{linkedin.com/in/alvin-reba-88a857279}} $|$
+    \href{https://github.com/Alvnvnc}{\underline{github.com/Alvnvnc}}
+    \vspace{-8pt}
+\end{center}
+
+
+%-----------SUMMARY-----------
+\section{Summary}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     Backend-focused software engineer with production-grade experience building systems using \textbf{Golang, Clean Architecture, and modern DevOps practices}. Experienced in designing secure multi-tenant APIs, IoT data pipelines, and scalable monitoring platforms using PostgreSQL, InfluxDB, and Redis. Comfortable working across the full backend stack—from system design and database modeling to CI/CD and zero-downtime deployment. Familiar with integrating \textbf{LLM-based systems and AI workflows}, with growing experience in building AI-powered services. Seeking an Engineering Intern role to contribute to robust AI-enabled products at scale.
+    }}
+ \end{itemize}
+ \vspace{-16pt}
+
+
+%-----------EDUCATION-----------
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {Sepuluh Nopember Institute of Technology (ITS)}{Surabaya, Indonesia}
+      {Bachelor of Science in Informatics}{Expected Graduation: 2026}
+      \resumeItemListStart
+        \resumeItem{Relevant Coursework: Data Structures \& Algorithms, Database Systems, Operating Systems, Software Engineering, Machine Learning}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+\vspace{-12pt}
+
+
+%-----------TECHNICAL SKILLS-----------
+\section{Technical Skills}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \textbf{Languages}{: Go (Golang), SQL, Python (basic)} \\
+     \textbf{Backend \& Architecture}{: Clean Architecture, RESTful API Design, Gin Framework, Middleware Development, RBAC, Multi-tenant Systems, TDD} \\
+     \textbf{Databases}{: PostgreSQL (schema design, indexing, optimization), InfluxDB (time-series), Redis (caching, sessions)} \\
+     \textbf{DevOps \& Infrastructure}{: Docker, Docker Compose, GitLab CI/CD, Zero-downtime Deployment, Cloudflare Tunnel, Trivy, gosec} \\
+     \textbf{Security}{: JWT Authentication, SSO Integration, Role-Based Access Control (RBAC), Secure API Design} \\
+     \textbf{AI / LLM}{: LLM API Integration, Prompt Engineering, Tool/Function Calling, AI Workflow Orchestration, Vector Search} \\
+     \textbf{Tools}{: Git, GitLab, Make/Makefile, golangci-lint, Swagger/OpenAPI}
+    }}
+ \end{itemize}
+ \vspace{-16pt}
+
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+  \resumeSubHeadingListStart
+
+    \resumeSubheading
+      {Independent Backend Engineer}{2023 -- Present}
+      {IoT Monitoring Systems}{Remote}
+      \resumeItemListStart
+        \resumeItem{Designed and developed multiple production-style backend systems independently from scratch to deployment}
+        \resumeItem{Delivered secure, scalable RESTful APIs supporting real-time sensor data ingestion and visualization}
+        \resumeItem{Applied software engineering best practices: CI/CD pipelines, automated testing, linting, and security scanning}
+        \resumeItem{Collaborated with frontend developers to integrate APIs into dashboards and internal monitoring tools}
+      \resumeItemListEnd
+    
+  \resumeSubHeadingListEnd
+\vspace{-12pt}
+
+
+%-----------PROJECTS-----------
+\section{Projects}
+    \vspace{-5pt}
+    \resumeSubHeadingListStart
+      \resumeProjectHeading
+          {\textbf{LecSens -- Water Sensor Monitoring Backend} $|$ \emph{Golang, Gin, PostgreSQL, InfluxDB, Redis, Docker}}{2024}
+          \resumeItemListStart
+            \resumeItem{Designed and built a complete backend platform for water sensor monitoring as sole developer}
+            \resumeItem{Implemented Clean Architecture to separate domain, application, and infrastructure layers for maintainability}
+            \resumeItem{Built secure REST APIs with JWT authentication and role-based access control (RBAC)}
+            \resumeItem{Designed PostgreSQL schema for operational data and InfluxDB for high-frequency time-series sensor readings}
+            \resumeItem{Implemented caching and session management using Redis, improving response times by 40\%}
+            \resumeItem{Deployed using Docker with CI/CD automation, integrated security scanning (Trivy, gosec)}
+          \resumeItemListEnd
+          \vspace{-13pt}
+      \resumeProjectHeading
+          {\textbf{POME Monitoring System -- Industrial Sensor Backend} $|$ \emph{Golang, PostgreSQL, InfluxDB, Redis, Docker}}{2025}
+          \resumeItemListStart
+            \resumeItem{Built microservice-inspired backend for monitoring Palm Oil Mill Effluent (POME) sensors}
+            \resumeItem{Integrated existing ML prediction model into backend via API for downstream analytics and dashboards}
+            \resumeItem{Designed semi real-time data ingestion pipeline with time-series processing using InfluxDB}
+            \resumeItem{Implemented multi-tenant architecture to securely isolate data between organizations}
+            \resumeItem{Developed comprehensive API documentation and optimized database queries for high-frequency sensor data}
+          \resumeItemListEnd
+    \resumeSubHeadingListEnd
+\vspace{-12pt}
+
+
+%-----------ADDITIONAL INFORMATION-----------
+\section{Additional Information}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \textbf{Strengths}{: Strong problem-solving and system design mindset, comfortable in ambiguous startup environments} \\
+     \textbf{Work Style}{: End-to-end feature ownership (design → implementation → deployment)} \\
+     \textbf{Current Focus}{: Actively learning AI platform engineering and LLM-based system design} \\
+     \textbf{Languages}{: Indonesian (Native), English (Professional Working Proficiency)}
+    }}
+ \end{itemize}
+
+
+\end{document}

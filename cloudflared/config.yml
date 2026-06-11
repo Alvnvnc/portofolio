@@ -1,0 +1,7 @@
+tunnel: 252ca58f-4195-4d9a-b44c-132921fa319b
+credentials-file: /etc/cloudflared/252ca58f-4195-4d9a-b44c-132921fa319b.json
+
+ingress:
+  - hostname: alvnvnc.site
+    service: http://portofolio-web:4782
+  - service: http_status:404

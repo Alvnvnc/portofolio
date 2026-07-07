@@ -1,31 +1,28 @@
 <script lang="ts">
-	import { cn } from '$lib/utils';
+	import { splitReveal, lineDraw, rise } from '$lib/actions/motion';
 
-	interface Props {
-		/** Zero-padded section index, e.g. "02" */
-		index: string;
-		title: string;
-		/** Terminal-style readout line under the title */
-		readout?: string;
-		class?: string;
-	}
-
-	let { index, title, readout, class: className = '' }: Props = $props();
+	// Editorial section header: mono index kicker, oversized display title
+	// with the split blur-reveal, and a hairline that draws itself in.
+	let {
+		index,
+		title,
+		readout = ''
+	}: { index: string; title: string; readout?: string } = $props();
 </script>
 
-<!-- Left-aligned console rule: `01 ▪ TITLE ░░░░░░` — no centered SaaS headers here -->
-<header class={cn('mb-10 sm:mb-12', className)}>
-	<div class="flex items-center gap-3 sm:gap-4">
-		<span class="font-pixel text-[0.6rem] leading-none text-amber">{index}</span>
-		<span class="h-[10px] w-[10px] flex-none bg-amber" aria-hidden="true"></span>
-		<h2 class="font-pixel text-sm leading-snug text-ink uppercase sm:text-lg">
+<header class="mb-14 sm:mb-20">
+	<p class="kicker" use:rise>
+		<span class="text-accent">{index}</span>
+		<span aria-hidden="true">/</span>
+		{readout}
+	</p>
+	{#key title}
+		<h2
+			class="mt-5 font-display text-4xl leading-[0.95] text-fg uppercase sm:text-6xl"
+			use:splitReveal={{ stagger: 0.07 }}
+		>
 			{title}
 		</h2>
-		<span class="dither h-[8px] min-w-6 flex-1" aria-hidden="true"></span>
-	</div>
-	{#if readout}
-		<p class="font-terminal mt-2 pl-0 text-lg text-moss sm:text-xl">
-			&gt;&gt; {readout}
-		</p>
-	{/if}
+	{/key}
+	<div class="hairline mt-8" use:lineDraw></div>
 </header>

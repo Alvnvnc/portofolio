@@ -1,252 +1,212 @@
-/* Fonts: pixel display + CRT terminal + readable mono body (must be first) */
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');
+/* Fonts: editorial display + humanist body + mono (must be first) */
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700;800;900&family=Schibsted+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* ============================================================
-   FIELD CONSOLE — design tokens
-   A backend engineer's portfolio styled as the kind of
-   industrial monitoring console he actually builds.
-   Palette is deliberately small: ink, phosphor, amber, alert.
+   WARM EDITORIAL — design tokens
+   Espresso base, bone text, terracotta clay accent, muted sage.
+   A creative-developer portfolio: cinematic, humanist, dark-only.
    ============================================================ */
 
 :root {
-	/* Surfaces (green-black, not GitHub navy) */
-	--night: #0b0e09;
-	--void: #070905;
-	--panel: #12160e;
-	--slot: #1a2114;
-	--seam: #2b3522;
-
-	/* Ink & text */
-	--ink: #eae6d2;
-	--fog: #b4bda6;
-	--moss: #7d8870;
-
-	/* Accents */
-	--phosphor: #5ee05e;
-	--amber: #ffb938;
-	--alert: #ff6b4a;
-
-	/* Solid pixel shadow */
-	--shadow: #000000;
-
-	/* Dither + scanline tints */
-	--dither: rgba(234, 230, 210, 0.07);
-	--scan: rgba(0, 0, 0, 0.16);
+	--background: #14100d;
+	--foreground: #ede4d6;
 }
 
-/* Paper-console light theme: warm print on cream, same accents darkened */
-[data-theme='light'] {
-	--night: #ece6d3;
-	--void: #e0d9c2;
-	--panel: #f5f0e0;
-	--slot: #e4ddc7;
-	--seam: #c9c0a4;
+@theme {
+	--color-bg: #14100d;
+	--color-bg-elevated: #1f1811;
+	--color-surface: #2a2119;
+	--color-fg: #ede4d6;
+	--color-fg-muted: #a2917d;
+	--color-accent: #d6835a;
+	--color-accent-soft: #d6835a1f;
+	--color-accent-2: #8a9a78;
+	--color-border: #ede4d61a;
 
-	--ink: #23281b;
-	--fog: #424b35;
-	--moss: #6e7a58;
+	--font-display: 'Unbounded', sans-serif;
+	--font-body: 'Schibsted Grotesk', sans-serif;
+	--font-mono: 'JetBrains Mono', monospace;
 
-	--phosphor: #157a38;
-	--amber: #a16500;
-	--alert: #bf3a1f;
-
-	--shadow: #23281b;
-
-	--dither: rgba(35, 40, 27, 0.1);
-	--scan: rgba(35, 40, 27, 0.05);
+	--animate-marquee: marquee 28s linear infinite;
+	--animate-blast: blast 700ms ease-out;
+	--animate-spin-slow: spin-slow 40s linear infinite;
 }
 
-@theme inline {
-	--color-night: var(--night);
-	--color-void: var(--void);
-	--color-panel: var(--panel);
-	--color-slot: var(--slot);
-	--color-seam: var(--seam);
-	--color-ink: var(--ink);
-	--color-fog: var(--fog);
-	--color-moss: var(--moss);
-	--color-phosphor: var(--phosphor);
-	--color-amber: var(--amber);
-	--color-alert: var(--alert);
-	--color-shadow: var(--shadow);
+@keyframes spin-slow {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
 
-	--font-pixel: 'Press Start 2P', monospace;
-	--font-terminal: 'VT323', monospace;
-	--font-body: 'IBM Plex Mono', monospace;
+@keyframes marquee {
+	from {
+		transform: translateX(0);
+	}
+	to {
+		transform: translateX(-50%);
+	}
+}
+
+@keyframes blast {
+	from {
+		transform: scale(1);
+		opacity: 0.8;
+	}
+	to {
+		transform: scale(1.8);
+		opacity: 0;
+	}
 }
 
 /* ============================================================
    Base
    ============================================================ */
+* {
+	scrollbar-width: thin;
+	scrollbar-color: var(--color-fg-muted) transparent;
+}
+
 html {
-	scroll-behavior: smooth;
+	background: var(--color-bg);
 }
 
 body {
+	background: var(--color-bg);
+	color: var(--color-fg);
 	font-family: var(--font-body);
-	background-color: var(--night);
-	color: var(--fog);
-	line-height: 1.65;
+	overflow-x: hidden;
 	-webkit-font-smoothing: antialiased;
 }
 
-/* Pixel font needs extra leading to breathe */
-.font-pixel {
-	font-family: var(--font-pixel);
-	line-height: 1.9;
-	letter-spacing: 0.04em;
+::selection {
+	background: var(--color-accent);
+	color: var(--color-bg);
 }
 
-.font-terminal {
-	font-family: var(--font-terminal);
-	line-height: 1.35;
-}
-
-/* One global focus style: thick amber outline, keyboard-friendly */
 :focus-visible {
-	outline: 3px solid var(--amber);
+	outline: 2px solid var(--color-accent);
 	outline-offset: 3px;
 }
 
-::selection {
-	background-color: var(--amber);
-	color: var(--night);
+/* ============================================================
+   Custom cursor — only on fine pointers with motion allowed
+   ============================================================ */
+.custom-cursor {
+	display: none;
 }
 
-/* Square scrollbar, no rounding anywhere */
-::-webkit-scrollbar {
-	width: 12px;
-	height: 12px;
-}
-::-webkit-scrollbar-track {
-	background: var(--void);
-}
-::-webkit-scrollbar-thumb {
-	background: var(--seam);
-	border: 2px solid var(--void);
-}
-::-webkit-scrollbar-thumb:hover {
-	background: var(--moss);
+@media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+	.custom-cursor {
+		display: flex;
+	}
+
+	html,
+	a,
+	button,
+	[role='button'] {
+		cursor: none;
+	}
 }
 
 /* ============================================================
-   Pixel utilities
+   Film grain — subtle texture behind hero / dark sections
+   ============================================================ */
+.grain::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	pointer-events: none;
+	opacity: 0.05;
+	mix-blend-mode: overlay;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ============================================================
+   Editorial primitives — the shared print language
    ============================================================ */
 
-/* Crisp upscaling for pixel art */
-.pixel-art {
-	image-rendering: pixelated;
-	image-rendering: crisp-edges;
+/* Mono index kicker: "02 / SERVICES" */
+.kicker {
+	font-family: var(--font-mono);
+	font-size: 11px;
+	letter-spacing: 0.25em;
+	text-transform: uppercase;
+	color: var(--color-fg-muted);
 }
 
-/* Solid offset shadows — the whole site uses these, never blur */
-.px-shadow {
-	box-shadow: 5px 5px 0 0 var(--shadow);
-}
-.px-shadow-sm {
-	box-shadow: 3px 3px 0 0 var(--shadow);
-}
-.px-shadow-lg {
-	box-shadow: 8px 8px 0 0 var(--shadow);
+/* 1px rule meant to be drawn in by the `lineDraw` action */
+.hairline {
+	height: 1px;
+	width: 100%;
+	background: var(--color-border);
 }
 
-/* 2px checkerboard — used for section seams and decorative strips */
-.dither {
-	background-image: conic-gradient(
-		var(--dither) 25%,
-		transparent 0 50%,
-		var(--dither) 0 75%,
-		transparent 0
-	);
-	background-size: 4px 4px;
-}
-
-/* Subtle CRT scanlines (hero + thumbnails only, never over body text) */
-.scanlines {
+/* Dashed underline that draws itself in on hover/focus (nav, inline links) */
+.draw-link {
 	background-image: repeating-linear-gradient(
-		0deg,
-		var(--scan),
-		var(--scan) 1px,
-		transparent 1px,
-		transparent 3px
+		to right,
+		currentColor 0,
+		currentColor 4px,
+		transparent 4px,
+		transparent 8px
 	);
+	background-repeat: no-repeat;
+	background-position: left calc(100% - 0.05em);
+	background-size: 0% 1px;
+	transition: background-size 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+	padding-bottom: 0.35em;
 }
 
-/* Faint blueprint grid for the page backdrop */
-.console-grid {
-	background-image:
-		linear-gradient(var(--dither) 1px, transparent 1px),
-		linear-gradient(90deg, var(--dither) 1px, transparent 1px);
-	background-size: 24px 24px;
+.draw-link:hover,
+.draw-link:focus-visible,
+.draw-link[aria-current] {
+	background-size: 100% 1px;
 }
 
-/* Square status LED. Pair with a color class: bg-phosphor etc. */
-.led {
-	display: inline-block;
-	width: 8px;
-	height: 8px;
-	flex: none;
-}
-.led-blink {
-	animation: led-blink 1.4s step-end infinite;
-}
-
-@keyframes led-blink {
-	0%,
-	100% {
-		opacity: 1;
-	}
-	50% {
-		opacity: 0.25;
-	}
-}
-
-/* Blinking block cursor for terminal lines */
-.cursor-block::after {
-	content: '▮';
-	margin-left: 2px;
-	color: var(--phosphor);
-	animation: led-blink 1s step-end infinite;
-}
-
-/* Tiny idle float for decorative sprites */
-.sprite-float {
-	animation: sprite-float 2.4s ease-in-out infinite;
-}
-@keyframes sprite-float {
-	0%,
-	100% {
-		transform: translateY(0);
-	}
-	50% {
-		transform: translateY(-5px);
-	}
-}
-
-/* Nudge-on-hover for cards: lift against the solid shadow */
-.px-hover {
-	transition: transform 120ms steps(2, end), box-shadow 120ms steps(2, end);
-}
-.px-hover:hover {
-	transform: translate(-2px, -2px);
-	box-shadow: 7px 7px 0 0 var(--shadow);
-}
-
-/* Respect reduced motion: kill the toys, keep the content */
 @media (prefers-reduced-motion: reduce) {
-	html {
-		scroll-behavior: auto;
-	}
-	.led-blink,
-	.cursor-block::after,
-	.sprite-float {
-		animation: none;
-	}
-	.px-hover,
-	.px-hover:hover {
+	.draw-link {
 		transition: none;
-		transform: none;
+	}
+}
+
+/* ============================================================
+   Reveal-on-scroll (paired with the `reveal` action)
+   ============================================================ */
+.reveal {
+	opacity: 0;
+	transform: translateY(28px);
+	transition:
+		opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+		transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+	transition-delay: var(--reveal-delay, 0ms);
+	will-change: opacity, transform;
+}
+
+.reveal.is-inview {
+	opacity: 1;
+	transform: none;
+}
+
+/* ============================================================
+   Reduced motion: kill the toys, keep the content
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+
+	.marquee-track {
+		animation: none !important;
 	}
 }

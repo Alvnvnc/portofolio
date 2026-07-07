@@ -1,8 +1,5 @@
 <script lang="ts">
-	import PixelPanel from '$lib/components/ui/PixelPanel.svelte';
-	import PixelButton from '$lib/components/ui/PixelButton.svelte';
-	import PixelBadge from '$lib/components/ui/PixelBadge.svelte';
-	import PixelIcon from '$lib/components/ui/PixelIcon.svelte';
+	import Icon from '$lib/components/ui/Icon.svelte';
 	import { onMount } from 'svelte';
 	import { scrollFadeIn, scrollStagger } from '$lib/utils/animations';
 
@@ -65,66 +62,66 @@
 </svelte:head>
 
 <!-- Spec sheet header -->
-<section bind:this={heroRef} class="console-grid px-4 pt-28 pb-14 sm:px-6">
+<section bind:this={heroRef} class="grain px-6 pt-32 pb-14 sm:px-10">
 	<div class="mx-auto max-w-4xl">
 		<a
 			href="/#services"
-			class="font-pixel mb-8 inline-block text-[0.5rem] text-moss uppercase transition-colors hover:text-amber"
+			data-cursor="Back"
+			class="mb-8 inline-block font-mono text-[11px] tracking-[0.2em] text-fg-muted uppercase transition-colors hover:text-accent"
 		>
-			◂ back to console
+			← back to services
 		</a>
 
 		<div class="flex flex-wrap items-center gap-4">
-			<span class="px-shadow-sm flex h-12 w-12 items-center justify-center border-[3px] border-ink bg-slot text-amber">
-				<PixelIcon name={service.icon} size={22} />
+			<span class="flex h-12 w-12 items-center justify-center rounded-full border border-border text-accent">
+				<Icon name={service.icon} size={22} />
 			</span>
-			<span class="font-pixel text-[0.55rem] text-amber uppercase">{service.code} · spec sheet</span>
+			<span class="font-mono text-[11px] tracking-[0.2em] text-accent uppercase">
+				{service.code} · spec sheet
+			</span>
 		</div>
 
-		<h1 class="font-pixel mt-5 mb-4 text-lg leading-relaxed text-ink uppercase sm:text-xl">
+		<h1 class="mt-6 font-display text-4xl leading-[0.95] text-fg uppercase sm:text-5xl">
 			{service.title}
 		</h1>
-		<p class="max-w-2xl text-base leading-relaxed text-fog">
+		<p class="mt-5 max-w-2xl font-body text-base leading-relaxed text-fg-muted sm:text-lg">
 			{service.description}
 		</p>
 	</div>
-	<div class="dither mx-auto mt-12 h-2 max-w-4xl" aria-hidden="true"></div>
 </section>
 
 <!-- Details + stack -->
-<section bind:this={detailRef} class="bg-void px-4 py-14 sm:px-6">
-	<div class="mx-auto grid max-w-4xl gap-8 md:grid-cols-3">
-		<div class="md:col-span-2">
-			<PixelPanel title="service.details" variant="panel" class="h-full p-6 pt-7">
-				<p class="text-[0.9rem] leading-relaxed text-fog sm:text-base">
-					{service.longDescription ?? service.description}
-				</p>
-			</PixelPanel>
+<section bind:this={detailRef} class="border-t border-border bg-bg px-6 py-16 sm:px-10">
+	<div class="mx-auto grid max-w-4xl gap-6 md:grid-cols-3">
+		<div class="rounded-2xl border border-border bg-bg-elevated/40 p-6 md:col-span-2">
+			<span class="font-mono text-[11px] tracking-[0.2em] text-fg-muted uppercase">Details</span>
+			<p class="mt-4 font-body text-base leading-relaxed text-fg-muted">
+				{service.longDescription ?? service.description}
+			</p>
 		</div>
-		<div>
-			<PixelPanel title="stack" accent="phosphor" variant="night" class="h-full p-5 pt-7">
-				<div class="flex flex-wrap gap-2">
-					{#each service.techStack as tech (tech)}
-						<PixelBadge text={tech} variant="ghost" />
-					{/each}
-				</div>
-			</PixelPanel>
+		<div class="rounded-2xl border border-border bg-bg-elevated/40 p-6">
+			<span class="font-mono text-[11px] tracking-[0.2em] text-fg-muted uppercase">Stack</span>
+			<div class="mt-4 flex flex-wrap gap-2">
+				{#each service.techStack as tech (tech)}
+					<span class="rounded-full border border-border px-3 py-1 font-mono text-[10px] tracking-[0.15em] text-fg-muted uppercase">
+						{tech}
+					</span>
+				{/each}
+			</div>
 		</div>
 	</div>
 </section>
 
 <!-- What's included -->
 {#if service.features?.length}
-	<section class="bg-night px-4 py-14 sm:px-6">
+	<section class="border-t border-border bg-bg px-6 py-16 sm:px-10">
 		<div class="mx-auto max-w-4xl">
-			<h2 class="font-pixel mb-8 text-sm text-ink uppercase">
-				<span class="text-amber">▸</span> What's included
-			</h2>
+			<h2 class="mb-8 font-display text-2xl text-fg uppercase sm:text-3xl">What's included</h2>
 			<div bind:this={featuresRef} class="grid gap-4 sm:grid-cols-2">
 				{#each service.features as feature (feature)}
-					<div class="px-shadow-sm border-[3px] border-ink bg-panel p-4">
-						<p class="flex items-start gap-2 text-sm leading-relaxed text-fog">
-							<span class="font-terminal text-phosphor">+</span>
+					<div class="rounded-xl border border-border bg-bg-elevated/40 p-5">
+						<p class="flex items-start gap-3 font-body text-sm leading-relaxed text-fg-muted">
+							<span class="mt-2 h-1 w-1 flex-none rounded-full bg-accent"></span>
 							{feature}
 						</p>
 					</div>
@@ -136,18 +133,14 @@
 
 <!-- Process -->
 {#if service.process?.length}
-	<section class="bg-void px-4 py-14 sm:px-6">
+	<section class="border-t border-border bg-bg px-6 py-16 sm:px-10">
 		<div class="mx-auto max-w-4xl">
-			<h2 class="font-pixel mb-8 text-sm text-ink uppercase">
-				<span class="text-amber">▸</span> How it runs
-			</h2>
+			<h2 class="mb-8 font-display text-2xl text-fg uppercase sm:text-3xl">How it runs</h2>
 			<div bind:this={processRef} class="space-y-4">
 				{#each service.process as step, i (step)}
-					<div class="px-shadow-sm flex items-start gap-4 border-[3px] border-ink bg-panel p-4">
-						<span class="font-pixel border-2 border-amber px-2 py-[6px] text-[0.55rem] leading-none text-amber">
-							{String(i + 1).padStart(2, '0')}
-						</span>
-						<p class="pt-[2px] text-sm leading-relaxed text-fog">{step}</p>
+					<div class="flex items-start gap-5 rounded-xl border border-border bg-bg-elevated/40 p-5">
+						<span class="font-display text-2xl text-accent">{String(i + 1).padStart(2, '0')}</span>
+						<p class="pt-1 font-body text-sm leading-relaxed text-fg-muted">{step}</p>
 					</div>
 				{/each}
 			</div>
@@ -157,39 +150,30 @@
 
 <!-- Field evidence -->
 {#if relatedProjects.length > 0}
-	<section class="bg-night px-4 py-14 sm:px-6">
+	<section class="border-t border-border bg-bg px-6 py-16 sm:px-10">
 		<div class="mx-auto max-w-4xl">
-			<h2 class="font-pixel mb-3 text-sm text-ink uppercase">
-				<span class="text-amber">▸</span> Field evidence
-			</h2>
-			<p class="font-terminal mb-8 text-lg text-moss">
-				&gt;&gt; systems where this service is already running
+			<h2 class="font-display text-2xl text-fg uppercase sm:text-3xl">Field evidence</h2>
+			<p class="mt-3 font-mono text-[11px] tracking-[0.2em] text-fg-muted uppercase">
+				Systems where this service is already running
 			</p>
-			<div bind:this={projectsRef} class="grid gap-6 sm:grid-cols-2">
+			<div bind:this={projectsRef} class="mt-8 grid gap-6 sm:grid-cols-2">
 				{#each relatedProjects as project (project.id)}
-					<a href="/#projects" class="px-shadow px-hover block border-[3px] border-ink bg-panel">
-						{#if project.thumbnail}
-							<div class="relative overflow-hidden border-b-[3px] border-ink">
-								<img
-									src={project.thumbnail}
-									alt="Pixel art illustration for {project.title}"
-									class="pixel-art block aspect-[2/1] w-full object-cover"
-									loading="lazy"
-								/>
-								<div class="scanlines pointer-events-none absolute inset-0" aria-hidden="true"></div>
-							</div>
-						{/if}
-						<div class="p-4">
-							<p class="font-pixel mb-2 text-[0.45rem] text-amber uppercase">{project.code}</p>
-							<h3 class="font-pixel mb-3 text-[0.55rem] leading-relaxed text-ink uppercase">
-								{project.title}
-							</h3>
-							<p class="mb-4 text-sm leading-relaxed text-moss">{project.description}</p>
-							<div class="flex flex-wrap gap-2">
-								{#each project.techStack.slice(0, 4) as tech (tech)}
-									<PixelBadge text={tech} variant="outline" />
-								{/each}
-							</div>
+					<a
+						href="/#projects"
+						data-cursor="View"
+						class="group block rounded-2xl border border-border bg-bg-elevated/40 p-6 transition-colors hover:border-accent/40"
+					>
+						<p class="font-mono text-[11px] tracking-[0.2em] text-accent uppercase">{project.code}</p>
+						<h3 class="mt-3 font-display text-lg text-fg uppercase transition-colors group-hover:text-accent">
+							{project.title}
+						</h3>
+						<p class="mt-3 font-body text-sm leading-relaxed text-fg-muted">{project.description}</p>
+						<div class="mt-4 flex flex-wrap gap-2">
+							{#each project.techStack.slice(0, 4) as tech (tech)}
+								<span class="rounded-full border border-border px-2.5 py-0.5 font-mono text-[10px] tracking-[0.1em] text-fg-muted uppercase">
+									{tech}
+								</span>
+							{/each}
 						</div>
 					</a>
 				{/each}
@@ -199,19 +183,21 @@
 {/if}
 
 <!-- CTA -->
-<section bind:this={ctaRef} class="console-grid bg-void px-4 py-20 sm:px-6">
-	<div class="mx-auto max-w-2xl">
-		<PixelPanel title="open.channel" accent="amber" variant="night" class="p-7 pt-8 text-center">
-			<h2 class="font-pixel mb-3 text-sm leading-relaxed text-ink uppercase">
-				Need {service.title.toLowerCase()}?
-			</h2>
-			<p class="mb-7 text-sm leading-relaxed text-moss">
-				Tell me what you're building. You'll get an honest answer about scope, timeline, and
-				whether I'm the right operator for it.
-			</p>
-			<PixelButton variant="primary" size="md" href="/#contact">
-				Open channel <span aria-hidden="true">▸</span>
-			</PixelButton>
-		</PixelPanel>
+<section bind:this={ctaRef} class="grain border-t border-border bg-bg px-6 py-24 sm:px-10">
+	<div class="mx-auto max-w-2xl rounded-2xl border border-border bg-bg-elevated/40 p-10 text-center">
+		<h2 class="font-display text-2xl text-fg uppercase sm:text-3xl">
+			Need {service.title.toLowerCase()}?
+		</h2>
+		<p class="mx-auto mt-4 max-w-md font-body text-sm leading-relaxed text-fg-muted">
+			Tell me what you're building. You'll get an honest answer about scope, timeline, and whether
+			I'm the right person for it.
+		</p>
+		<a
+			href="/#contact"
+			data-cursor="Talk"
+			class="mt-8 inline-block rounded-full bg-accent px-6 py-3 font-mono text-[11px] tracking-[0.2em] text-bg uppercase transition-opacity hover:opacity-90"
+		>
+			Open channel →
+		</a>
 	</div>
 </section>

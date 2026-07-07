@@ -13,6 +13,11 @@ node_modules
 
 # Cloudflared credentials
 cloudflared/*.json
+cloudflared/*.txt
+cloudflared.txt
+
+# Local scratch / ideas
+improvisation/
 
 # LaTeX build artifacts
 *.aux

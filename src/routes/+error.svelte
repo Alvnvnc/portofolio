@@ -1,26 +1,27 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import PixelButton from '$lib/components/ui/PixelButton.svelte';
 </script>
 
 <svelte:head>
 	<title>Error {$page.status} | Alvin Vincent</title>
 </svelte:head>
 
-<div class="console-grid flex min-h-screen items-center justify-center px-4">
-	<div class="px-shadow-lg max-w-md border-[3px] border-ink bg-panel p-8 text-center">
-		<p class="font-pixel mb-2 text-[0.5rem] text-alert uppercase">
-			<span class="led led-blink mr-2 inline-block bg-alert"></span>signal lost
+<div class="grain flex min-h-screen items-center justify-center px-6">
+	<div class="max-w-md text-center">
+		<p class="font-mono text-[11px] tracking-[0.2em] text-accent uppercase">Signal lost</p>
+		<h1 class="mt-4 font-display text-7xl text-fg">{$page.status}</h1>
+		<p class="mt-4 font-body text-lg text-fg-muted">
+			{$page.error?.message ?? 'Page not found'}
 		</p>
-		<h1 class="font-pixel mb-4 text-4xl text-ink">{$page.status}</h1>
-		<p class="font-terminal mb-2 text-xl text-fog">
-			{$page.error?.message ?? 'Sector not found'}
+		<p class="mt-2 font-body text-sm text-fg-muted">
+			Whatever you were looking for, it isn't deployed to this route.
 		</p>
-		<p class="mb-7 text-sm text-moss">
-			The map ends here. Whatever you were looking for, it isn't deployed to this route.
-		</p>
-		<PixelButton variant="primary" size="md" href="/">
-			Respawn at home <span aria-hidden="true">▸</span>
-		</PixelButton>
+		<a
+			href="/"
+			data-cursor="Home"
+			class="mt-8 inline-block rounded-full bg-accent px-6 py-3 font-mono text-[11px] tracking-[0.2em] text-bg uppercase transition-opacity hover:opacity-90"
+		>
+			Back to home →
+		</a>
 	</div>
 </div>

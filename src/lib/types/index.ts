@@ -1,8 +1,9 @@
-import type { PixelIconName } from '$lib/components/ui/PixelIcon.svelte';
-
 // ========================================
 // Portfolio Data Types
 // ========================================
+
+/** Short semantic icon key (e.g. "stack", "chip") — mapped to markup per-section */
+export type IconName = string;
 
 export interface PersonalInfo {
 	name: string;
@@ -13,6 +14,8 @@ export interface PersonalInfo {
 	email: string;
 	linkedin?: string;
 	website?: string;
+	/** Short availability line shown in the hero + footer */
+	availability?: string;
 }
 
 export interface Skill {
@@ -44,7 +47,49 @@ export interface Project {
 		demo?: string;
 		docs?: string;
 	};
+	/** Production deployment URL (may be behind SSO — see `gated`) */
+	liveUrl?: string;
+	/** True when the deployment sits behind Portal SSO: opening it lands on a login gate */
+	gated?: boolean;
+	/** Public, embeddable demo (frame-ancestors allows this site) — used for the live iframe */
+	demoUrl?: string;
+	/** Screenshot proof paths, shown when the live system can't be iframe-embedded */
+	shots?: string[];
 	thumbnail?: string;
+}
+
+/** Featured live system on the /portofolio archive — the strongest live proof */
+export interface FeaturedSystem {
+	/** Console designation strip, e.g. "SYS-01 · LIVE SYSTEM" */
+	label: string;
+	name: string;
+	subtitle: string;
+	description: string;
+	techStack: string[];
+	/** Live deployment to embed in the CRT frame */
+	embedUrl: string;
+	/** Copy shown when the browser blocks the iframe */
+	embedFallback: string;
+	/** Links back to the matching entry in `projects` for the deep dossier */
+	projectId: string;
+}
+
+/** One node in the sensor → decision motion narrative */
+export interface SystemFlowStep {
+	id: string;
+	/** Zero-padded order, e.g. "01" */
+	index: string;
+	label: string;
+	/** Short terminal readout under the node label */
+	readout: string;
+	icon: IconName;
+}
+
+/** A short, scannable backend decision in the architecture-notes dossier */
+export interface ArchitectureNote {
+	tag: string;
+	title: string;
+	body: string;
 }
 
 export interface Experience {
@@ -79,7 +124,7 @@ export interface Service {
 	code: string;
 	title: string;
 	description: string;
-	icon: PixelIconName;
+	icon: IconName;
 	techStack: string[];
 	longDescription?: string;
 	features?: string[];

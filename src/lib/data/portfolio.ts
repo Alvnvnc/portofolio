@@ -6,7 +6,10 @@ import type {
 	Education,
 	Service,
 	NavItem,
-	SectionMeta
+	SectionMeta,
+	FeaturedSystem,
+	SystemFlowStep,
+	ArchitectureNote
 } from '$lib/types';
 
 // ========================================
@@ -18,21 +21,22 @@ export const personalInfo: PersonalInfo = {
 	title: 'Backend Engineer',
 	tagline:
 		'I build the layer you never see: APIs, data pipelines, and the deploy scripts that keep them honest.',
-	location: 'Surabaya, Indonesia',
+	location: 'Surabaya, Indonesia — working worldwide',
 	email: 'alvnvincent30@gmail.com',
-	linkedin: 'https://linkedin.com/in/alvin-reba-88a857279'
+	linkedin: 'https://linkedin.com/in/alvin-reba-88a857279',
+	availability: 'Available for freelance — 2026'
 };
 
 // ========================================
 // Navigation Items
 // ========================================
 export const navItems: NavItem[] = [
-	{ id: 'about', label: 'Operator', href: '#about' },
+	{ id: 'projects', label: 'Work', href: '#projects' },
 	{ id: 'services', label: 'Services', href: '#services' },
-	{ id: 'skills', label: 'Loadout', href: '#skills' },
-	{ id: 'projects', label: 'Systems', href: '#projects' },
-	{ id: 'experience', label: 'Log', href: '#experience' },
-	{ id: 'contact', label: 'Channel', href: '#contact' }
+	{ id: 'skills', label: 'Stack', href: '#skills' },
+	{ id: 'about', label: 'About', href: '#about' },
+	{ id: 'portofolio', label: 'Archive', href: '/portofolio' },
+	{ id: 'contact', label: 'Contact', href: '#contact' }
 ];
 
 // ========================================
@@ -153,6 +157,9 @@ export const projects: Project[] = [
 			'Multi-stage Docker builds and k8s manifests; Prometheus alerts fire before users notice'
 		],
 		techStack: ['Go', 'Python', 'Kong', 'gRPC', 'MQTT', 'RabbitMQ', 'PostgreSQL', 'InfluxDB', 'Kubernetes'],
+		liveUrl: 'https://pome.iimlab.id',
+		gated: true,
+		demoUrl: 'https://rapid.alvnvnc.site',
 		thumbnail: '/images/project-backend-template.png'
 	},
 	{
@@ -174,6 +181,9 @@ export const projects: Project[] = [
 			'Invitation and subscription flows built into tenant management'
 		],
 		techStack: ['Go', 'Kong', 'Traefik', 'PostgreSQL', 'GORM', 'JWT', 'Docker'],
+		liveUrl: 'https://portal-iot.iimlab.id',
+		gated: true,
+		shots: ['/images/portal-dashboard.jpg', '/images/portal-services.jpg', '/images/portal-wizard.jpg'],
 		thumbnail: '/images/project-ai-workflow.png'
 	},
 	{
@@ -195,7 +205,65 @@ export const projects: Project[] = [
 			'CI/CD pipeline runs Trivy and gosec security scans on every build'
 		],
 		techStack: ['Go', 'PostgreSQL', 'InfluxDB', 'Redis', 'Docker', 'Nginx', 'JWT'],
+		liveUrl: 'https://lecsens.iimlab.id',
+		gated: true,
 		thumbnail: '/images/project-lecsens.png'
+	}
+];
+
+// ========================================
+// Live Systems Archive (/portofolio)
+// ========================================
+
+/** SYS-01 — the strongest live proof, embedded as a real running deployment */
+export const featuredSystem: FeaturedSystem = {
+	label: 'SYS-01 · LIVE SYSTEM',
+	name: 'POME Guardian',
+	subtitle: 'Effluent Risk Intelligence',
+	description:
+		'Real-time monitoring for palm-oil mill effluent data: sensor ingestion, backend processing, time-series storage, dashboard visibility, and ML-assisted treatment recommendation.',
+	techStack: ['Go', 'Python', 'gRPC', 'PostgreSQL', 'InfluxDB', 'RabbitMQ', 'Kong', 'Kubernetes'],
+	embedUrl: 'https://rapid.alvnvnc.site',
+	embedFallback: 'Live preview is blocked by browser policy. Open POME Guardian directly.',
+	projectId: 'pome'
+};
+
+/** The motion narrative: sensor signal → treatment decision */
+export const systemFlow: SystemFlowStep[] = [
+	{ id: 'sensor', index: '01', label: 'Sensor', readout: 'reads pH · COD · TSS', icon: 'pulse' },
+	{ id: 'edge', index: '02', label: 'Edge device', readout: 'batches + buffers reads', icon: 'plug' },
+	{ id: 'backend', index: '03', label: 'Backend', readout: 'validates + routes events', icon: 'stack' },
+	{ id: 'store', index: '04', label: 'Storage', readout: 'postgres facts · influx stream', icon: 'drop' },
+	{ id: 'dashboard', index: '05', label: 'Dashboard', readout: 'panels light up live', icon: 'bolt' },
+	{ id: 'ml', index: '06', label: 'ML inference', readout: 'recommends treatment', icon: 'chip' }
+];
+
+/** Short, scannable backend decisions — dossier style */
+export const architectureNotes: ArchitectureNote[] = [
+	{
+		tag: 'BOUNDARY',
+		title: 'ML isolated behind gRPC',
+		body: 'Inference lives in its own Python service. Models retrain and redeploy without ever touching the Go API surface.'
+	},
+	{
+		tag: 'BACKPRESSURE',
+		title: 'RabbitMQ absorbs sensor bursts',
+		body: 'Async events keep ingestion spikes off the request path, so a noisy mill never stalls the dashboards.'
+	},
+	{
+		tag: 'STORAGE',
+		title: 'Right database per job',
+		body: 'PostgreSQL holds the facts and relationships; InfluxDB swallows the high-frequency time-series firehose.'
+	},
+	{
+		tag: 'EDGE',
+		title: 'Kong fronts the cluster',
+		body: 'JWT verification, rate limiting, and ACLs run at the gateway. Services stay thin and focused on domain logic.'
+	},
+	{
+		tag: 'OPS',
+		title: 'Observable before users notice',
+		body: 'Prometheus + Grafana watch the platform on Kubernetes; alerts fire on drift before anyone opens a ticket.'
 	}
 ];
 

@@ -12,6 +12,12 @@ export const GET: RequestHandler = async () => {
 			changefreq: 'monthly',
 			priority: '1.0'
 		},
+		{
+			loc: `${baseUrl}/portofolio`,
+			lastmod: today,
+			changefreq: 'monthly',
+			priority: '0.9'
+		},
 		...services.map((service) => ({
 			loc: `${baseUrl}/services/${service.id}`,
 			lastmod: today,

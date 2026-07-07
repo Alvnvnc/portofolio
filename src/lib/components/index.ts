@@ -1,10 +1,13 @@
-// Pixel UI Components
-export { default as PixelButton } from './ui/PixelButton.svelte';
-export { default as PixelPanel } from './ui/PixelPanel.svelte';
-export { default as PixelBadge } from './ui/PixelBadge.svelte';
-export { default as PixelIcon } from './ui/PixelIcon.svelte';
-export { default as LevelDots } from './ui/LevelDots.svelte';
-export { default as SectionHeader } from './ui/SectionHeader.svelte';
+// UI Components
+export { default as Cursor } from './ui/Cursor.svelte';
+export { default as Loader } from './ui/Loader.svelte';
+export { default as Marquee } from './ui/Marquee.svelte';
+export { default as HoldToBlast } from './ui/HoldToBlast.svelte';
+export { default as Icon } from './ui/Icon.svelte';
+
+// 3D (Threlte)
+export { default as HeroCanvas } from './three/HeroCanvas.svelte';
+export { default as HelixCanvas } from './three/HelixCanvas.svelte';
 
 // Layout Components
 export { default as Navbar } from './layout/Navbar.svelte';
@@ -18,3 +21,4 @@ export { default as Skills } from './sections/Skills.svelte';
 export { default as Projects } from './sections/Projects.svelte';
 export { default as Experience } from './sections/Experience.svelte';
 export { default as Contact } from './sections/Contact.svelte';
+export { default as PortfolioLiveEmbed } from './sections/PortfolioLiveEmbed.svelte';

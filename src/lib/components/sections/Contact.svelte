@@ -1,30 +1,12 @@
 <script lang="ts">
-	import { cn } from '$lib/utils';
-	import { personalInfo, sectionMeta, services } from '$lib/data/portfolio';
+	import { personalInfo, services } from '$lib/data/portfolio';
+	import { t } from '$lib/i18n';
+	import { staggerRise } from '$lib/actions/motion';
 	import SectionHeader from '$lib/components/ui/SectionHeader.svelte';
-	import PixelPanel from '$lib/components/ui/PixelPanel.svelte';
-	import PixelButton from '$lib/components/ui/PixelButton.svelte';
-	import PixelIcon from '$lib/components/ui/PixelIcon.svelte';
-	import { onMount } from 'svelte';
-	import { scrollFadeIn, scrollStagger } from '$lib/utils/animations';
-
-	interface Props {
-		class?: string;
-	}
-
-	let { class: className = '' }: Props = $props();
-
-	const meta = sectionMeta.find((s) => s.id === 'contact')!;
 
 	const FORMSPREE_ID = 'mykdwlrj';
 
-	let formData = $state({
-		name: '',
-		email: '',
-		service: '',
-		message: ''
-	});
-
+	let formData = $state({ name: '', email: '', service: '', message: '' });
 	let isSubmitting = $state(false);
 	let submitStatus = $state<'idle' | 'success' | 'error'>('idle');
 
@@ -32,7 +14,6 @@
 		e.preventDefault();
 		isSubmitting = true;
 		submitStatus = 'idle';
-
 		try {
 			const response = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
 				method: 'POST',
@@ -40,11 +21,10 @@
 				body: JSON.stringify({
 					name: formData.name,
 					email: formData.email,
-					service: formData.service || 'General Inquiry',
+					service: formData.service || $t.contact.form.generalInquiry,
 					message: formData.message
 				})
 			});
-
 			if (response.ok) {
 				submitStatus = 'success';
 				formData = { name: '', email: '', service: '', message: '' };
@@ -58,189 +38,178 @@
 		}
 	}
 
-	const channels = [
-		{ tag: 'IN', label: 'LinkedIn', value: 'alvin-reba', href: personalInfo.linkedin },
-		{ tag: '@', label: 'Email', value: personalInfo.email, href: `mailto:${personalInfo.email}` }
-	];
-
-	let headerEl: HTMLElement;
-	let contentEl: HTMLElement;
-
-	onMount(() => {
-		scrollFadeIn(headerEl);
-		scrollStagger(contentEl, ':scope > *', { stagger: 0.15, y: 30 });
-	});
+	const channels = $derived([
+		{ label: 'LinkedIn', value: 'alvin-reba', href: personalInfo.linkedin },
+		{ label: 'Email', value: personalInfo.email, href: `mailto:${personalInfo.email}` }
+	]);
 </script>
 
-<section id="contact" class={cn('console-grid bg-night px-4 py-24 sm:px-6', className)}>
+<section id="contact" class="relative bg-bg px-6 py-24 sm:px-10 sm:py-32">
 	<div class="mx-auto max-w-5xl">
-		<div bind:this={headerEl}>
-			<SectionHeader index={meta.index} title={meta.title} readout={meta.readout} />
-		</div>
+		<SectionHeader index={$t.contact.index} title={$t.contact.kicker} readout={$t.contact.readout} />
 
-		<div bind:this={contentEl} class="grid gap-8 md:grid-cols-[0.85fr_1.15fr]">
-			<!-- Comm channels -->
-			<PixelPanel title="comm.link" variant="panel" class="p-5 pt-7 sm:p-6 sm:pt-7">
-				<p class="mb-6 text-sm leading-relaxed text-fog">
-					Have a system that needs building — or one that needs rescuing? Pick a channel. I read
-					everything myself.
+		<div class="grid gap-14 md:grid-cols-[0.85fr_1.15fr] md:gap-10">
+			<!-- Channels -->
+			<div use:staggerRise={{ y: 20 }}>
+				<p class="max-w-[44ch] font-body text-base leading-relaxed text-fg-muted">
+					{$t.contact.intro}
 				</p>
 
-				<ul class="space-y-4">
-					{#each channels as channel (channel.tag)}
+				<ul class="mt-10 space-y-6">
+					{#each channels as channel (channel.label)}
 						<li>
 							<a
 								href={channel.href}
 								target={channel.href?.startsWith('mailto') ? undefined : '_blank'}
 								rel={channel.href?.startsWith('mailto') ? undefined : 'noopener noreferrer'}
-								class="group flex items-center gap-4"
+								data-cursor={$t.contact.cursorOpen}
+								class="group block"
 							>
-								<span
-									class="px-shadow-sm font-pixel flex h-10 w-10 flex-none items-center justify-center border-[3px] border-ink bg-slot text-[0.55rem] text-ink uppercase transition-colors group-hover:bg-amber group-hover:text-night"
-								>
-									{channel.tag}
+								<span class="block font-mono text-[10px] tracking-[0.2em] text-fg-muted uppercase">
+									{channel.label} ↗
 								</span>
-								<span class="min-w-0">
-									<span class="font-pixel block text-[0.45rem] text-moss uppercase">
-										{channel.label}
-									</span>
-									<span class="font-terminal block truncate text-lg text-fog transition-colors group-hover:text-amber">
-										{channel.value}
-									</span>
+								<span
+									class="draw-link mt-1 inline-block max-w-full truncate font-body text-lg text-fg transition-colors group-hover:text-accent"
+								>
+									{channel.value}
 								</span>
 							</a>
 						</li>
 					{/each}
 				</ul>
 
-				<div class="mt-6 space-y-2 border-t-2 border-seam pt-5">
-					<p class="flex items-center gap-2 text-sm text-moss">
-						<span class="text-amber"><PixelIcon name="pin" size={14} /></span>
-						{personalInfo.location} · UTC+7
+				<div class="mt-10 space-y-2 border-t border-dashed border-border pt-6">
+					<p class="font-mono text-[11px] tracking-[0.1em] text-fg-muted uppercase">
+						{$t.hero.location} · UTC+7
 					</p>
-					<p class="flex items-center gap-2 text-sm text-moss">
-						<span class="led led-blink bg-phosphor"></span>
-						Avg response: under 24h on working days
+					<p class="flex items-center gap-2 font-mono text-[11px] tracking-[0.1em] text-fg-muted uppercase">
+						<span class="h-1.5 w-1.5 rounded-full bg-accent-2" aria-hidden="true"></span>
+						{$t.contact.responseLine}
 					</p>
 				</div>
-			</PixelPanel>
+			</div>
 
-			<!-- Transmission form -->
-			<PixelPanel title="transmit.msg" accent="amber" variant="night" class="p-5 pt-7 sm:p-6 sm:pt-7">
-				<form onsubmit={handleSubmit} class="space-y-4">
-					<div>
-						<label for="name" class="font-terminal mb-1 block text-lg text-phosphor">
-							&gt; your name:
-						</label>
+			<!-- Form: ruled paper, not boxes. -->
+			<form onsubmit={handleSubmit} class="space-y-7" use:staggerRise={{ y: 20, stagger: 0.06 }}>
+				<div class="grid gap-7 sm:grid-cols-2">
+					<label class="block">
+						<span class="font-mono text-[10px] tracking-[0.2em] text-fg-muted uppercase">
+							{$t.contact.form.name}
+						</span>
 						<input
 							type="text"
-							id="name"
 							name="name"
-							class="term-input"
-							placeholder="Ada Lovelace"
+							class="editorial-input"
+							placeholder={$t.contact.form.namePlaceholder}
 							autocomplete="name"
 							bind:value={formData.name}
 							required
 						/>
-					</div>
-
-					<div>
-						<label for="email" class="font-terminal mb-1 block text-lg text-phosphor">
-							&gt; reply address:
-						</label>
+					</label>
+					<label class="block">
+						<span class="font-mono text-[10px] tracking-[0.2em] text-fg-muted uppercase">
+							{$t.contact.form.email}
+						</span>
 						<input
 							type="email"
-							id="email"
 							name="email"
-							class="term-input"
-							placeholder="you@company.com"
+							class="editorial-input"
+							placeholder={$t.contact.form.emailPlaceholder}
 							autocomplete="email"
 							bind:value={formData.email}
 							required
 						/>
-					</div>
+					</label>
+				</div>
 
-					<div>
-						<label for="service" class="font-terminal mb-1 block text-lg text-phosphor">
-							&gt; mission type:
-						</label>
-						<select id="service" name="service" class="term-input" bind:value={formData.service}>
-							<option value="">General inquiry</option>
-							{#each services as service (service.id)}
-								<option value={service.title}>{service.title}</option>
-							{/each}
-						</select>
-					</div>
+				<label class="block">
+					<span class="font-mono text-[10px] tracking-[0.2em] text-fg-muted uppercase">
+						{$t.contact.form.service}
+					</span>
+					<select name="service" class="editorial-input" bind:value={formData.service}>
+						<option value="">{$t.contact.form.generalInquiry}</option>
+						{#each services as service (service.id)}
+							<option value={service.title}>
+								{$t.services.entries[service.id]?.title ?? service.title}
+							</option>
+						{/each}
+					</select>
+				</label>
 
-					<div>
-						<label for="message" class="font-terminal mb-1 block text-lg text-phosphor">
-							&gt; payload:
-						</label>
-						<textarea
-							id="message"
-							name="message"
-							class="term-input resize-y"
-							rows="4"
-							placeholder="What are you building? Rough scope, timeline, anything weird about it..."
-							bind:value={formData.message}
-							required
-						></textarea>
-					</div>
+				<label class="block">
+					<span class="font-mono text-[10px] tracking-[0.2em] text-fg-muted uppercase">
+						{$t.contact.form.message}
+					</span>
+					<textarea
+						id="message"
+						name="message"
+						class="editorial-input resize-y"
+						rows="4"
+						placeholder={$t.contact.form.messagePlaceholder}
+						bind:value={formData.message}
+						required
+					></textarea>
+				</label>
 
-					<PixelButton variant="primary" size="md" type="submit" disabled={isSubmitting} class="w-full">
-						{#if isSubmitting}
-							Transmitting ▓▓▓░░
-						{:else}
-							Transmit <span aria-hidden="true">▸</span>
-						{/if}
-					</PixelButton>
+				<button
+					type="submit"
+					disabled={isSubmitting}
+					data-cursor={$t.contact.cursorSend}
+					class="group flex w-full items-center justify-between border border-fg bg-fg px-6 py-4 font-mono text-[12px] tracking-[0.2em] text-bg uppercase transition-colors hover:bg-transparent hover:text-fg disabled:opacity-60 disabled:hover:bg-fg disabled:hover:text-bg"
+				>
+					<span>{isSubmitting ? $t.contact.form.submitting : $t.contact.form.submit}</span>
+					<span aria-hidden="true" class="transition-transform duration-300 group-hover:translate-x-2">→</span>
+				</button>
 
-					<div aria-live="polite">
-						{#if submitStatus === 'success'}
-							<p class="font-terminal border-2 border-phosphor px-3 py-2 text-base text-phosphor">
-								✓ ACK received. I'll reply within a day — usually faster.
-							</p>
-						{:else if submitStatus === 'error'}
-							<p class="font-terminal border-2 border-alert px-3 py-2 text-base text-alert">
-								✕ Packet lost. Email me directly: {personalInfo.email}
-							</p>
-						{/if}
-					</div>
-				</form>
-			</PixelPanel>
+				<div aria-live="polite">
+					{#if submitStatus === 'success'}
+						<p class="border-l-2 border-accent-2 py-1 pl-4 font-mono text-[11px] leading-relaxed text-accent-2">
+							{$t.contact.form.success}
+						</p>
+					{:else if submitStatus === 'error'}
+						<p class="border-l-2 border-accent py-1 pl-4 font-mono text-[11px] leading-relaxed text-accent">
+							{$t.contact.form.error}
+							<a href="mailto:{personalInfo.email}" class="underline">{personalInfo.email}</a>
+						</p>
+					{/if}
+				</div>
+			</form>
 		</div>
 	</div>
 </section>
 
 <style>
-	.term-input {
+	.editorial-input {
+		margin-top: 0.6rem;
 		width: 100%;
-		border: 3px solid var(--seam);
-		background: var(--void);
-		padding: 0.5rem 0.75rem;
-		font-family: var(--font-terminal);
-		font-size: 1.125rem;
-		line-height: 1.35;
-		color: var(--ink);
+		border: 0;
+		border-bottom: 1px solid var(--color-border);
+		border-radius: 0;
+		background: transparent;
+		padding: 0.55rem 0;
+		font-family: var(--font-body);
+		font-size: 1rem;
+		color: var(--color-fg);
+		transition: border-color 0.25s ease;
 	}
-	.term-input::placeholder {
-		color: var(--moss);
-		opacity: 0.7;
+	.editorial-input::placeholder {
+		color: var(--color-fg-muted);
+		opacity: 0.55;
 	}
-	.term-input:focus {
+	.editorial-input:focus {
 		outline: none;
-		border-color: var(--amber);
+		border-bottom-color: var(--color-accent);
 	}
-	select.term-input {
+	select.editorial-input {
 		appearance: none;
-		background-image: linear-gradient(45deg, transparent 50%, var(--moss) 50%),
-			linear-gradient(135deg, var(--moss) 50%, transparent 50%);
-		background-position:
-			calc(100% - 18px) calc(50% - 2px),
-			calc(100% - 12px) calc(50% - 2px);
-		background-size:
-			6px 6px,
-			6px 6px;
-		background-repeat: no-repeat;
+		cursor: pointer;
+	}
+	textarea.editorial-input {
+		border: 1px solid var(--color-border);
+		padding: 0.75rem 0.85rem;
+		margin-top: 0.85rem;
+	}
+	textarea.editorial-input:focus {
+		border-color: var(--color-accent);
 	}
 </style>

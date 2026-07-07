@@ -4,7 +4,8 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
-RUN npm run build
+# Generate .svelte-kit/tsconfig.json inside the image before Vite reads tsconfig.json.
+RUN npm run prepare && npm run build
 
 # Stage 2: Production
 FROM node:20-alpine

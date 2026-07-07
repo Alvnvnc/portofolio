@@ -1,7 +1,7 @@
 <script lang="ts">
 	import '../app.css';
 	import { Navbar, Footer } from '$lib/components';
-	import { theme } from '$lib/stores';
+	import { initSmoothScroll } from '$lib/utils/smoothScroll';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 
@@ -10,7 +10,8 @@
 	const isHome = $derived($page.route.id === '/');
 
 	onMount(() => {
-		theme.init();
+		const cleanup = initSmoothScroll();
+		return cleanup;
 	});
 </script>
 
@@ -73,7 +74,7 @@
 	{/if}
 </svelte:head>
 
-<div class="min-h-screen flex flex-col bg-[var(--color-bg-primary)]">
+<div class="flex min-h-screen flex-col bg-bg">
 	<Navbar />
 
 	<main class="flex-1">

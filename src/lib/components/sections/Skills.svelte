@@ -1,88 +1,79 @@
 <script lang="ts">
-	import { cn } from '$lib/utils';
-	import { skills, skillCategories, levelMeta, sectionMeta } from '$lib/data/portfolio';
+	import { skills, skillCategories, levelMeta } from '$lib/data/portfolio';
+	import { t } from '$lib/i18n';
+	import { staggerRise, rise } from '$lib/actions/motion';
 	import SectionHeader from '$lib/components/ui/SectionHeader.svelte';
-	import PixelPanel from '$lib/components/ui/PixelPanel.svelte';
-	import PixelIcon from '$lib/components/ui/PixelIcon.svelte';
-	import LevelDots from '$lib/components/ui/LevelDots.svelte';
-	import { onMount } from 'svelte';
-	import { scrollFadeIn, scrollStagger } from '$lib/utils/animations';
-
-	interface Props {
-		class?: string;
-	}
-
-	let { class: className = '' }: Props = $props();
-
-	const meta = sectionMeta.find((s) => s.id === 'skills')!;
 
 	const grouped = skillCategories.map((cat) => ({
 		...cat,
 		skills: skills.filter((s) => s.category === cat.id)
 	}));
 
-	// Legend order: strongest first
 	const legendLevels = ['expert', 'advanced', 'intermediate', 'beginner'] as const;
-
-	let headerEl: HTMLElement;
-	let gridEl: HTMLElement;
-
-	onMount(() => {
-		scrollFadeIn(headerEl);
-		scrollStagger(gridEl, ':scope > *', { stagger: 0.12, y: 25 });
-	});
 </script>
 
-<section id="skills" class={cn('bg-void px-4 py-24 sm:px-6', className)}>
-	<div class="mx-auto max-w-6xl">
-		<div bind:this={headerEl}>
-			<SectionHeader index={meta.index} title={meta.title} readout={meta.readout} />
-		</div>
+{#snippet dots(count: number)}
+	<span class="flex items-center gap-1" aria-hidden="true">
+		{#each [0, 1, 2, 3] as i (i)}
+			<span class="h-1.5 w-1.5 rounded-full {i < count ? 'bg-accent' : 'bg-border'}"></span>
+		{/each}
+	</span>
+{/snippet}
 
-		<div bind:this={gridEl} class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-			{#each grouped as category (category.id)}
-				<PixelPanel title={category.name} variant="panel" class="p-5 pt-6">
-					<span class="absolute top-4 right-4 text-moss" aria-hidden="true">
-						<PixelIcon name={category.icon} size={16} />
+<section id="skills" class="relative bg-bg px-6 py-24 sm:px-10 sm:py-32">
+	<SectionHeader index={$t.skills.index} title={$t.skills.kicker} readout={$t.skills.readout} />
+
+	<!-- The loadout reads as a printed spec table: category ledgers, no boxes. -->
+	<div class="grid gap-x-16 gap-y-14 md:grid-cols-2 lg:grid-cols-3" use:staggerRise={{ y: 24 }}>
+		{#each grouped as category (category.id)}
+			<div>
+				<h3 class="flex items-baseline justify-between border-b border-border pb-3">
+					<span class="kicker text-fg!">{$t.skills.categories[category.id] ?? category.name}</span>
+					<span class="font-mono text-[10px] text-fg-muted/60" aria-hidden="true">
+						×{String(category.skills.length).padStart(2, '0')}
 					</span>
-					<ul class="mt-1 space-y-3">
-						{#each category.skills as skill (skill.name)}
-							<li class="flex items-center justify-between gap-3">
-								<span class="flex items-center gap-2 text-sm text-fog">
-									{skill.name}
-									{#if skill.primary}
-										<span
-											class="font-pixel border border-amber px-1 py-[2px] text-[0.4rem] leading-none text-amber uppercase"
-											title="Daily driver"
-										>
-											main
-										</span>
-									{/if}
-								</span>
-								<LevelDots level={levelMeta[skill.level].dots} label={skill.name} />
-							</li>
-						{/each}
-					</ul>
-				</PixelPanel>
-			{/each}
-
-			<!-- Legend panel fills the sixth slot -->
-			<PixelPanel title="legend.txt" variant="night" class="p-5 pt-6">
-				<ul class="mt-1 space-y-4">
-					{#each legendLevels as level (level)}
-						<li class="flex items-start gap-3">
-							<LevelDots level={levelMeta[level].dots} label={levelMeta[level].label} class="mt-[5px]" />
-							<div>
-								<p class="font-pixel text-[0.5rem] text-ink uppercase">{levelMeta[level].label}</p>
-								<p class="text-xs leading-relaxed text-moss">{levelMeta[level].hint}</p>
-							</div>
+				</h3>
+				<ul>
+					{#each category.skills as skill (skill.name)}
+						<li
+							class="flex items-center justify-between gap-3 border-b border-border/50 py-3"
+						>
+							<span class="flex items-baseline gap-2.5 font-body text-sm text-fg-muted">
+								{skill.name}
+								{#if skill.primary}
+									<span
+										class="font-mono text-[9px] tracking-[0.15em] text-accent uppercase"
+										title={$t.skills.mainTitle}
+									>
+										[{$t.skills.main}]
+									</span>
+								{/if}
+							</span>
+							{@render dots(levelMeta[skill.level].dots)}
 						</li>
 					{/each}
 				</ul>
-				<p class="font-terminal mt-5 border-t-2 border-seam pt-3 text-base text-moss">
-					&gt; scale calibrated against production incidents, not confidence.
-				</p>
-			</PixelPanel>
-		</div>
+			</div>
+		{/each}
+	</div>
+
+	<!-- Legend as a colophon footnote, not another card. -->
+	<div class="mt-16 border-t border-dashed border-border pt-6" use:rise>
+		<dl class="flex flex-wrap gap-x-10 gap-y-4">
+			{#each legendLevels as level (level)}
+				<div class="flex items-center gap-3">
+					{@render dots(levelMeta[level].dots)}
+					<dt class="font-mono text-[10px] tracking-[0.15em] text-fg uppercase">
+						{$t.skills.levels[level].label}
+					</dt>
+					<dd class="hidden font-body text-xs text-fg-muted lg:block">
+						— {$t.skills.levels[level].hint}
+					</dd>
+				</div>
+			{/each}
+		</dl>
+		<p class="mt-5 font-mono text-[11px] tracking-[0.05em] text-fg-muted/80">
+			{$t.skills.footnote}
+		</p>
 	</div>
 </section>

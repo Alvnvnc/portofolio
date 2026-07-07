@@ -1,65 +1,77 @@
 <script lang="ts">
-	import { cn } from '$lib/utils';
 	import { personalInfo } from '$lib/data/portfolio';
-
-	interface Props {
-		class?: string;
-	}
-
-	let { class: className = '' }: Props = $props();
+	import { t, locale } from '$lib/i18n';
+	import { splitReveal, lineDraw } from '$lib/actions/motion';
+	import HoldToBlast from '$lib/components/ui/HoldToBlast.svelte';
 
 	const currentYear = new Date().getFullYear();
 
-	const links = [
-		{ tag: 'IN', label: 'LinkedIn', href: personalInfo.linkedin },
-		{ tag: '@', label: 'Email', href: `mailto:${personalInfo.email}` }
+	const socials = [
+		{ label: 'LinkedIn', href: personalInfo.linkedin },
+		{ label: 'Email', href: `mailto:${personalInfo.email}` }
 	];
+
+	let toast = $state<string | null>(null);
+
+	async function copyEmail() {
+		try {
+			await navigator.clipboard.writeText(personalInfo.email);
+			toast = $t.footer.copied;
+		} catch {
+			toast = $t.footer.copyFailed;
+		}
+		window.setTimeout(() => (toast = null), 4000);
+	}
 </script>
 
-<footer class={cn('border-t-[3px] border-ink bg-void', className)}>
-	<div class="dither h-2 w-full" aria-hidden="true"></div>
-
-	<div class="mx-auto max-w-6xl px-4 py-8 sm:px-6">
-		<div class="flex flex-col items-center justify-between gap-6 md:flex-row">
-			<!-- ID plate + copyright -->
-			<div class="flex items-center gap-3">
-				<span class="flex items-center gap-2 border-2 border-ink bg-panel px-2 py-[6px]">
-					<span class="led bg-phosphor"></span>
-					<span class="font-pixel text-[0.5rem] leading-none text-ink">ALV-01</span>
-				</span>
-				<p class="font-terminal text-base text-moss">
-					© {currentYear} {personalInfo.fullName}
-				</p>
-			</div>
-
-			<!-- Channels -->
-			<div class="flex items-center gap-3">
-				{#each links as link (link.tag)}
-					<a
-						href={link.href}
-						target={link.href?.startsWith('mailto') ? undefined : '_blank'}
-						rel={link.href?.startsWith('mailto') ? undefined : 'noopener noreferrer'}
-						class="font-pixel flex h-9 w-9 items-center justify-center border-2 border-seam text-[0.5rem] text-moss uppercase transition-colors hover:border-ink hover:bg-amber hover:text-night"
-						aria-label={link.label}
-					>
-						{link.tag}
-					</a>
-				{/each}
-			</div>
-
-			<!-- Build plate -->
-			<p class="font-pixel text-center text-[0.45rem] leading-relaxed text-moss uppercase md:text-right">
-				Hand-built with SvelteKit<br />
-				<span class="text-phosphor">no template was used or harmed</span>
-			</p>
+<footer class="grain relative border-t border-border bg-bg px-6 py-24 sm:px-10 sm:py-32">
+	<div class="flex flex-col gap-14 lg:flex-row lg:items-center lg:justify-between">
+		<div>
+			<span class="kicker">{$t.footer.availability}</span>
+			{#key $locale}
+				<h2
+					class="mt-6 font-display text-5xl leading-[0.95] text-fg uppercase sm:text-7xl"
+					use:splitReveal={{ stagger: 0.09 }}
+				>
+					{$t.footer.headline}
+				</h2>
+			{/key}
+			<a
+				href="mailto:{personalInfo.email}"
+				data-cursor={$t.footer.cursorMail}
+				class="draw-link mt-6 inline-block font-body text-lg text-fg-muted transition-colors hover:text-fg"
+			>
+				{personalInfo.email}
+			</a>
 		</div>
 
-		<!-- Last transmission -->
-		<div class="mt-7 border-t-2 border-seam pt-4 text-center">
-			<p class="font-terminal text-base text-moss">
-				<span class="text-phosphor">$</span> uptime
-				<span class="text-fog">→ online since {currentYear}, made in Surabaya</span>
-				· <span class="text-phosphor">$</span> exit 0
+		<div class="flex flex-col items-start gap-4 sm:items-center">
+			<HoldToBlast label={$t.footer.hold} completedLabel={$t.footer.held} onComplete={copyEmail} />
+			<p aria-live="polite" class="h-4 font-mono text-[10px] tracking-[0.15em] text-accent uppercase">
+				{toast ?? ''}
+			</p>
+		</div>
+	</div>
+
+	<div class="mt-20">
+		<div class="hairline" use:lineDraw></div>
+		<div class="flex flex-col gap-8 pt-8 sm:flex-row sm:items-center sm:justify-between">
+			<ul class="flex flex-wrap gap-6">
+				{#each socials as social (social.label)}
+					<li>
+						<a
+							href={social.href}
+							target={social.href?.startsWith('mailto') ? undefined : '_blank'}
+							rel={social.href?.startsWith('mailto') ? undefined : 'noopener noreferrer'}
+							class="draw-link font-mono text-[11px] tracking-[0.2em] text-fg-muted uppercase transition-colors hover:text-fg"
+						>
+							{social.label}
+						</a>
+					</li>
+				{/each}
+			</ul>
+			<p class="font-mono text-[11px] tracking-[0.2em] text-fg-muted uppercase">
+				© {currentYear} {personalInfo.fullName} — {$t.footer.rights}
 			</p>
 		</div>
 	</div>

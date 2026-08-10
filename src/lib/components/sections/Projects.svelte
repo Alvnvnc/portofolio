@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { projects } from '$lib/data/portfolio';
 	import { t, locale } from '$lib/i18n';
+	import { localizedPath } from '$lib/seo';
 	import { lineDraw, staggerRise } from '$lib/actions/motion';
 	import SectionHeader from '$lib/components/ui/SectionHeader.svelte';
 	import HelixCanvas from '$lib/components/three/HelixCanvas.svelte';
@@ -140,7 +141,7 @@
 							</p>
 
 							<a
-								href="/portofolio"
+								href={localizedPath('/portofolio', $locale)}
 								data-cursor="Open"
 								class="draw-link mt-8 inline-block font-mono text-[11px] tracking-[0.2em] text-accent uppercase transition-colors hover:text-fg"
 							>

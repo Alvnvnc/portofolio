@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { services } from '$lib/data/portfolio';
-	import { t } from '$lib/i18n';
+	import { t, locale } from '$lib/i18n';
+	import { localizedPath } from '$lib/seo';
 	import { lineDraw, staggerRise } from '$lib/actions/motion';
 	import SectionHeader from '$lib/components/ui/SectionHeader.svelte';
 
@@ -43,7 +44,7 @@
 
 					<div class="min-w-0">
 						<a
-							href="/services/{service.id}"
+							href={localizedPath(`/services/${service.id}`, $locale)}
 							data-cursor={$t.services.cursorRead}
 							class="block focus-visible:outline-offset-8"
 						>
@@ -65,7 +66,7 @@
 						class="col-span-2 flex items-center gap-6 sm:col-span-1 sm:flex-col sm:items-end sm:gap-3"
 					>
 						<a
-							href="/services/{service.id}"
+							href={localizedPath(`/services/${service.id}`, $locale)}
 							data-cursor={$t.services.cursorRead}
 							class="draw-link font-mono text-[11px] tracking-[0.2em] text-fg-muted uppercase transition-colors hover:text-fg"
 						>

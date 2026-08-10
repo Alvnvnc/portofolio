@@ -126,15 +126,7 @@ export interface Service {
 	description: string;
 	icon: IconName;
 	techStack: string[];
-	longDescription?: string;
-	features?: string[];
-	process?: string[];
 	relatedProjects?: string[];
-	seo?: {
-		title: string;
-		description: string;
-		keywords?: string[];
-	};
 }
 
 // ========================================

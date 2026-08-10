@@ -6,6 +6,36 @@ import type { Dict } from './en';
  * purpose; that is how Indonesian engineers actually talk.
  */
 export const id: Dict = {
+	seo: {
+		home: {
+			title: 'Programmer Backend & Full Stack Surabaya — Alvin Vincent',
+			description:
+				'Programmer backend dan full stack developer freelance di Surabaya. Jasa pembuatan REST API (Golang, Python), sistem monitoring IoT, integrasi AI/LLM, dan deploy produksi. Dari skema database sampai antarmuka yang dipakai klien.',
+			keywords: [
+				'programmer full stack',
+				'programmer backend',
+				'jasa pembuatan API',
+				'jasa pembuatan backend',
+				'full stack developer indonesia',
+				'freelance programmer surabaya',
+				'jasa pembuatan aplikasi web',
+				'golang developer indonesia'
+			]
+		},
+		archive: {
+			title: 'Arsip Sistem Live — Backend Produksi oleh Alvin Vincent',
+			description:
+				'Sistem yang sedang berjalan di produksi: monitoring IoT industri, gateway SSO multi-tenant, dan platform kepatuhan lingkungan. Lengkap dengan catatan arsitektur, stack, dan URL live-nya.',
+			keywords: [
+				'portofolio backend',
+				'contoh sistem produksi',
+				'microservices golang',
+				'platform monitoring IoT',
+				'API gateway'
+			]
+		}
+	},
+
 	nav: {
 		work: 'Karya',
 		services: 'Layanan',
@@ -24,16 +54,18 @@ export const id: Dict = {
 	},
 
 	hero: {
-		role: 'Backend Engineer',
+		role: 'Programmer Backend / Full Stack',
+		headingLabel:
+			'Alvin Vincent — programmer backend dan full stack developer di Surabaya, Indonesia',
 		availability: 'Terbuka untuk freelance — 2026',
 		tagline:
-			'Saya membangun lapisan yang tidak pernah Anda lihat: API, pipeline data, dan skrip deploy yang menjaga semuanya tetap jujur.',
+			'Saya membangun lapisan yang tidak pernah Anda lihat: API, pipeline data, dan skrip deploy yang menjaga semuanya tetap jujur. Kalau proyeknya butuh sisi layar juga, itu saya kerjakan.',
 		location: 'Surabaya, Indonesia — melayani seluruh dunia',
 		scroll: 'Gulir',
 		cursorView: 'Lihat'
 	},
 
-	marquee: 'Backend Engineer — Terbuka untuk freelance —',
+	marquee: 'Programmer Backend — Full Stack Developer — Terbuka untuk freelance —',
 
 	projects: {
 		index: '01',
@@ -97,7 +129,7 @@ export const id: Dict = {
 	services: {
 		index: '02',
 		kicker: 'Layanan',
-		readout: 'lima hal yang bisa saya bangun untuk Anda. tanpa basa-basi.',
+		readout: 'enam hal yang bisa saya bangun untuk Anda. tanpa basa-basi.',
 		specSheet: 'Lembar spesifikasi',
 		request: 'Ajukan',
 		cursorRead: 'Baca',
@@ -135,8 +167,142 @@ export const id: Dict = {
 				title: 'DevOps & Deployment',
 				description:
 					'Docker, CI/CD, pemindaian keamanan, deploy tanpa downtime — pekerjaan tak glamor yang membuat pager tetap sunyi.'
+			},
+			'full-stack-web': {
+				title: 'Pengembangan Web Full Stack',
+				description:
+					'Satu orang dari skema sampai layar: PostgreSQL, API Go atau Python, dan front end SvelteKit/Next.js yang bicara dengan benar ke API-nya.'
 			}
 		}
+	},
+
+	archive: {
+		back: 'kembali ke beranda',
+		kicker: 'Arsip sistem live',
+		headingA: 'Sistem',
+		headingB: 'Terpasang',
+		intro:
+			'Sistem yang sedang berjalan, catatan arsitektur, dan bukti lapangan dari lapisan backend yang saya bangun dan saya operasikan.',
+		statusLabel: 'archive.status',
+		status: {
+			online: 'sistem online',
+			featured: 'unggulan',
+			classification: 'klasifikasi',
+			access: 'akses',
+			accessValue: 'di balik SSO',
+			classificationValue: 'iot industri / ml'
+		},
+		ssoGated: 'di balik SSO',
+		online: 'online',
+		openDemo: 'Buka demo live',
+		fullDossier: 'Dosir lengkap',
+		loginRequired: 'perlu login',
+		liveConsole: 'konsol live',
+		flowKicker: 'Jalur sinyal',
+		flowHeadingA: 'Dari sinyal sensor',
+		flowHeadingB: 'ke keputusan pengolahan',
+		fleetKicker: 'Armada',
+		fleetHeading: 'Arsip proyek',
+		fleetIntro:
+			'Semua sistem di bawah ini sedang berjalan di lapangan sekarang. Konsol produksinya berada di balik single sign-on Portal — tautannya membuka gerbang login sungguhan; tangkapan layar menunjukkan isinya.',
+		notesKicker: 'Keputusan',
+		notesHeading: 'Catatan arsitektur',
+		notesIntro: 'Keputusan backend yang menjaga sistem-sistem ini tetap jujur.',
+		ctaKicker: 'Buka kanal',
+		ctaHeading: 'Butuh sistem seperti ini?',
+		ctaBody:
+			'Ceritakan apa yang sedang Anda bangun. Saya bisa bantu merancang backend, alur data, jalur deployment, dan pengaman operasionalnya.',
+		ctaButton: 'Buka kanal',
+
+		featured: {
+			label: 'SYS-01 · SISTEM LIVE',
+			subtitle: 'Intelijen Risiko Limbah Cair',
+			description:
+				'Pemantauan real-time untuk data limbah cair pabrik kelapa sawit: ingesti sensor, pemrosesan backend, penyimpanan time-series, visibilitas dashboard, dan rekomendasi pengolahan berbantuan ML.',
+			embedFallback:
+				'Pratinjau live diblokir kebijakan browser. Buka POME Guardian langsung.',
+			embedTitle: 'POME Guardian — pratinjau sistem live'
+		},
+
+		embed: {
+			online: 'online',
+			linking: 'menyambung',
+			blocked: 'diblokir',
+			connecting: 'Menyambungkan tautan live…',
+			refused: 'Embed ditolak',
+			openSystem: 'Buka POME Guardian',
+			retry: 'Coba lagi',
+			policyNote: 'Embed bisa diblokir kebijakan browser',
+			openFull: 'Buka sistem penuh'
+		},
+
+		flow: {
+			sensor: { label: 'Sensor', readout: 'membaca pH · COD · TSS' },
+			edge: { label: 'Perangkat edge', readout: 'mengumpulkan + menahan bacaan' },
+			backend: { label: 'Backend', readout: 'memvalidasi + merutekan event' },
+			store: { label: 'Penyimpanan', readout: 'fakta di postgres · stream di influx' },
+			dashboard: { label: 'Dashboard', readout: 'panel menyala langsung' },
+			ml: { label: 'Inferensi ML', readout: 'merekomendasikan pengolahan' }
+		},
+
+		projectNotes: {
+			pome: 'Microservices Go + Python di belakang Kong; RabbitMQ untuk async, Postgres dan Influx dipisah sesuai tugasnya.',
+			portal: 'Auth di tepi lewat Traefik → Kong; satu database per layanan supaya tiap tenant bisa berkembang sendiri-sendiri.',
+			lecsens: 'Layanan Go ber-Clean Architecture; ambang batas dievaluasi saat data masuk, bukan lewat batch.'
+		},
+
+		classification: {
+			pome: 'IoT Industri / ML',
+			portal: 'SSO Multi-Tenant',
+			lecsens: 'Pemantauan Lingkungan'
+		},
+
+		notes: {
+			BOUNDARY: {
+				tag: 'BATAS',
+				title: 'ML diisolasi di balik gRPC',
+				body: 'Inferensi tinggal di layanan Python-nya sendiri. Model bisa dilatih ulang dan di-deploy ulang tanpa pernah menyentuh permukaan API Go.'
+			},
+			BACKPRESSURE: {
+				tag: 'BACKPRESSURE',
+				title: 'RabbitMQ meredam lonjakan sensor',
+				body: 'Event async menjauhkan lonjakan ingesti dari jalur request, sehingga pabrik yang sedang riuh tidak pernah membuat dashboard tersendat.'
+			},
+			STORAGE: {
+				tag: 'PENYIMPANAN',
+				title: 'Database yang tepat untuk tiap tugas',
+				body: 'PostgreSQL memegang fakta dan relasinya; InfluxDB menelan derasnya time-series berfrekuensi tinggi.'
+			},
+			EDGE: {
+				tag: 'TEPI',
+				title: 'Kong berdiri di depan cluster',
+				body: 'Verifikasi JWT, rate limiting, dan ACL berjalan di gateway. Layanan tetap ramping dan fokus pada logika domain.'
+			},
+			OPS: {
+				tag: 'OPS',
+				title: 'Terpantau sebelum pengguna sadar',
+				body: 'Prometheus + Grafana mengawasi platform di Kubernetes; alert menyala saat ada penyimpangan, sebelum ada yang membuka tiket.'
+			}
+		}
+	},
+
+	serviceDetail: {
+		back: 'kembali ke layanan',
+		specSheet: 'lembar spesifikasi',
+		details: 'Rincian',
+		stack: 'Stack',
+		included: 'Yang Anda dapat',
+		process: 'Alur kerjanya',
+		boundariesTitle: 'Yang saya kerjakan — dan yang saya oper',
+		boundariesMine: 'Saya kerjakan sendiri',
+		boundariesPartner: 'Saya bawa spesialis',
+		faqTitle: 'Pertanyaan yang sering ditanyakan klien',
+		evidence: 'Bukti lapangan',
+		evidenceReadout: 'Sistem yang sudah memakai layanan ini',
+		ctaTitle: (title: string) => `Butuh ${title.toLowerCase()}?`,
+		ctaBody:
+			'Ceritakan apa yang sedang Anda bangun. Anda akan dapat jawaban jujur soal lingkup, waktu pengerjaan, dan apakah saya memang orang yang tepat untuk itu.',
+		ctaButton: 'Buka kanal'
 	},
 
 	skills: {
@@ -168,6 +334,7 @@ export const id: Dict = {
 			'Saya membangun lapisan yang membosankan-tapi-kritis — API, queue, skema, dan skrip deploy yang menjaga semuanya tetap jujur.',
 		p1: 'Hampir setiap hari itu berarti layanan Go dan data yang dipindahkannya: PostgreSQL untuk fakta, InfluxDB untuk apa pun yang dikatakan sensor lima detik lalu, Redis supaya tidak ada yang perlu bertanya dua kali.',
 		p2: 'Saya kuliah Informatika di ITS Surabaya dan merilis sistem sungguhan di sela-selanya — pemantauan IoT industri, gateway multi-tenant, layanan inferensi ML. Rancang, bangun, deploy: saya tinggal untuk satu putaran penuh.',
+		p3: 'Saya bekerja full stack, dan saya lebih suka jujur soal artinya: bobotnya ada di backend, dan front end yang saya bangun adalah front end yang bicara ke backend itu — SvelteKit atau Next.js, tipenya mengikuti kontrak yang sama, tetap ringan di Android kelas menengah. Identitas brand, ilustrasi, dan copywriting panjang saya serahkan ke orang yang memang lebih jago di sana.',
 		traits: [
 			{ title: 'Desain Sistem', line: 'Clean Architecture — layanan yang hidup lebih lama dari penulis pertamanya.' },
 			{ title: 'Keamanan Dulu', line: 'RBAC, JWT, isolasi tenant. Dikunci sebelum rilis, bukan sesudahnya.' },
@@ -220,6 +387,7 @@ export const id: Dict = {
 		responseLine: 'Rata-rata balasan di bawah 24 jam pada hari kerja',
 		cursorOpen: 'Buka',
 		cursorSend: 'Kirim',
+		linkedin: { kicker: 'LinkedIn — profil terverifikasi' },
 		form: {
 			name: 'Nama',
 			namePlaceholder: 'Ada Lovelace',

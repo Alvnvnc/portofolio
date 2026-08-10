@@ -4,6 +4,41 @@
  * this object 1:1 and is type-checked against it.
  */
 export const en = {
+	/**
+	 * Head copy. Kept in the dictionary (not in the page) so the Indonesian
+	 * version of every indexable page ships a real Indonesian title and
+	 * description instead of a translated body under an English head.
+	 */
+	seo: {
+		home: {
+			title: 'Alvin Vincent — Backend & Full Stack Engineer (Golang, SvelteKit)',
+			description:
+				'Freelance backend and full stack engineer based in Surabaya, Indonesia. Go and Python APIs, PostgreSQL and InfluxDB pipelines, IoT monitoring, LLM integration, and the deploys that keep them running.',
+			keywords: [
+				'backend engineer',
+				'full stack engineer',
+				'freelance backend developer',
+				'golang developer',
+				'sveltekit developer',
+				'API development',
+				'IoT backend',
+				'Surabaya Indonesia'
+			]
+		},
+		archive: {
+			title: 'Live Systems Archive — Production Backends by Alvin Vincent',
+			description:
+				'Systems currently running in production: industrial IoT monitoring, a multi-tenant SSO gateway, and compliance platforms. Architecture notes, stack, and live URLs where they can be shown.',
+			keywords: [
+				'backend portfolio',
+				'production systems',
+				'golang microservices',
+				'IoT monitoring platform',
+				'API gateway'
+			]
+		}
+	},
+
 	nav: {
 		work: 'Work',
 		services: 'Services',
@@ -22,16 +57,22 @@ export const en = {
 	},
 
 	hero: {
-		role: 'Backend Engineer',
+		role: 'Backend Engineer / Full Stack',
+		/**
+		 * The visible name is split into per-letter spans for the animation, which
+		 * reads as noise to a crawler and to a screen reader. This is the real H1.
+		 */
+		headingLabel:
+			'Alvin Vincent — backend engineer and full stack developer in Surabaya, Indonesia',
 		availability: 'Available for freelance — 2026',
 		tagline:
-			'I build the layer you never see: APIs, data pipelines, and the deploy scripts that keep them honest.',
+			'I build the layer you never see: APIs, data pipelines, and the deploy scripts that keep them honest. When a project needs the screen too, I build that as well.',
 		location: 'Surabaya, Indonesia — working worldwide',
 		scroll: 'Scroll',
 		cursorView: 'View'
 	},
 
-	marquee: 'Backend Engineer — Available for freelance —',
+	marquee: 'Backend Engineer — Full Stack Developer — Available for freelance —',
 
 	projects: {
 		index: '01',
@@ -95,7 +136,7 @@ export const en = {
 	services: {
 		index: '02',
 		kicker: 'Services',
-		readout: 'five things I can build for you. no filler.',
+		readout: 'six things I can build for you. no filler.',
 		specSheet: 'Spec sheet',
 		request: 'Request',
 		cursorRead: 'Read',
@@ -133,8 +174,153 @@ export const en = {
 				title: 'DevOps & Deployment',
 				description:
 					'Docker, CI/CD, security scans, zero-downtime deploys — the unglamorous work that keeps the pager quiet.'
+			},
+			'full-stack-web': {
+				title: 'Full Stack Web Development',
+				description:
+					'One person from schema to screen: PostgreSQL, a Go or Python API, and a SvelteKit/Next.js front end that talks to it properly.'
 			}
 		} as Record<string, { title: string; description: string }>
+	},
+
+	/**
+	 * /portofolio, fully translated — chrome and technical readouts alike.
+	 * Product names, protocols and tool names (Kong, InfluxDB, gRPC, pH/COD/TSS)
+	 * stay as-is in both locales: they are proper nouns, not English words.
+	 */
+	archive: {
+		back: 'back to home',
+		kicker: 'Live systems archive',
+		headingA: 'Deployed',
+		headingB: 'Systems',
+		intro:
+			'Live systems, architecture notes, and field evidence from the backend layer I build and operate.',
+		statusLabel: 'archive.status',
+		status: {
+			online: 'systems online',
+			featured: 'featured',
+			classification: 'classification',
+			access: 'access',
+			accessValue: 'SSO-gated',
+			classificationValue: 'industrial iot / ml'
+		},
+		ssoGated: 'SSO-gated',
+		online: 'online',
+		openDemo: 'Open live demo',
+		fullDossier: 'Full dossier',
+		loginRequired: 'login required',
+		liveConsole: 'live console',
+		flowKicker: 'Signal path',
+		flowHeadingA: 'From sensor signal',
+		flowHeadingB: 'to treatment decision',
+		fleetKicker: 'The fleet',
+		fleetHeading: 'Project archive',
+		fleetIntro:
+			"Every system below is running in the field right now. Production consoles sit behind Portal single sign-on — links open the real login gate; screenshots show what's inside.",
+		notesKicker: 'Decisions',
+		notesHeading: 'Architecture notes',
+		notesIntro: 'The backend decisions that keep these systems honest.',
+		ctaKicker: 'Open channel',
+		ctaHeading: 'Need a system like this?',
+		ctaBody:
+			"Tell me what you're building. I can help design the backend, data flow, deployment path, and operational guardrails.",
+		ctaButton: 'Open channel',
+
+		/** SYS-01 featured deployment. `name` is a product name and never translates. */
+		featured: {
+			label: 'SYS-01 · LIVE SYSTEM',
+			subtitle: 'Effluent Risk Intelligence',
+			description:
+				'Real-time monitoring for palm-oil mill effluent data: sensor ingestion, backend processing, time-series storage, dashboard visibility, and ML-assisted treatment recommendation.',
+			embedFallback: 'Live preview is blocked by browser policy. Open POME Guardian directly.',
+			embedTitle: 'POME Guardian — live system preview'
+		},
+
+		/** live-embed frame chrome */
+		embed: {
+			online: 'online',
+			linking: 'linking',
+			blocked: 'blocked',
+			connecting: 'Establishing live link…',
+			refused: 'Embed refused',
+			openSystem: 'Open POME Guardian',
+			retry: 'Retry embed',
+			policyNote: 'Embedding may be blocked by browser policy',
+			openFull: 'Open full system'
+		},
+
+		/** sensor → decision narrative, keyed by systemFlow step id */
+		flow: {
+			sensor: { label: 'Sensor', readout: 'reads pH · COD · TSS' },
+			edge: { label: 'Edge device', readout: 'batches + buffers reads' },
+			backend: { label: 'Backend', readout: 'validates + routes events' },
+			store: { label: 'Storage', readout: 'postgres facts · influx stream' },
+			dashboard: { label: 'Dashboard', readout: 'panels light up live' },
+			ml: { label: 'ML inference', readout: 'recommends treatment' }
+		} as Record<string, { label: string; readout: string }>,
+
+		/** one-line architecture summary per archive entry, keyed by project id */
+		projectNotes: {
+			pome: 'Go + Python microservices behind Kong; RabbitMQ async, Postgres + Influx split.',
+			portal: 'Traefik → Kong edge auth; database-per-service so tenants evolve independently.',
+			lecsens: 'Clean Architecture Go services; thresholds evaluated on ingest, not in batches.'
+		} as Record<string, string>,
+
+		/** what each system is, in two or three words — the kicker beside its title */
+		classification: {
+			pome: 'Industrial IoT / ML',
+			portal: 'Multi-Tenant SSO',
+			lecsens: 'Environmental Monitoring'
+		} as Record<string, string>,
+
+		/** dossier decisions, keyed by architectureNotes tag */
+		notes: {
+			BOUNDARY: {
+				tag: 'BOUNDARY',
+				title: 'ML isolated behind gRPC',
+				body: 'Inference lives in its own Python service. Models retrain and redeploy without ever touching the Go API surface.'
+			},
+			BACKPRESSURE: {
+				tag: 'BACKPRESSURE',
+				title: 'RabbitMQ absorbs sensor bursts',
+				body: 'Async events keep ingestion spikes off the request path, so a noisy mill never stalls the dashboards.'
+			},
+			STORAGE: {
+				tag: 'STORAGE',
+				title: 'Right database per job',
+				body: 'PostgreSQL holds the facts and relationships; InfluxDB swallows the high-frequency time-series firehose.'
+			},
+			EDGE: {
+				tag: 'EDGE',
+				title: 'Kong fronts the cluster',
+				body: 'JWT verification, rate limiting, and ACLs run at the gateway. Services stay thin and focused on domain logic.'
+			},
+			OPS: {
+				tag: 'OPS',
+				title: 'Observable before users notice',
+				body: 'Prometheus + Grafana watch the platform on Kubernetes; alerts fire on drift before anyone opens a ticket.'
+			}
+		} as Record<string, { tag: string; title: string; body: string }>
+	},
+
+	/** UI chrome for /services/[slug] — the prose itself lives in serviceCopy.ts */
+	serviceDetail: {
+		back: 'back to services',
+		specSheet: 'spec sheet',
+		details: 'Details',
+		stack: 'Stack',
+		included: "What's included",
+		process: 'How it runs',
+		boundariesTitle: 'What I do — and what I hand off',
+		boundariesMine: 'I build this myself',
+		boundariesPartner: 'I bring in a specialist',
+		faqTitle: 'Questions clients actually ask',
+		evidence: 'Field evidence',
+		evidenceReadout: 'Systems where this service is already running',
+		ctaTitle: (title: string) => `Need ${title.toLowerCase()}?`,
+		ctaBody:
+			"Tell me what you're building. You'll get an honest answer about scope, timeline, and whether I'm the right person for it.",
+		ctaButton: 'Open channel'
 	},
 
 	skills: {
@@ -166,6 +352,7 @@ export const en = {
 			'I build the boring-but-critical layer — APIs, queues, schemas, and the deploy scripts that keep them honest.',
 		p1: 'Most days that means Go services and the data they move: PostgreSQL for facts, InfluxDB for whatever the sensors said five seconds ago, Redis so nobody has to ask twice.',
 		p2: 'I study Informatics at ITS Surabaya and ship real systems on the side — industrial IoT monitoring, multi-tenant gateways, ML inference services. Design, implement, deploy: I stay for the whole loop.',
+		p3: "I work full stack, and I'd rather be precise about what that means: the weight sits on the backend, and the front end I build is the one that talks to it — SvelteKit or Next.js, typed against the same contracts, fast on a mid-range Android. Brand identity, illustration, and long-form copy I hand to people who do that better than I do.",
 		traits: [
 			{ title: 'System Design', line: 'Clean Architecture — services that outlive their first author.' },
 			{ title: 'Security First', line: 'RBAC, JWT, tenant isolation. Locked before launch, not after.' },
@@ -221,6 +408,7 @@ export const en = {
 		responseLine: 'Avg response under 24h on working days',
 		cursorOpen: 'Open',
 		cursorSend: 'Send',
+		linkedin: { kicker: 'LinkedIn — verified profile' },
 		form: {
 			name: 'Name',
 			namePlaceholder: 'Ada Lovelace',

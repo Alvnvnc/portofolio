@@ -90,6 +90,14 @@
 			bind:this={headingEl}
 			class="flex flex-col font-display text-[16vw] leading-[0.85] font-extrabold text-fg uppercase [text-shadow:0_2px_40px_rgba(11,9,7,0.55)] sm:text-[11vw] lg:text-[9vw]"
 		>
+			<!--
+				The name is rendered one <span> per letter for the reveal animation.
+				Read straight, that is "A l v i n" — useless to a screen reader and to
+				a crawler weighing the page's single strongest heading. So the letters
+				are hidden from the a11y tree and the real heading text lives here.
+			-->
+			<span class="sr-only">{$t.hero.headingLabel}</span>
+			<span class="contents" aria-hidden="true">
 			{#each [line1, line2] as word, wi (wi)}
 				{#if word}
 					<span class="flex overflow-hidden">
@@ -111,6 +119,7 @@
 					</span>
 				{/if}
 			{/each}
+			</span>
 		</h1>
 
 		<p

@@ -2,7 +2,8 @@
 	import { cn } from '$lib/utils';
 	import { navItems, personalInfo } from '$lib/data/portfolio';
 	import { activeSection } from '$lib/stores';
-	import { t, locale, toggleLocale } from '$lib/i18n';
+	import { t, locale, locales } from '$lib/i18n';
+	import { localizedPath, stripLocale } from '$lib/seo';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
@@ -11,7 +12,10 @@
 	let isScrolled = $state(false);
 	let clock = $state('--:--');
 
-	const isHome = $derived($page.route.id === '/');
+	/** Locale-neutral identity of the current page: `/id/portofolio` → `/portofolio`. */
+	const path = $derived(stripLocale($page.url.pathname));
+	const isHome = $derived(path === '/');
+	const homeHref = $derived(localizedPath('/', $locale));
 	const isHashLink = (href: string) => href.startsWith('#');
 
 	// nav item id → dictionary label
@@ -28,13 +32,13 @@
 		)[id] ?? id;
 
 	function resolveHref(href: string): string {
-		if (!isHashLink(href)) return href;
-		return isHome ? href : `/${href}`;
+		if (!isHashLink(href)) return localizedPath(href, $locale);
+		return isHome ? href : `${homeHref}${href}`;
 	}
 
 	function isActive(item: { id: string; href: string }): boolean {
 		if (isHashLink(item.href)) return isHome && $activeSection === item.id;
-		return $page.url.pathname === item.href;
+		return path === item.href;
 	}
 
 	$effect(() => {
@@ -70,23 +74,37 @@
 		if (isHome) {
 			document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
 		} else {
-			goto(`/${href}`);
+			goto(`${homeHref}${href}`);
 		}
 	}
 </script>
 
 {#snippet localeToggle()}
-	<button
-		type="button"
-		onclick={toggleLocale}
-		title={$t.nav.switchLocale}
-		aria-label={$t.nav.switchLocale}
-		class="flex items-center gap-1.5 font-mono text-[11px] tracking-[0.2em] uppercase"
-	>
-		<span class={$locale === 'en' ? 'text-fg' : 'text-fg-muted/60'}>EN</span>
-		<span class="text-fg-muted/40" aria-hidden="true">/</span>
-		<span class={$locale === 'id' ? 'text-fg' : 'text-fg-muted/60'}>ID</span>
-	</button>
+	<!--
+		Real anchors, not a store toggle. A button that flips a client-side store
+		leaves the Indonesian copy invisible to crawlers; these give /id a
+		followable link from every page on the site.
+	-->
+	<div class="flex items-center gap-1.5 font-mono text-[11px] tracking-[0.2em] uppercase">
+		{#each locales as loc, i (loc)}
+			{#if i > 0}
+				<span class="text-fg-muted/40" aria-hidden="true">/</span>
+			{/if}
+			<a
+				href={localizedPath(path, loc)}
+				hreflang={loc === 'id' ? 'id-ID' : 'en'}
+				rel="alternate"
+				title={$locale === loc ? undefined : $t.nav.switchLocale}
+				aria-current={$locale === loc ? 'true' : undefined}
+				class={cn(
+					'transition-colors',
+					$locale === loc ? 'text-fg' : 'text-fg-muted/60 hover:text-fg'
+				)}
+			>
+				{loc.toUpperCase()}
+			</a>
+		{/each}
+	</div>
 {/snippet}
 
 <header
@@ -96,7 +114,7 @@
 	)}
 >
 	<a
-		href="/"
+		href={homeHref}
 		onclick={(e) => handleNavClick(e, '#hero')}
 		class="font-display text-sm font-medium tracking-[0.15em] text-fg uppercase"
 		aria-label="Back to top"

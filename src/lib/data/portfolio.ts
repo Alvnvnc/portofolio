@@ -18,7 +18,7 @@ import type {
 export const personalInfo: PersonalInfo = {
 	name: 'Alvin Vincent',
 	fullName: 'Alvin Vincent Oswald Reba',
-	title: 'Backend Engineer',
+	title: 'Backend & Full Stack Engineer',
 	tagline:
 		'I build the layer you never see: APIs, data pipelines, and the deploy scripts that keep them honest.',
 	location: 'Surabaya, Indonesia — working worldwide',
@@ -313,6 +313,9 @@ export const education: Education[] = [
 // ========================================
 // Services — the catalog
 // ========================================
+// Structure only. All prose (long copy, features, process, FAQ, SEO strings)
+// lives per-locale in `$lib/i18n/serviceCopy`, so an Indonesian visitor and
+// Googlebot see the same Indonesian page — not an English one behind a toggle.
 export const services: Service[] = [
 	{
 		id: 'backend-dev',
@@ -322,34 +325,7 @@ export const services: Service[] = [
 			'APIs and services built to be maintained, not just shipped — Clean Architecture, tests, and logs you can actually read.',
 		icon: 'stack',
 		techStack: ['Golang', 'Python', 'PostgreSQL', 'Redis'],
-		longDescription:
-			'I build production-grade backend systems from scratch using Clean Architecture principles. Every system is designed for maintainability, testability, and scalability — from database schema design to deployment automation. Whether you need a monolith or microservices, I deliver secure, well-structured backends that your team can confidently maintain and extend.',
-		features: [
-			'Clean Architecture with domain-driven design',
-			'Secure REST API endpoints with JWT/OAuth authentication',
-			'Database schema design and query optimization',
-			'Comprehensive error handling and structured logging',
-			'Unit and integration testing with CI/CD pipeline'
-		],
-		process: [
-			'Requirements analysis and system architecture planning',
-			'Database schema and API contract design',
-			'Implementation with Clean Architecture patterns',
-			'Testing, security review, and production deployment'
-		],
-		relatedProjects: ['pome', 'lecsens'],
-		seo: {
-			title: 'Backend Development Services | Golang & Python | Alvin Vincent',
-			description:
-				'Freelance backend developer specializing in Golang, Python, PostgreSQL. Clean Architecture, REST APIs, and scalable systems. Available for projects worldwide.',
-			keywords: [
-				'backend developer',
-				'golang developer',
-				'freelance backend engineer',
-				'REST API development',
-				'clean architecture'
-			]
-		}
+		relatedProjects: ['pome', 'lecsens']
 	},
 	{
 		id: 'api-design',
@@ -359,34 +335,17 @@ export const services: Service[] = [
 			'REST endpoints with auth, rate limits, and docs — your web or mobile team plugs in and stops thinking about it.',
 		icon: 'plug',
 		techStack: ['REST', 'JWT', 'OAuth', 'WebSocket'],
-		longDescription:
-			'I design and build RESTful APIs that are secure, well-documented, and easy to integrate. From authentication systems with JWT and OAuth to real-time WebSocket connections, I create APIs that serve as reliable foundations for web and mobile applications. I also handle third-party API integrations, payment gateways, and webhook systems.',
-		features: [
-			'RESTful API design following best practices',
-			'JWT and OAuth2 authentication systems',
-			'Rate limiting and request throttling',
-			'Third-party API and payment gateway integration',
-			'WebSocket real-time communication'
-		],
-		process: [
-			'API requirements and endpoint specification',
-			'Authentication and authorization strategy',
-			'Implementation with comprehensive documentation',
-			'Integration testing and performance optimization'
-		],
-		relatedProjects: ['portal', 'pome'],
-		seo: {
-			title: 'API Design & Integration Services | REST API Developer | Alvin Vincent',
-			description:
-				'Professional REST API design and integration services. JWT authentication, OAuth, WebSocket, third-party integrations. Freelance API developer in Indonesia.',
-			keywords: [
-				'API design',
-				'REST API developer',
-				'API integration',
-				'JWT authentication',
-				'freelance API engineer'
-			]
-		}
+		relatedProjects: ['portal', 'pome']
+	},
+	{
+		id: 'full-stack-web',
+		code: 'SVC-06',
+		title: 'Full Stack Web Development',
+		description:
+			'One person from schema to screen: PostgreSQL, a Go or Python API, and a SvelteKit/Next.js front end that talks to it properly.',
+		icon: 'shield',
+		techStack: ['SvelteKit', 'Next.js', 'TypeScript', 'Golang'],
+		relatedProjects: ['portal', 'lecsens']
 	},
 	{
 		id: 'iot-data',
@@ -396,34 +355,7 @@ export const services: Service[] = [
 			'Sensor-to-dashboard pipelines: MQTT in, time-series storage, alerts out. Built on real industrial deployments.',
 		icon: 'drop',
 		techStack: ['InfluxDB', 'PostgreSQL', 'MQTT', 'Grafana'],
-		longDescription:
-			'I build backend systems for IoT and sensor monitoring — from data ingestion pipelines to real-time analytics dashboards. With production experience on industrial monitoring platforms (palm-oil mill effluent, water quality compliance), I handle high-frequency sensor data at scale using time-series databases, automated alerting, and visualization tools.',
-		features: [
-			'High-frequency sensor data ingestion pipelines',
-			'Time-series database design (InfluxDB, TimescaleDB)',
-			'Real-time monitoring dashboards and alerting',
-			'MQTT broker integration for IoT devices',
-			'Data analytics and automated reporting'
-		],
-		process: [
-			'Sensor data requirements and protocol analysis',
-			'Database architecture for time-series + metadata',
-			'Pipeline implementation with real-time processing',
-			'Dashboard setup, alerting, and deployment'
-		],
-		relatedProjects: ['lecsens', 'pome'],
-		seo: {
-			title: 'IoT Backend & Data Systems | Sensor Monitoring Developer | Alvin Vincent',
-			description:
-				'IoT backend developer building sensor monitoring platforms, time-series data pipelines, and real-time dashboards. InfluxDB, MQTT, Grafana. Freelance in Indonesia.',
-			keywords: [
-				'IoT developer',
-				'sensor monitoring backend',
-				'time-series database',
-				'InfluxDB developer',
-				'real-time monitoring'
-			]
-		}
+		relatedProjects: ['lecsens', 'pome']
 	},
 	{
 		id: 'ai-integration',
@@ -433,34 +365,7 @@ export const services: Service[] = [
 			'LLM features wired into real backends — RAG, vector search, structured outputs, with fallbacks and a cost ceiling.',
 		icon: 'chip',
 		techStack: ['LLM APIs', 'Vector DB', 'RAG', 'gRPC'],
-		longDescription:
-			'I integrate large language models into your backend workflows — from RAG (Retrieval-Augmented Generation) systems for intelligent document search to automated content processing pipelines. I build provider-agnostic LLM abstraction layers with fallback strategies, cost optimization, and structured output parsing.',
-		features: [
-			'RAG systems with vector search for document retrieval',
-			'Provider-agnostic LLM integration with fallback strategies',
-			'Automated document processing and classification',
-			'Cost tracking and optimization per tenant',
-			'Structured output parsing and validation'
-		],
-		process: [
-			'Use case analysis and LLM provider selection',
-			'Vector database and embedding pipeline setup',
-			'Integration implementation with error handling',
-			'Testing, cost monitoring, and production deployment'
-		],
-		relatedProjects: ['pome'],
-		seo: {
-			title: 'AI/LLM Integration Services | RAG Systems Developer | Alvin Vincent',
-			description:
-				'AI and LLM integration developer building RAG systems, vector search, and automated document processing. Provider-agnostic LLM integration. Freelance AI engineer.',
-			keywords: [
-				'LLM integration',
-				'RAG system developer',
-				'AI backend developer',
-				'vector search',
-				'LLM API integration'
-			]
-		}
+		relatedProjects: ['pome']
 	},
 	{
 		id: 'devops',
@@ -470,33 +375,6 @@ export const services: Service[] = [
 			'Docker, CI/CD, security scans, zero-downtime deploys — the unglamorous work that keeps the pager quiet.',
 		icon: 'bolt',
 		techStack: ['Docker', 'Kubernetes', 'CI/CD', 'Linux'],
-		longDescription:
-			'I set up production deployment infrastructure — from Docker containerization and CI/CD pipelines to Linux server management and Cloudflare tunnels. I automate the entire build-test-deploy cycle with security scanning, health checks, and zero-downtime deployments so your applications run reliably in production.',
-		features: [
-			'Docker multi-stage builds and compose orchestration',
-			'CI/CD pipelines with automated testing and security scanning',
-			'Linux server provisioning and management',
-			'Cloudflare tunnels and DNS configuration',
-			'Zero-downtime deployment strategies'
-		],
-		process: [
-			'Infrastructure requirements and architecture planning',
-			'Docker containerization and compose setup',
-			'CI/CD pipeline configuration with security scanning',
-			'Deployment, monitoring, and documentation'
-		],
-		relatedProjects: ['pome', 'portal'],
-		seo: {
-			title: 'DevOps & Deployment Services | Docker & CI/CD | Alvin Vincent',
-			description:
-				'DevOps services including Docker containerization, CI/CD pipelines, Linux server management, and Cloudflare setup. Freelance DevOps engineer in Indonesia.',
-			keywords: [
-				'DevOps services',
-				'Docker deployment',
-				'CI/CD pipeline',
-				'Linux server management',
-				'freelance DevOps'
-			]
-		}
+		relatedProjects: ['pome', 'portal']
 	}
 ];

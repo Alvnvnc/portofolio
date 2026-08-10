@@ -3,6 +3,7 @@
 	import { t } from '$lib/i18n';
 	import { staggerRise } from '$lib/actions/motion';
 	import SectionHeader from '$lib/components/ui/SectionHeader.svelte';
+	import LinkedInBadge from '$lib/components/ui/LinkedInBadge.svelte';
 
 	const FORMSPREE_ID = 'mykdwlrj';
 
@@ -39,7 +40,6 @@
 	}
 
 	const channels = $derived([
-		{ label: 'LinkedIn', value: 'alvin-reba', href: personalInfo.linkedin },
 		{ label: 'Email', value: personalInfo.email, href: `mailto:${personalInfo.email}` }
 	]);
 </script>
@@ -77,6 +77,10 @@
 						</li>
 					{/each}
 				</ul>
+
+				<div class="mt-10">
+					<LinkedInBadge />
+				</div>
 
 				<div class="mt-10 space-y-2 border-t border-dashed border-border pt-6">
 					<p class="font-mono text-[11px] tracking-[0.1em] text-fg-muted uppercase">

@@ -19,6 +19,6 @@ services:
     command: tunnel --config /etc/cloudflared/config.yml run
     volumes:
       - ./cloudflared/config.yml:/etc/cloudflared/config.yml:ro
-      - ./cloudflared/252ca58f-4195-4d9a-b44c-132921fa319b.json:/etc/cloudflared/252ca58f-4195-4d9a-b44c-132921fa319b.json:ro
+      - ./cloudflared/bede2f17-29d8-47f3-9607-fbb25e021649.json:/etc/cloudflared/bede2f17-29d8-47f3-9607-fbb25e021649.json:ro
     depends_on:
       - portofolio-web

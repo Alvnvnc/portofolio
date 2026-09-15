@@ -1,5 +1,5 @@
-tunnel: 252ca58f-4195-4d9a-b44c-132921fa319b
-credentials-file: /etc/cloudflared/252ca58f-4195-4d9a-b44c-132921fa319b.json
+tunnel: bede2f17-29d8-47f3-9607-fbb25e021649
+credentials-file: /etc/cloudflared/bede2f17-29d8-47f3-9607-fbb25e021649.json
 
 ingress:
   - hostname: alvnvnc.site

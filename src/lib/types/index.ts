@@ -1,9 +1,3 @@
-import type { PixelIconName } from '$lib/components/ui/PixelIcon.svelte';
-
-// ========================================
-// Portfolio Data Types
-// ========================================
-
 export interface PersonalInfo {
 	name: string;
 	fullName: string;
@@ -19,7 +13,6 @@ export interface Skill {
 	name: string;
 	category: SkillCategory;
 	level: 'beginner' | 'intermediate' | 'advanced' | 'expert';
-	/** Marks a daily-driver tool — gets the "MAIN" tag in the loadout */
 	primary?: boolean;
 }
 
@@ -29,7 +22,6 @@ export type ProjectStatus = 'live' | 'field-test' | 'archived';
 
 export interface Project {
 	id: string;
-	/** Console designation, e.g. "SYS-01" */
 	code: string;
 	title: string;
 	classification: string;
@@ -39,7 +31,6 @@ export interface Project {
 	architecture: string;
 	keyDecisions: string[];
 	techStack: string[];
-	/** All current systems are private client work — only public demos/docs get linked */
 	links?: {
 		demo?: string;
 		docs?: string;
@@ -75,11 +66,9 @@ export interface Education {
 
 export interface Service {
 	id: string;
-	/** Catalog designation, e.g. "SVC-01" */
 	code: string;
 	title: string;
 	description: string;
-	icon: PixelIconName;
 	techStack: string[];
 	longDescription?: string;
 	features?: string[];
@@ -92,22 +81,16 @@ export interface Service {
 	};
 }
 
-// ========================================
-// UI Component Types
-// ========================================
-
-export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
-export type ButtonSize = 'sm' | 'md' | 'lg';
-
 export interface NavItem {
 	id: string;
 	label: string;
 	href: string;
 }
 
-// ========================================
-// Section Types (for scroll spy + headers)
-// ========================================
+export interface Faq {
+	question: string;
+	answer: string;
+}
 
 export type SectionId =
 	| 'hero'
@@ -120,9 +103,8 @@ export type SectionId =
 
 export interface SectionMeta {
 	id: SectionId;
-	/** Zero-padded console index, e.g. "02" */
+	label: string;
 	index: string;
 	title: string;
-	/** Terminal readout line under the section title */
-	readout: string;
+	note: string;
 }

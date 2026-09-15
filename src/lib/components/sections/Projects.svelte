@@ -1,139 +1,249 @@
 <script lang="ts">
-	import { cn } from '$lib/utils';
 	import { projects, sectionMeta } from '$lib/data/portfolio';
 	import type { ProjectStatus } from '$lib/types';
-	import SectionHeader from '$lib/components/ui/SectionHeader.svelte';
-	import PixelBadge from '$lib/components/ui/PixelBadge.svelte';
-	import PixelButton from '$lib/components/ui/PixelButton.svelte';
-	import { onMount } from 'svelte';
-	import { scrollFadeIn, scrollStagger } from '$lib/utils/animations';
-
-	interface Props {
-		class?: string;
-	}
-
-	let { class: className = '' }: Props = $props();
+	import Station from '$lib/components/ui/Station.svelte';
+	import SectionHead from '$lib/components/ui/SectionHead.svelte';
+	import Plate from '$lib/components/ui/Plate.svelte';
 
 	const meta = sectionMeta.find((s) => s.id === 'projects')!;
 
-	const statusMeta: Record<ProjectStatus, { label: string; led: string; text: string }> = {
-		live: { label: 'Live', led: 'bg-phosphor led-blink', text: 'text-phosphor' },
-		'field-test': { label: 'Field test', led: 'bg-amber', text: 'text-amber' },
-		archived: { label: 'Archived', led: 'bg-moss', text: 'text-moss' }
+	const statusLabel: Record<ProjectStatus, string> = {
+		live: 'live in production',
+		'field-test': 'field test',
+		archived: 'archived'
 	};
-
-	let headerEl: HTMLElement;
-	let listEl: HTMLElement;
-
-	onMount(() => {
-		scrollFadeIn(headerEl);
-		scrollStagger(listEl, ':scope > *', { stagger: 0.18, y: 35 });
-	});
 </script>
 
-<section id="projects" class={cn('bg-night px-4 py-24 sm:px-6', className)}>
-	<div class="mx-auto max-w-6xl">
-		<div bind:this={headerEl}>
-			<SectionHeader index={meta.index} title={meta.title} readout={meta.readout} />
-		</div>
+<section id="projects" class="section">
+	<Station id="projects" index={meta.index} label={meta.label} />
+	<div class="sheet">
+		<SectionHead title={meta.title} note={meta.note} />
 
-		<div bind:this={listEl} class="space-y-10">
-			{#each projects as project (project.id)}
-				{@const status = statusMeta[project.status]}
-				<article class="px-shadow border-[3px] border-ink bg-panel">
-					<!-- Dossier header -->
-					<div
-						class="flex flex-wrap items-center gap-x-4 gap-y-2 border-b-[3px] border-ink bg-slot px-5 py-3"
-					>
-						<span class="font-pixel text-[0.5rem] text-amber uppercase">{project.code}</span>
-						<h3 class="font-pixel text-[0.6rem] leading-relaxed text-ink uppercase sm:text-[0.65rem]">
-							{project.title}
-						</h3>
-						<span class="ml-auto flex items-center gap-4">
-							<PixelBadge text={project.classification} variant="outline" class="hidden sm:inline-block" />
-							<span class="flex items-center gap-2">
-								<span class={cn('led', status.led)}></span>
-								<span class={cn('font-pixel text-[0.45rem] uppercase', status.text)}>
-									{status.label}
-								</span>
-							</span>
+		<div class="projects mt-12">
+			{#each projects as project, i (project.id)}
+				<article class="project" class:flip={i % 2 === 1}>
+					<p class="head mono">
+						<span class="code">{project.code.toLowerCase()}</span>
+						<span class="kind">{project.classification}</span>
+						<span class="status" data-status={project.status}>
+							<i></i>{statusLabel[project.status]}
 						</span>
-					</div>
+					</p>
 
-					<div class="grid gap-6 p-5 sm:p-6 lg:grid-cols-[280px_1fr] lg:gap-8">
-						<!-- Monitor feed + stack -->
-						<div>
+					<h3 class="ptitle">{project.title}</h3>
+
+					<div class="grid">
+						<div class="plate-col">
 							{#if project.thumbnail}
-								<div class="relative mb-4 overflow-hidden border-2 border-seam">
-									<img
-										src={project.thumbnail}
-										alt="Pixel art illustration for {project.title}"
-										class="pixel-art block aspect-square w-full object-cover"
-										loading="lazy"
-										width="280"
-										height="280"
-									/>
-									<div class="scanlines pointer-events-none absolute inset-0" aria-hidden="true"></div>
-									<span
-										class="font-pixel absolute bottom-2 left-2 bg-night/85 px-2 py-1 text-[0.4rem] text-phosphor uppercase"
-									>
-										feed · {project.code}
-									</span>
-								</div>
+								<Plate
+									src={project.thumbnail}
+									alt="Pixel-art illustration for {project.title}"
+									caption="plate {String(i + 1).padStart(2, '0')} — {project.id}"
+								/>
 							{/if}
-							<div class="flex flex-wrap gap-2">
-								{#each project.techStack as tech (tech)}
-									<PixelBadge text={tech} variant="outline" />
-								{/each}
-							</div>
 						</div>
 
-						<!-- Mission file -->
-						<div class="space-y-5">
-							<p class="text-[0.9rem] leading-relaxed text-fog sm:text-base">
-								{project.description}
-							</p>
+						<div class="notes">
+							<p class="desc">{project.description}</p>
 
-							<div>
-								<h4 class="font-pixel mb-2 text-[0.5rem] text-amber uppercase">▸ Field notes</h4>
-								<p class="text-sm leading-relaxed text-moss">{project.problem}</p>
-							</div>
+							<dl>
+								<div class="note">
+									<dt class="mono">context</dt>
+									<dd>{project.problem}</dd>
+								</div>
+								<div class="note">
+									<dt class="mono">architecture</dt>
+									<dd>{project.architecture}</dd>
+								</div>
+								<div class="note">
+									<dt class="mono">decisions</dt>
+									<dd>
+										<ul class="decisions">
+											{#each project.keyDecisions as decision (decision)}
+												<li><span class="tick"></span>{decision}</li>
+											{/each}
+										</ul>
+									</dd>
+								</div>
+							</dl>
 
-							<div>
-								<h4 class="font-pixel mb-2 text-[0.5rem] text-phosphor uppercase">▸ Architecture</h4>
-								<p class="text-sm leading-relaxed text-moss">{project.architecture}</p>
-							</div>
+							<p class="tech mono">{project.techStack.join(' / ')}</p>
 
-							<div>
-								<h4 class="font-pixel mb-2 text-[0.5rem] text-ink uppercase">▸ Patch notes</h4>
-								<ul class="space-y-1.5">
-									{#each project.keyDecisions as decision (decision)}
-										<li class="flex items-start gap-2 text-sm leading-relaxed text-fog">
-											<span class="font-terminal mt-[1px] text-phosphor">+</span>
-											{decision}
-										</li>
-									{/each}
-								</ul>
-							</div>
+							{#if project.links?.demo}
+								<a class="text-action" href={project.links.demo} target="_blank" rel="noopener noreferrer">
+									Open live system
+								</a>
+							{:else}
+								<p class="private mono">
+									Source is private — client contracts. Walkthrough available on a call.
+								</p>
+							{/if}
 						</div>
-					</div>
-
-					<!-- Dossier footer: public demo if one exists, otherwise the honest truth -->
-					<div class="border-t-2 border-seam px-5 py-4 sm:px-6">
-						{#if project.links?.demo}
-							<PixelButton variant="primary" size="sm" href={project.links.demo} external>
-								Live system <span aria-hidden="true">▸</span>
-							</PixelButton>
-						{:else}
-							<p class="font-terminal text-base text-moss">
-								<span class="text-phosphor">$</span> git remote -v
-								<span class="text-ink">→ private (client work).</span>
-								Happy to walk through the architecture on a call.
-							</p>
-						{/if}
 					</div>
 				</article>
 			{/each}
 		</div>
 	</div>
 </section>
+
+<style>
+	.projects {
+		display: flex;
+		flex-direction: column;
+		gap: clamp(56px, 9vh, 104px);
+	}
+
+	.project {
+		border-top: 1px solid var(--rule);
+		padding-top: 26px;
+	}
+
+	.head {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 8px 24px;
+		font-size: 0.6875rem;
+		color: var(--ink-3);
+	}
+
+	.status {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+	}
+
+	.status i {
+		width: 6px;
+		height: 6px;
+		background: var(--rule-2);
+	}
+
+	.status[data-status='live'] i {
+		background: var(--signal);
+	}
+
+	.status[data-status='live'] {
+		color: var(--signal);
+	}
+
+	.ptitle {
+		margin-top: 14px;
+		font-size: clamp(1.6rem, 3.4vw, 2.6rem);
+		font-weight: 600;
+		letter-spacing: -0.02em;
+		line-height: 1.08;
+		color: var(--ink);
+		max-width: 26ch;
+	}
+
+	.grid {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		gap: 32px;
+		margin-top: 28px;
+	}
+
+	.desc {
+		font-size: 1.0625rem;
+		line-height: 1.6;
+		color: var(--ink-2);
+		max-width: 62ch;
+	}
+
+	dl {
+		margin-top: 26px;
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	.note {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		gap: 6px;
+	}
+
+	.note dt {
+		font-size: 0.6875rem;
+		color: var(--ink-3);
+	}
+
+	.note dd {
+		font-size: 0.9375rem;
+		line-height: 1.62;
+		color: var(--ink-2);
+		max-width: 66ch;
+	}
+
+	.decisions {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	.decisions li {
+		display: flex;
+		gap: 12px;
+	}
+
+	.tick {
+		width: 12px;
+		height: 1px;
+		margin-top: 12px;
+		flex: none;
+		background: var(--rule-2);
+	}
+
+	.tech {
+		margin-top: 26px;
+		font-size: 0.6875rem;
+		color: var(--ink-3);
+	}
+
+	.private {
+		margin-top: 14px;
+		font-size: 0.75rem;
+		color: var(--ink-3);
+	}
+
+	.text-action {
+		display: inline-block;
+		margin-top: 16px;
+		font-size: 0.875rem;
+		color: var(--ink);
+		text-decoration: underline;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 3px;
+		transition: color 140ms ease;
+	}
+
+	.text-action:hover {
+		color: var(--signal);
+	}
+
+	@media (min-width: 1024px) {
+		.grid {
+			grid-template-columns: minmax(0, 380px) minmax(0, 1fr);
+			gap: 56px;
+			align-items: start;
+		}
+
+		.flip .grid {
+			grid-template-columns: minmax(0, 1fr) minmax(0, 380px);
+		}
+
+		.flip .plate-col {
+			order: 2;
+		}
+
+		.note {
+			grid-template-columns: 130px minmax(0, 1fr);
+			gap: 20px;
+		}
+
+		.note dt {
+			padding-top: 2px;
+		}
+	}
+</style>

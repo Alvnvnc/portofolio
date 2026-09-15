@@ -1,29 +1,57 @@
 <script lang="ts">
-	import PixelPanel from '$lib/components/ui/PixelPanel.svelte';
-	import PixelButton from '$lib/components/ui/PixelButton.svelte';
-	import PixelBadge from '$lib/components/ui/PixelBadge.svelte';
-	import PixelIcon from '$lib/components/ui/PixelIcon.svelte';
-	import { onMount } from 'svelte';
-	import { scrollFadeIn, scrollStagger } from '$lib/utils/animations';
+	import Action from '$lib/components/ui/Action.svelte';
+	import Plate from '$lib/components/ui/Plate.svelte';
+	import { services } from '$lib/data/portfolio';
 
 	let { data } = $props();
 	const service = $derived(data.service);
 	const relatedProjects = $derived(data.relatedProjects);
+	const otherServices = $derived(services.filter((s) => s.id !== service.id));
 
-	let heroRef = $state<HTMLElement>(undefined!);
-	let detailRef = $state<HTMLElement>(undefined!);
-	let featuresRef = $state<HTMLElement>(undefined!);
-	let processRef = $state<HTMLElement>(undefined!);
-	let projectsRef = $state<HTMLElement>(undefined!);
-	let ctaRef = $state<HTMLElement>(undefined!);
+	const SITE = 'https://alvnvnc.site';
+	const url = $derived(`${SITE}/services/${service.id}`);
 
-	onMount(() => {
-		if (heroRef) scrollFadeIn(heroRef);
-		if (detailRef) scrollFadeIn(detailRef, { delay: 0.15 });
-		if (featuresRef) scrollStagger(featuresRef, ':scope > *', { stagger: 0.08, y: 20 });
-		if (processRef) scrollStagger(processRef, ':scope > *', { stagger: 0.12, y: 25 });
-		if (projectsRef) scrollStagger(projectsRef, ':scope > *', { stagger: 0.1, y: 25 });
-		if (ctaRef) scrollFadeIn(ctaRef, { delay: 0.1 });
+	const graph = $derived({
+		'@context': 'https://schema.org',
+		'@graph': [
+			{
+				'@type': 'Service',
+				'@id': `${url}#service`,
+				name: service.title,
+				description: service.seo?.description ?? service.description,
+				url,
+				serviceType: service.title,
+				provider: {
+					'@type': 'Person',
+					'@id': `${SITE}/#person`,
+					name: 'Alvin Vincent Oswald Reba',
+					jobTitle: 'Full-stack developer',
+					url: SITE
+				},
+				areaServed: { '@type': 'Place', name: 'Worldwide' },
+				availableChannel: {
+					'@type': 'ServiceChannel',
+					serviceUrl: `${SITE}/#contact`
+				},
+				hasOfferCatalog: {
+					'@type': 'OfferCatalog',
+					name: `${service.title} — deliverables`,
+					itemListElement: (service.features ?? []).map((feature) => ({
+						'@type': 'Offer',
+						itemOffered: { '@type': 'Service', name: feature }
+					}))
+				}
+			},
+			{
+				'@type': 'BreadcrumbList',
+				'@id': `${url}#breadcrumbs`,
+				itemListElement: [
+					{ '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE}/` },
+					{ '@type': 'ListItem', position: 2, name: 'Services', item: `${SITE}/#services` },
+					{ '@type': 'ListItem', position: 3, name: service.title, item: url }
+				]
+			}
+		]
 	});
 </script>
 
@@ -38,159 +66,83 @@
 	<meta property="og:title" content={service.seo?.title ?? service.title} />
 	<meta property="og:description" content={service.seo?.description ?? service.description} />
 	<meta property="og:type" content="website" />
-	<meta property="og:url" content={`https://alvnvnc.site/services/${service.id}`} />
-	<meta property="og:image" content="https://alvnvnc.site/images/hero-pixel-scene.png" />
-	<meta property="og:site_name" content="Alvin Vincent - Backend Engineer" />
+	<meta property="og:url" content={url} />
+	<meta property="og:image" content={`${SITE}/images/og-card.png`} />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
+	<meta property="og:image:alt" content="{service.title} — Alvin Vincent, freelance full-stack developer" />
+	<meta property="og:site_name" content="Alvin Vincent - Full-Stack Developer" />
 
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content={service.seo?.title ?? service.title} />
 	<meta name="twitter:description" content={service.seo?.description ?? service.description} />
-	<meta name="twitter:image" content="https://alvnvnc.site/images/hero-pixel-scene.png" />
+	<meta name="twitter:image" content={`${SITE}/images/og-card.png`} />
 
-	{@html `<script type="application/ld+json">${JSON.stringify({
-		"@context": "https://schema.org",
-		"@type": "Service",
-		"name": service.title,
-		"description": service.seo?.description ?? service.description,
-		"url": `https://alvnvnc.site/services/${service.id}`,
-		"provider": {
-			"@type": "Person",
-			"name": "Alvin Vincent Oswald Reba",
-			"jobTitle": "Backend Engineer",
-			"url": "https://alvnvnc.site"
-		},
-		"areaServed": "Worldwide",
-		"serviceType": service.title
-	})}</script>`}
+	{@html `<script type="application/ld+json">${JSON.stringify(graph)}</script>`}
 </svelte:head>
 
-<!-- Spec sheet header -->
-<section bind:this={heroRef} class="console-grid px-4 pt-28 pb-14 sm:px-6">
-	<div class="mx-auto max-w-4xl">
-		<a
-			href="/#services"
-			class="font-pixel mb-8 inline-block text-[0.5rem] text-moss uppercase transition-colors hover:text-amber"
-		>
-			◂ back to console
-		</a>
-
-		<div class="flex flex-wrap items-center gap-4">
-			<span class="px-shadow-sm flex h-12 w-12 items-center justify-center border-[3px] border-ink bg-slot text-amber">
-				<PixelIcon name={service.icon} size={22} />
-			</span>
-			<span class="font-pixel text-[0.55rem] text-amber uppercase">{service.code} · spec sheet</span>
-		</div>
-
-		<h1 class="font-pixel mt-5 mb-4 text-lg leading-relaxed text-ink uppercase sm:text-xl">
-			{service.title}
-		</h1>
-		<p class="max-w-2xl text-base leading-relaxed text-fog">
-			{service.description}
-		</p>
-	</div>
-	<div class="dither mx-auto mt-12 h-2 max-w-4xl" aria-hidden="true"></div>
-</section>
-
-<!-- Details + stack -->
-<section bind:this={detailRef} class="bg-void px-4 py-14 sm:px-6">
-	<div class="mx-auto grid max-w-4xl gap-8 md:grid-cols-3">
-		<div class="md:col-span-2">
-			<PixelPanel title="service.details" variant="panel" class="h-full p-6 pt-7">
-				<p class="text-[0.9rem] leading-relaxed text-fog sm:text-base">
-					{service.longDescription ?? service.description}
-				</p>
-			</PixelPanel>
-		</div>
-		<div>
-			<PixelPanel title="stack" accent="phosphor" variant="night" class="h-full p-5 pt-7">
-				<div class="flex flex-wrap gap-2">
-					{#each service.techStack as tech (tech)}
-						<PixelBadge text={tech} variant="ghost" />
-					{/each}
-				</div>
-			</PixelPanel>
-		</div>
+<section class="head">
+	<div class="sheet">
+		<a class="back mono" href="/#services">← all services</a>
+		<p class="code mono">{service.code.toLowerCase()} / spec sheet</p>
+		<h1>{service.title}</h1>
+		<p class="lead">{service.description}</p>
+		<p class="tech mono">{service.techStack.join(' / ')}</p>
 	</div>
 </section>
 
-<!-- What's included -->
+<section class="section">
+	<div class="sheet">
+		<h2 class="h2">Details</h2>
+		<p class="body-copy mt-6">{service.longDescription ?? service.description}</p>
+	</div>
+</section>
+
 {#if service.features?.length}
-	<section class="bg-night px-4 py-14 sm:px-6">
-		<div class="mx-auto max-w-4xl">
-			<h2 class="font-pixel mb-8 text-sm text-ink uppercase">
-				<span class="text-amber">▸</span> What's included
-			</h2>
-			<div bind:this={featuresRef} class="grid gap-4 sm:grid-cols-2">
+	<section class="section">
+		<div class="sheet">
+			<h2 class="h2">What's included</h2>
+			<ul class="features mt-8">
 				{#each service.features as feature (feature)}
-					<div class="px-shadow-sm border-[3px] border-ink bg-panel p-4">
-						<p class="flex items-start gap-2 text-sm leading-relaxed text-fog">
-							<span class="font-terminal text-phosphor">+</span>
-							{feature}
-						</p>
-					</div>
+					<li><span class="tick"></span>{feature}</li>
 				{/each}
-			</div>
+			</ul>
 		</div>
 	</section>
 {/if}
 
-<!-- Process -->
 {#if service.process?.length}
-	<section class="bg-void px-4 py-14 sm:px-6">
-		<div class="mx-auto max-w-4xl">
-			<h2 class="font-pixel mb-8 text-sm text-ink uppercase">
-				<span class="text-amber">▸</span> How it runs
-			</h2>
-			<div bind:this={processRef} class="space-y-4">
+	<section class="section">
+		<div class="sheet">
+			<h2 class="h2">How it runs</h2>
+			<ol class="steps mt-8">
 				{#each service.process as step, i (step)}
-					<div class="px-shadow-sm flex items-start gap-4 border-[3px] border-ink bg-panel p-4">
-						<span class="font-pixel border-2 border-amber px-2 py-[6px] text-[0.55rem] leading-none text-amber">
-							{String(i + 1).padStart(2, '0')}
-						</span>
-						<p class="pt-[2px] text-sm leading-relaxed text-fog">{step}</p>
-					</div>
+					<li>
+						<span class="step-index mono">{String(i + 1).padStart(2, '0')}</span>
+						<span class="step-text">{step}</span>
+					</li>
 				{/each}
-			</div>
+			</ol>
 		</div>
 	</section>
 {/if}
 
-<!-- Field evidence -->
 {#if relatedProjects.length > 0}
-	<section class="bg-night px-4 py-14 sm:px-6">
-		<div class="mx-auto max-w-4xl">
-			<h2 class="font-pixel mb-3 text-sm text-ink uppercase">
-				<span class="text-amber">▸</span> Field evidence
-			</h2>
-			<p class="font-terminal mb-8 text-lg text-moss">
-				&gt;&gt; systems where this service is already running
-			</p>
-			<div bind:this={projectsRef} class="grid gap-6 sm:grid-cols-2">
+	<section class="section">
+		<div class="sheet">
+			<h2 class="h2">Where it already runs</h2>
+			<div class="evidence mt-8">
 				{#each relatedProjects as project (project.id)}
-					<a href="/#projects" class="px-shadow px-hover block border-[3px] border-ink bg-panel">
+					<a class="evidence-card" href="/#projects">
 						{#if project.thumbnail}
-							<div class="relative overflow-hidden border-b-[3px] border-ink">
-								<img
-									src={project.thumbnail}
-									alt="Pixel art illustration for {project.title}"
-									class="pixel-art block aspect-[2/1] w-full object-cover"
-									loading="lazy"
-								/>
-								<div class="scanlines pointer-events-none absolute inset-0" aria-hidden="true"></div>
-							</div>
+							<Plate
+								src={project.thumbnail}
+								alt="Pixel-art illustration for {project.title}"
+								caption="{project.code.toLowerCase()} — {project.id}"
+							/>
 						{/if}
-						<div class="p-4">
-							<p class="font-pixel mb-2 text-[0.45rem] text-amber uppercase">{project.code}</p>
-							<h3 class="font-pixel mb-3 text-[0.55rem] leading-relaxed text-ink uppercase">
-								{project.title}
-							</h3>
-							<p class="mb-4 text-sm leading-relaxed text-moss">{project.description}</p>
-							<div class="flex flex-wrap gap-2">
-								{#each project.techStack.slice(0, 4) as tech (tech)}
-									<PixelBadge text={tech} variant="outline" />
-								{/each}
-							</div>
-						</div>
+						<h3>{project.title}</h3>
+						<p>{project.description}</p>
 					</a>
 				{/each}
 			</div>
@@ -198,20 +150,215 @@
 	</section>
 {/if}
 
-<!-- CTA -->
-<section bind:this={ctaRef} class="console-grid bg-void px-4 py-20 sm:px-6">
-	<div class="mx-auto max-w-2xl">
-		<PixelPanel title="open.channel" accent="amber" variant="night" class="p-7 pt-8 text-center">
-			<h2 class="font-pixel mb-3 text-sm leading-relaxed text-ink uppercase">
-				Need {service.title.toLowerCase()}?
-			</h2>
-			<p class="mb-7 text-sm leading-relaxed text-moss">
-				Tell me what you're building. You'll get an honest answer about scope, timeline, and
-				whether I'm the right operator for it.
-			</p>
-			<PixelButton variant="primary" size="md" href="/#contact">
-				Open channel <span aria-hidden="true">▸</span>
-			</PixelButton>
-		</PixelPanel>
+{#if otherServices.length > 0}
+	<section class="section">
+		<div class="sheet">
+			<h2 class="h2">Other services</h2>
+			<ul class="others mt-6">
+				{#each otherServices as other (other.id)}
+					<li>
+						<a href="/services/{other.id}">{other.title}</a>
+						<span class="mono">{other.code.toLowerCase()}</span>
+					</li>
+				{/each}
+			</ul>
+		</div>
+	</section>
+{/if}
+
+<section class="cta">
+	<div class="sheet">
+		<h2>Need {service.title.toLowerCase()}?</h2>
+		<p class="lead">
+			Tell me what you're building. You'll get an honest answer about scope, timeline, and whether
+			I'm the right engineer for it.
+		</p>
+		<Action href="/#contact" class="cta-action">Start a project</Action>
 	</div>
 </section>
+
+<style>
+	.head {
+		padding-block: calc(var(--topbar-h) + 48px) clamp(48px, 8vh, 88px);
+	}
+
+	.back {
+		font-size: 0.75rem;
+		color: var(--ink-3);
+		text-decoration: none;
+	}
+
+	.back:hover {
+		color: var(--signal);
+	}
+
+	.code {
+		margin-top: 34px;
+		font-size: 0.6875rem;
+		color: var(--signal);
+	}
+
+	h1 {
+		margin-top: 12px;
+		font-size: clamp(2rem, 5.4vw, 3.8rem);
+		font-weight: 600;
+		letter-spacing: -0.024em;
+		line-height: 1.04;
+		color: var(--ink);
+		max-width: 22ch;
+	}
+
+	.lead {
+		margin-top: 20px;
+	}
+
+	.tech {
+		margin-top: 22px;
+		font-size: 0.6875rem;
+		color: var(--ink-3);
+	}
+
+	.h2 {
+		font-size: 0.75rem;
+		font-weight: 500;
+		color: var(--ink-3);
+		border-top: 1px solid var(--rule);
+		padding-top: 14px;
+	}
+
+	.features {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		gap: 14px;
+		max-width: 72ch;
+	}
+
+	.features li {
+		display: flex;
+		gap: 14px;
+		font-size: 0.9375rem;
+		line-height: 1.6;
+		color: var(--ink-2);
+	}
+
+	.tick {
+		width: 14px;
+		height: 1px;
+		margin-top: 12px;
+		flex: none;
+		background: var(--rule-2);
+	}
+
+	.steps {
+		display: flex;
+		flex-direction: column;
+		gap: 0;
+		max-width: 72ch;
+	}
+
+	.steps li {
+		display: grid;
+		grid-template-columns: 48px minmax(0, 1fr);
+		gap: 20px;
+		padding: 18px 0;
+		border-bottom: 1px solid var(--rule);
+	}
+
+	.step-index {
+		font-size: 0.75rem;
+		color: var(--signal);
+		padding-top: 2px;
+	}
+
+	.step-text {
+		font-size: 0.9375rem;
+		line-height: 1.6;
+		color: var(--ink-2);
+	}
+
+	.evidence {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+		gap: 40px;
+	}
+
+	.evidence-card {
+		display: block;
+		color: inherit;
+		text-decoration: none;
+	}
+
+	.evidence-card h3 {
+		margin-top: 16px;
+		font-size: 1.0625rem;
+		font-weight: 600;
+		letter-spacing: -0.012em;
+		color: var(--ink);
+		transition: color 140ms ease;
+	}
+
+	.evidence-card:hover h3 {
+		color: var(--signal);
+	}
+
+	.evidence-card p {
+		margin-top: 8px;
+		font-size: 0.875rem;
+		line-height: 1.6;
+		color: var(--ink-2);
+		max-width: 46ch;
+	}
+
+	.cta {
+		background: var(--paper-2);
+		border-top: 1px solid var(--rule);
+		padding-block: clamp(56px, 9vh, 96px);
+	}
+
+	.others {
+		display: flex;
+		flex-direction: column;
+		max-width: 560px;
+	}
+
+	.others li {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 20px;
+		padding: 14px 0;
+		border-bottom: 1px solid var(--rule);
+	}
+
+	.others a {
+		font-size: 1rem;
+		color: var(--ink);
+		text-decoration: none;
+		transition: color 140ms ease;
+	}
+
+	.others a:hover {
+		color: var(--signal);
+	}
+
+	.others .mono {
+		font-size: 0.6875rem;
+		color: var(--ink-3);
+	}
+
+	.cta h2 {
+		font-size: clamp(1.6rem, 3.6vw, 2.6rem);
+		font-weight: 600;
+		letter-spacing: -0.02em;
+		color: var(--ink);
+		max-width: 26ch;
+	}
+
+	.cta .lead {
+		margin-top: 16px;
+	}
+
+	.cta :global(.cta-action) {
+		margin-top: 30px;
+	}
+</style>

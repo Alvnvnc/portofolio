@@ -6,7 +6,8 @@ import type {
 	Education,
 	Service,
 	NavItem,
-	SectionMeta
+	SectionMeta,
+	Faq
 } from '$lib/types';
 
 // ========================================
@@ -15,65 +16,72 @@ import type {
 export const personalInfo: PersonalInfo = {
 	name: 'Alvin Vincent',
 	fullName: 'Alvin Vincent Oswald Reba',
-	title: 'Backend Engineer',
+	title: 'Full-stack developer',
 	tagline:
-		'I build the layer you never see: APIs, data pipelines, and the deploy scripts that keep them honest.',
+		'I build complete products end to end: the API, the data pipelines behind it, the dashboard on top, and the deploy that keeps it up.',
 	location: 'Surabaya, Indonesia',
 	email: 'alvnvincent30@gmail.com',
-	linkedin: 'https://linkedin.com/in/alvin-reba-88a857279'
+	linkedin: 'https://linkedin.com/in/alvin-reba-88a857279',
+	website: 'https://alvnvnc.site'
 };
 
 // ========================================
 // Navigation Items
 // ========================================
 export const navItems: NavItem[] = [
-	{ id: 'about', label: 'Operator', href: '#about' },
+	{ id: 'about', label: 'About', href: '#about' },
 	{ id: 'services', label: 'Services', href: '#services' },
-	{ id: 'skills', label: 'Loadout', href: '#skills' },
+	{ id: 'skills', label: 'Skills', href: '#skills' },
 	{ id: 'projects', label: 'Systems', href: '#projects' },
-	{ id: 'experience', label: 'Log', href: '#experience' },
-	{ id: 'contact', label: 'Channel', href: '#contact' }
+	{ id: 'experience', label: 'Experience', href: '#experience' },
+	{ id: 'contact', label: 'Contact', href: '#contact' }
 ];
 
 // ========================================
-// Section Metadata (console headers)
+// Section Metadata (station headings)
 // ========================================
 export const sectionMeta: SectionMeta[] = [
 	{
 		id: 'about',
+		label: 'about',
 		index: '01',
-		title: 'Operator File',
-		readout: 'cat /etc/operator — who is driving this console'
+		title: 'Backend-deep, full-stack',
+		note: 'Full-stack developer in Surabaya. I design, build, and operate complete systems.'
 	},
 	{
 		id: 'services',
+		label: 'services',
 		index: '02',
-		title: 'Service Catalog',
-		readout: 'five things I can build for you. no filler.'
+		title: 'What I build',
+		note: 'Six services I deliver. The last slot stays open for your project.'
 	},
 	{
 		id: 'skills',
+		label: 'skills',
 		index: '03',
-		title: 'Loadout',
-		readout: 'tools ranked honestly — no 90% skill bars here'
+		title: 'Skills, calibrated',
+		note: 'Levels measured against production, not confidence.'
 	},
 	{
 		id: 'projects',
+		label: 'systems',
 		index: '04',
-		title: 'Deployed Systems',
-		readout: 'real platforms, running in the field right now'
+		title: 'Systems in production',
+		note: 'Three platforms running in the field. Source is private — client contracts.'
 	},
 	{
 		id: 'experience',
+		label: 'experience',
 		index: '05',
-		title: 'Career Log',
-		readout: 'changelog of the operator, oldest entry 2022'
+		title: 'The short log',
+		note: 'Shipping production systems since 2022, mostly solo.'
 	},
 	{
 		id: 'contact',
+		label: 'contact',
 		index: '06',
-		title: 'Open Channel',
-		readout: 'avg response < 24h · timezone WIB (UTC+7)'
+		title: 'Start a project',
+		note: 'Answers within one working day. Usually faster.'
 	}
 ];
 
@@ -81,12 +89,14 @@ export const sectionMeta: SectionMeta[] = [
 // Skills — the loadout
 // ========================================
 export const skills: Skill[] = [
-	// Core languages
+	// Core stack
 	{ name: 'Golang', category: 'core', level: 'advanced', primary: true },
 	{ name: 'Python', category: 'core', level: 'advanced' },
 	{ name: 'SQL', category: 'core', level: 'advanced' },
 	{ name: 'TypeScript', category: 'core', level: 'intermediate' },
+	{ name: 'SvelteKit', category: 'core', level: 'intermediate' },
 	{ name: 'JavaScript', category: 'core', level: 'intermediate' },
+	{ name: 'Tailwind CSS', category: 'core', level: 'intermediate' },
 	{ name: 'Java', category: 'core', level: 'intermediate' },
 
 	// Data stores
@@ -115,11 +125,11 @@ export const skills: Skill[] = [
 ];
 
 export const skillCategories = [
-	{ id: 'core', name: 'Core Langs', icon: 'bolt' },
-	{ id: 'database', name: 'Data Stores', icon: 'drop' },
-	{ id: 'infrastructure', name: 'Infra', icon: 'stack' },
-	{ id: 'ai', name: 'AI / LLM', icon: 'chip' },
-	{ id: 'tools', name: 'Practices', icon: 'shield' }
+	{ id: 'core', name: 'Core stack' },
+	{ id: 'database', name: 'Data stores' },
+	{ id: 'infrastructure', name: 'Infrastructure' },
+	{ id: 'ai', name: 'AI & LLM' },
+	{ id: 'tools', name: 'Practices' }
 ] as const;
 
 /** Honest level names — shown in the loadout legend */
@@ -153,7 +163,7 @@ export const projects: Project[] = [
 			'Multi-stage Docker builds and k8s manifests; Prometheus alerts fire before users notice'
 		],
 		techStack: ['Go', 'Python', 'Kong', 'gRPC', 'MQTT', 'RabbitMQ', 'PostgreSQL', 'InfluxDB', 'Kubernetes'],
-		thumbnail: '/images/project-backend-template.png'
+		thumbnail: '/images/project-backend-template.webp'
 	},
 	{
 		id: 'portal',
@@ -174,7 +184,7 @@ export const projects: Project[] = [
 			'Invitation and subscription flows built into tenant management'
 		],
 		techStack: ['Go', 'Kong', 'Traefik', 'PostgreSQL', 'GORM', 'JWT', 'Docker'],
-		thumbnail: '/images/project-ai-workflow.png'
+		thumbnail: '/images/project-ai-workflow.webp'
 	},
 	{
 		id: 'lecsens',
@@ -195,7 +205,7 @@ export const projects: Project[] = [
 			'CI/CD pipeline runs Trivy and gosec security scans on every build'
 		],
 		techStack: ['Go', 'PostgreSQL', 'InfluxDB', 'Redis', 'Docker', 'Nginx', 'JWT'],
-		thumbnail: '/images/project-lecsens.png'
+		thumbnail: '/images/project-lecsens.webp'
 	}
 ];
 
@@ -205,22 +215,23 @@ export const projects: Project[] = [
 export const experiences: Experience[] = [
 	{
 		id: 'exp-1',
-		company: 'Independent Backend Engineer',
-		position: 'Backend Engineer',
+		company: 'Independent · freelance',
+		position: 'Full-stack developer',
 		period: {
 			start: '2023',
 			end: 'Present'
 		},
 		location: 'Remote, Indonesia',
 		description:
-			'Designing and operating production backend systems end-to-end — including the POME, Portal, and LecSens platforms above — from first schema to Kubernetes deploy.',
+			'Designing and operating production systems end-to-end — data model, Go services, and the interfaces and deploys around them — including the POME, Portal, and LecSens platforms above and this site.',
 		achievements: [
-			'Built three production IoT platforms solo: architecture, implementation, deployment, monitoring',
+			'Built three production IoT platforms: architecture, backend services, deployment, and monitoring',
+			'Shipped complete products solo — schema, API, dashboard, and the pipeline that releases them',
 			'Delivered secure multi-tenant REST APIs handling real-time sensor ingestion and visualization',
 			'Wired CI/CD with automated tests, linting, and security scanning (Trivy, gosec) into every repo',
 			'Collaborated with frontend developers to land APIs in dashboards without integration drama'
 		],
-		techStack: ['Golang', 'PostgreSQL', 'InfluxDB', 'Redis', 'Docker', 'Kubernetes', 'CI/CD']
+		techStack: ['Golang', 'PostgreSQL', 'InfluxDB', 'Redis', 'Docker', 'Kubernetes', 'SvelteKit', 'CI/CD']
 	}
 ];
 
@@ -252,7 +263,6 @@ export const services: Service[] = [
 		title: 'Backend Development',
 		description:
 			'APIs and services built to be maintained, not just shipped — Clean Architecture, tests, and logs you can actually read.',
-		icon: 'stack',
 		techStack: ['Golang', 'Python', 'PostgreSQL', 'Redis'],
 		longDescription:
 			'I build production-grade backend systems from scratch using Clean Architecture principles. Every system is designed for maintainability, testability, and scalability — from database schema design to deployment automation. Whether you need a monolith or microservices, I deliver secure, well-structured backends that your team can confidently maintain and extend.',
@@ -289,7 +299,6 @@ export const services: Service[] = [
 		title: 'API Design & Integration',
 		description:
 			'REST endpoints with auth, rate limits, and docs — your web or mobile team plugs in and stops thinking about it.',
-		icon: 'plug',
 		techStack: ['REST', 'JWT', 'OAuth', 'WebSocket'],
 		longDescription:
 			'I design and build RESTful APIs that are secure, well-documented, and easy to integrate. From authentication systems with JWT and OAuth to real-time WebSocket connections, I create APIs that serve as reliable foundations for web and mobile applications. I also handle third-party API integrations, payment gateways, and webhook systems.',
@@ -326,7 +335,6 @@ export const services: Service[] = [
 		title: 'IoT & Data Systems',
 		description:
 			'Sensor-to-dashboard pipelines: MQTT in, time-series storage, alerts out. Built on real industrial deployments.',
-		icon: 'drop',
 		techStack: ['InfluxDB', 'PostgreSQL', 'MQTT', 'Grafana'],
 		longDescription:
 			'I build backend systems for IoT and sensor monitoring — from data ingestion pipelines to real-time analytics dashboards. With production experience on industrial monitoring platforms (palm-oil mill effluent, water quality compliance), I handle high-frequency sensor data at scale using time-series databases, automated alerting, and visualization tools.',
@@ -363,7 +371,6 @@ export const services: Service[] = [
 		title: 'AI / LLM Integration',
 		description:
 			'LLM features wired into real backends — RAG, vector search, structured outputs, with fallbacks and a cost ceiling.',
-		icon: 'chip',
 		techStack: ['LLM APIs', 'Vector DB', 'RAG', 'gRPC'],
 		longDescription:
 			'I integrate large language models into your backend workflows — from RAG (Retrieval-Augmented Generation) systems for intelligent document search to automated content processing pipelines. I build provider-agnostic LLM abstraction layers with fallback strategies, cost optimization, and structured output parsing.',
@@ -400,7 +407,6 @@ export const services: Service[] = [
 		title: 'DevOps & Deployment',
 		description:
 			'Docker, CI/CD, security scans, zero-downtime deploys — the unglamorous work that keeps the pager quiet.',
-		icon: 'bolt',
 		techStack: ['Docker', 'Kubernetes', 'CI/CD', 'Linux'],
 		longDescription:
 			'I set up production deployment infrastructure — from Docker containerization and CI/CD pipelines to Linux server management and Cloudflare tunnels. I automate the entire build-test-deploy cycle with security scanning, health checks, and zero-downtime deployments so your applications run reliably in production.',
@@ -430,5 +436,74 @@ export const services: Service[] = [
 				'freelance DevOps'
 			]
 		}
+	},
+	{
+		id: 'full-stack',
+		code: 'SVC-06',
+		title: 'Full-stack delivery',
+		description:
+			'One engineer for the whole build: schema, API, dashboard, and deploy. You get a running product, not a pile of handoffs.',
+		techStack: ['SvelteKit', 'TypeScript', 'Go', 'PostgreSQL', 'Docker'],
+		longDescription:
+			'I take a product from an empty repository to a running system: the data model, the backend services, the interface your users actually touch, and the pipeline that ships it. Backend is my depth — Go services in Clean Architecture, PostgreSQL and InfluxDB, Docker and CI/CD. The front end I deliver in SvelteKit and TypeScript, the same stack this site runs on. One engineer, one thread of responsibility, and no integration gap between the people who write the API and the people who call it.',
+		features: [
+			'Database schema and API contracts derived from the product requirements',
+			'Backend services in Go with Clean Architecture and tests',
+			'User-facing dashboard in SvelteKit and TypeScript',
+			'Deploy pipeline: containers, CI/CD, monitoring, zero-downtime releases',
+			'Handover: documentation and a codebase your next hire can read'
+		],
+		process: [
+			'Scope: what the product must do on day one, written down',
+			'Architecture: data model, API contracts, interface skeleton',
+			'Build in weekly increments you can click and test',
+			'Ship to production with monitoring, then iterate on real usage'
+		],
+		relatedProjects: ['pome', 'lecsens', 'portal'],
+		seo: {
+			title: 'Freelance Full-Stack Developer | End-to-End Product Builds | Alvin Vincent',
+			description:
+				'Freelance full-stack developer building complete products end to end: Go APIs, PostgreSQL, SvelteKit dashboards, and Docker deploys. One engineer from schema to launch.',
+			keywords: [
+				'freelance full stack developer',
+				'full stack developer Indonesia',
+				'MVP development',
+				'end to end product development',
+				'SvelteKit developer',
+				'Go developer'
+			]
+		}
+	}
+];
+
+// ========================================
+// FAQ — mirrored in FAQPage structured data
+// (src/routes/+layout.svelte) so answers stay in one place
+// ========================================
+export const faqs: Faq[] = [
+	{
+		question: 'Can you build the whole product, not just the backend?',
+		answer:
+			'Yes. This site is one example: schema, API, interface, and deploy. On client platforms I own the backend and the release pipeline, and I ship the interface wherever the scope needs it.'
+	},
+	{
+		question: 'How long does a project take?',
+		answer:
+			'It depends on scope, but a focused first version is usually weeks, not months. After a short call you get a written scope with a real date.'
+	},
+	{
+		question: 'Do you work with clients outside Indonesia?',
+		answer:
+			'Yes — I work remotely from Surabaya (UTC+7) and keep daily overlap with Europe and North America. Calls in English or Indonesian.'
+	},
+	{
+		question: 'What does it cost?',
+		answer:
+			'Send the problem and you get a straight answer about scope, timeline, and the number before any work starts.'
+	},
+	{
+		question: 'What stack will you use?',
+		answer:
+			'Go and PostgreSQL behind the API, InfluxDB for time-series, SvelteKit and TypeScript for the interface, Docker and CI/CD to ship it. Boring tools your next hire can pick up.'
 	}
 ];

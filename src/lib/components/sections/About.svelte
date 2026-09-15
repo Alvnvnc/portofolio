@@ -1,146 +1,165 @@
 <script lang="ts">
-	import { cn } from '$lib/utils';
 	import { personalInfo, sectionMeta } from '$lib/data/portfolio';
-	import SectionHeader from '$lib/components/ui/SectionHeader.svelte';
-	import PixelPanel from '$lib/components/ui/PixelPanel.svelte';
-	import PixelIcon from '$lib/components/ui/PixelIcon.svelte';
-	import type { PixelIconName } from '$lib/components/ui/PixelIcon.svelte';
-	import { onMount } from 'svelte';
-	import { scrollFadeIn, scrollStagger } from '$lib/utils/animations';
-
-	interface Props {
-		class?: string;
-	}
-
-	let { class: className = '' }: Props = $props();
+	import Station from '$lib/components/ui/Station.svelte';
+	import SectionHead from '$lib/components/ui/SectionHead.svelte';
+	import Plate from '$lib/components/ui/Plate.svelte';
 
 	const meta = sectionMeta.find((s) => s.id === 'about')!;
 
-	const traits: { icon: PixelIconName; title: string; line: string }[] = [
+	const facts = [
+		{ label: 'role', value: 'Backend engineer' },
+		{ label: 'based', value: 'Surabaya, Indonesia' },
+		{ label: 'study', value: 'Informatics, ITS — 2026' },
+		{ label: 'status', value: 'Available for work' }
+	];
+
+	const traits = [
 		{
-			icon: 'stack',
-			title: 'System Design',
-			line: 'Clean Architecture — services that outlive their first author.'
+			title: 'System design',
+			line: 'Services organised so the next person can change them: Clean Architecture, explicit boundaries, boring dependencies.'
 		},
 		{
-			icon: 'shield',
-			title: 'Security First',
-			line: 'RBAC, JWT, tenant isolation. Locked before launch, not after.'
+			title: 'Security first',
+			line: 'RBAC, JWT, tenant isolation. Locked down before launch, not patched after it.'
 		},
 		{
-			icon: 'pulse',
-			title: 'Data Pipelines',
-			line: 'Time-series at sensor speed: ingest, store, alert.'
+			title: 'Data pipelines',
+			line: 'Sensor-speed ingestion — streams in, time-series stored, thresholds checked on the way through.'
 		},
 		{
-			icon: 'bolt',
-			title: 'Ship & Operate',
-			line: 'CI/CD, containers, monitoring. Deployed means watched.'
+			title: 'Ship and operate',
+			line: 'Containers, pipelines, monitoring. If I deploy it, I watch it.'
 		}
 	];
-
-	const stats = [
-		{ key: 'CLASS', value: 'Backend Engineer' },
-		{ key: 'BASE', value: 'Surabaya, ID' },
-		{ key: 'GUILD', value: "ITS · Informatics '26" },
-		{ key: 'STATUS', value: 'Online' }
-	];
-
-	let headerEl: HTMLElement;
-	let cardEl: HTMLElement;
-	let bioEl: HTMLElement;
-	let traitsEl: HTMLElement;
-
-	onMount(() => {
-		scrollFadeIn(headerEl);
-		scrollFadeIn(cardEl, { delay: 0.1 });
-		scrollFadeIn(bioEl, { delay: 0.2 });
-		scrollStagger(traitsEl, ':scope > *', { stagger: 0.12, delay: 0.1 });
-	});
 </script>
 
-<section id="about" class={cn('bg-void px-4 py-24 sm:px-6', className)}>
-	<div class="mx-auto max-w-6xl">
-		<div bind:this={headerEl}>
-			<SectionHeader index={meta.index} title={meta.title} readout={meta.readout} />
-		</div>
+<section id="about" class="section">
+	<Station id="about" index={meta.index} label={meta.label} />
+	<div class="sheet">
+		<SectionHead title={meta.title} note={meta.note} />
 
-		<div class="grid gap-10 lg:grid-cols-[300px_1fr]">
-			<!-- Save-file character card -->
-			<div bind:this={cardEl}>
-				<div class="px-shadow border-[3px] border-ink bg-night">
-					<div class="relative overflow-hidden border-b-[3px] border-ink">
-						<img
-							src="/images/hero-character.png"
-							alt="Pixel art of Alvin coding at a CRT terminal, headphones on"
-							class="pixel-art block aspect-square w-full object-cover"
-							loading="lazy"
-							width="300"
-							height="300"
-						/>
-						<div class="scanlines pointer-events-none absolute inset-0" aria-hidden="true"></div>
-					</div>
-					<div class="p-4">
-						<p class="font-pixel mb-3 text-[0.55rem] leading-relaxed text-ink uppercase">
-							{personalInfo.fullName}
-						</p>
-						<dl class="space-y-2">
-							{#each stats as stat (stat.key)}
-								<div class="flex items-baseline justify-between gap-3">
-									<dt class="font-pixel text-[0.45rem] text-moss uppercase">{stat.key}</dt>
-									<dd class="font-terminal text-right text-base text-fog">
-										{#if stat.key === 'STATUS'}
-											<span class="inline-flex items-center gap-2">
-												<span class="led led-blink bg-phosphor"></span>
-												<span class="text-phosphor">{stat.value}</span>
-											</span>
-										{:else}
-											{stat.value}
-										{/if}
-									</dd>
-								</div>
-							{/each}
-						</dl>
-					</div>
-				</div>
-			</div>
-
-			<!-- Profile readout + traits -->
+		<div class="mt-14 grid gap-12 lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-16">
 			<div>
-				<div bind:this={bioEl}>
-					<PixelPanel title="operator.profile" variant="panel" class="mb-8 p-6">
-						<div class="space-y-4 text-[0.9rem] leading-relaxed text-fog sm:text-base">
-							<p>
-								I'm <span class="text-ink">Alvin</span> — I build the boring-but-critical layer:
-								APIs, queues, schemas, and the deploy scripts that keep them honest.
-							</p>
-							<p>
-								Most days that means <span class="text-phosphor">Go</span> services and the data
-								they move. <span class="text-phosphor">PostgreSQL</span> for facts,
-								<span class="text-phosphor">InfluxDB</span> for whatever the sensors said five
-								seconds ago, <span class="text-phosphor">Redis</span> so nobody has to ask twice.
-							</p>
-							<p>
-								I study Informatics at ITS Surabaya and ship real systems on the side — industrial
-								IoT monitoring, multi-tenant gateways, ML inference services.
-								<span class="text-amber">Design, implement, deploy:</span> I stay for the whole loop.
-							</p>
-						</div>
-					</PixelPanel>
+				<div class="body-copy space-y-4">
+					<p>
+						I'm Alvin. Most days I work in <strong class="font-medium text-ink">Go</strong> — APIs,
+						queues, schemas, and the deploy scripts that keep them honest.
+						<strong class="font-medium text-ink">PostgreSQL</strong> for the facts,
+						<strong class="font-medium text-ink">InfluxDB</strong> for whatever the sensors said
+						five seconds ago, <strong class="font-medium text-ink">Redis</strong> so nobody has to
+						ask twice.
+					</p>
+					<p>
+						I study Informatics at ITS Surabaya and ship production systems on the side: industrial
+						IoT monitoring, multi-tenant gateways, ML inference services. Recent work goes all the
+						way up the stack — dashboards in <strong class="font-medium text-ink">SvelteKit</strong>
+						and <strong class="font-medium text-ink">TypeScript</strong> on top of the APIs, so the
+						product is finished, not just callable. This site is one of them. Design, implement,
+						deploy: I stay for the whole loop.
+					</p>
 				</div>
 
-				<div bind:this={traitsEl} class="grid gap-4 sm:grid-cols-2">
-					{#each traits as trait (trait.title)}
-						<div class="px-shadow-sm px-hover border-[3px] border-ink bg-panel p-4">
-							<div class="mb-2 flex items-center gap-3">
-								<span class="text-amber"><PixelIcon name={trait.icon} size={18} /></span>
-								<h3 class="font-pixel text-[0.5rem] text-ink uppercase">{trait.title}</h3>
-							</div>
-							<p class="text-sm leading-relaxed text-moss">{trait.line}</p>
+				<dl class="facts mt-12">
+					{#each facts as fact (fact.label)}
+						<div class="fact">
+							<dt class="mono">{fact.label}</dt>
+							<dd>{fact.value}</dd>
 						</div>
 					{/each}
-				</div>
+				</dl>
+
+				<ul class="traits mt-12">
+					{#each traits as trait (trait.title)}
+						<li>
+							<span class="sq"></span>
+							<div>
+								<h3 class="trait-title">{trait.title}</h3>
+								<p class="trait-line">{trait.line}</p>
+							</div>
+						</li>
+					{/each}
+				</ul>
+			</div>
+
+			<div>
+				<Plate
+					src="/images/hero-character.webp"
+					alt="Pixel-art portrait of Alvin working at a terminal with headphones on"
+					caption="fig. 01 — pixel self-portrait"
+				/>
+				<p class="mono mt-6 text-[0.6875rem] leading-relaxed text-ink-3">
+					{personalInfo.fullName}<br />{personalInfo.title}
+				</p>
 			</div>
 		</div>
 	</div>
 </section>
+
+<style>
+	.facts {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 22px 32px;
+	}
+
+	.fact {
+		border-top: 1px solid var(--rule-2);
+		padding-top: 12px;
+	}
+
+	.fact dt {
+		font-size: 0.6875rem;
+		color: var(--ink-3);
+	}
+
+	.fact dd {
+		margin-top: 5px;
+		font-size: 0.9375rem;
+		color: var(--ink);
+	}
+
+	.traits {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 26px 40px;
+	}
+
+	.traits li {
+		display: flex;
+		gap: 12px;
+	}
+
+	.sq {
+		width: 6px;
+		height: 6px;
+		margin-top: 8px;
+		flex: none;
+		background: var(--signal);
+	}
+
+	.trait-title {
+		font-size: 0.9375rem;
+		font-weight: 600;
+		color: var(--ink);
+	}
+
+	.trait-line {
+		margin-top: 4px;
+		font-size: 0.875rem;
+		line-height: 1.6;
+		color: var(--ink-2);
+		max-width: 42ch;
+	}
+
+	@media (min-width: 640px) {
+		.facts {
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+		}
+	}
+
+	@media (max-width: 639px) {
+		.traits {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

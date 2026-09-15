@@ -1,35 +1,20 @@
 <script lang="ts">
-	import { cn } from '$lib/utils';
-	import { personalInfo, sectionMeta, services } from '$lib/data/portfolio';
-	import SectionHeader from '$lib/components/ui/SectionHeader.svelte';
-	import PixelPanel from '$lib/components/ui/PixelPanel.svelte';
-	import PixelButton from '$lib/components/ui/PixelButton.svelte';
-	import PixelIcon from '$lib/components/ui/PixelIcon.svelte';
-	import { onMount } from 'svelte';
-	import { scrollFadeIn, scrollStagger } from '$lib/utils/animations';
-
-	interface Props {
-		class?: string;
-	}
-
-	let { class: className = '' }: Props = $props();
+	import { personalInfo, sectionMeta, services, faqs } from '$lib/data/portfolio';
+	import Station from '$lib/components/ui/Station.svelte';
+	import SectionHead from '$lib/components/ui/SectionHead.svelte';
+	import Action from '$lib/components/ui/Action.svelte';
+	import Clock from '$lib/components/ui/Clock.svelte';
 
 	const meta = sectionMeta.find((s) => s.id === 'contact')!;
 
 	const FORMSPREE_ID = 'mykdwlrj';
 
-	let formData = $state({
-		name: '',
-		email: '',
-		service: '',
-		message: ''
-	});
-
+	let formData = $state({ name: '', email: '', service: '', message: '' });
 	let isSubmitting = $state(false);
 	let submitStatus = $state<'idle' | 'success' | 'error'>('idle');
 
-	async function handleSubmit(e: Event) {
-		e.preventDefault();
+	async function handleSubmit(event: Event) {
+		event.preventDefault();
 		isSubmitting = true;
 		submitStatus = 'idle';
 
@@ -40,7 +25,7 @@
 				body: JSON.stringify({
 					name: formData.name,
 					email: formData.email,
-					service: formData.service || 'General Inquiry',
+					service: formData.service || 'General inquiry',
 					message: formData.message
 				})
 			});
@@ -57,190 +42,331 @@
 			isSubmitting = false;
 		}
 	}
-
-	const channels = [
-		{ tag: 'IN', label: 'LinkedIn', value: 'alvin-reba', href: personalInfo.linkedin },
-		{ tag: '@', label: 'Email', value: personalInfo.email, href: `mailto:${personalInfo.email}` }
-	];
-
-	let headerEl: HTMLElement;
-	let contentEl: HTMLElement;
-
-	onMount(() => {
-		scrollFadeIn(headerEl);
-		scrollStagger(contentEl, ':scope > *', { stagger: 0.15, y: 30 });
-	});
 </script>
 
-<section id="contact" class={cn('console-grid bg-night px-4 py-24 sm:px-6', className)}>
-	<div class="mx-auto max-w-5xl">
-		<div bind:this={headerEl}>
-			<SectionHeader index={meta.index} title={meta.title} readout={meta.readout} />
-		</div>
+<section id="contact" class="section contact">
+	<Station id="contact" index={meta.index} label={meta.label} />
+	<div class="sheet">
+		<SectionHead title={meta.title} note={meta.note} />
 
-		<div bind:this={contentEl} class="grid gap-8 md:grid-cols-[0.85fr_1.15fr]">
-			<!-- Comm channels -->
-			<PixelPanel title="comm.link" variant="panel" class="p-5 pt-7 sm:p-6 sm:pt-7">
-				<p class="mb-6 text-sm leading-relaxed text-fog">
-					Have a system that needs building — or one that needs rescuing? Pick a channel. I read
-					everything myself.
-				</p>
+		<div class="grid mt-12">
+			<div class="channels">
+				<p class="k mono">email</p>
+				<a class="email" href="mailto:{personalInfo.email}">{personalInfo.email}</a>
 
-				<ul class="space-y-4">
-					{#each channels as channel (channel.tag)}
-						<li>
-							<a
-								href={channel.href}
-								target={channel.href?.startsWith('mailto') ? undefined : '_blank'}
-								rel={channel.href?.startsWith('mailto') ? undefined : 'noopener noreferrer'}
-								class="group flex items-center gap-4"
-							>
-								<span
-									class="px-shadow-sm font-pixel flex h-10 w-10 flex-none items-center justify-center border-[3px] border-ink bg-slot text-[0.55rem] text-ink uppercase transition-colors group-hover:bg-amber group-hover:text-night"
-								>
-									{channel.tag}
-								</span>
-								<span class="min-w-0">
-									<span class="font-pixel block text-[0.45rem] text-moss uppercase">
-										{channel.label}
-									</span>
-									<span class="font-terminal block truncate text-lg text-fog transition-colors group-hover:text-amber">
-										{channel.value}
-									</span>
-								</span>
-							</a>
-						</li>
+				{#if personalInfo.linkedin}
+					<p class="k mono">linkedin</p>
+					<a
+						class="link social"
+						href={personalInfo.linkedin}
+						target="_blank"
+						rel="noopener noreferrer">linkedin.com/in/alvin-reba</a
+					>
+				{/if}
+
+				<dl class="meta">
+					<div>
+						<dt class="mono">based in</dt>
+						<dd>{personalInfo.location} · <Clock /></dd>
+					</div>
+					<div>
+						<dt class="mono">reply time</dt>
+						<dd>Under 24 hours on working days</dd>
+					</div>
+					<div>
+						<dt class="mono">status</dt>
+						<dd class="open"><i></i>Taking new projects</dd>
+					</div>
+				</dl>
+
+				<div class="faq">
+					<h3 class="mono faq-title">Common questions</h3>
+					{#each faqs as faq (faq.question)}
+						<details>
+							<summary>
+								<span>{faq.question}</span>
+								<span class="mark" aria-hidden="true"></span>
+							</summary>
+							<p>{faq.answer}</p>
+						</details>
 					{/each}
-				</ul>
-
-				<div class="mt-6 space-y-2 border-t-2 border-seam pt-5">
-					<p class="flex items-center gap-2 text-sm text-moss">
-						<span class="text-amber"><PixelIcon name="pin" size={14} /></span>
-						{personalInfo.location} · UTC+7
-					</p>
-					<p class="flex items-center gap-2 text-sm text-moss">
-						<span class="led led-blink bg-phosphor"></span>
-						Avg response: under 24h on working days
-					</p>
 				</div>
-			</PixelPanel>
+			</div>
 
-			<!-- Transmission form -->
-			<PixelPanel title="transmit.msg" accent="amber" variant="night" class="p-5 pt-7 sm:p-6 sm:pt-7">
-				<form onsubmit={handleSubmit} class="space-y-4">
-					<div>
-						<label for="name" class="font-terminal mb-1 block text-lg text-phosphor">
-							&gt; your name:
-						</label>
-						<input
-							type="text"
-							id="name"
-							name="name"
-							class="term-input"
-							placeholder="Ada Lovelace"
-							autocomplete="name"
-							bind:value={formData.name}
-							required
-						/>
-					</div>
+			<form onsubmit={handleSubmit}>
+				<div class="field">
+					<label for="name">Your name</label>
+					<input
+						id="name"
+						name="name"
+						type="text"
+						autocomplete="name"
+						bind:value={formData.name}
+						required
+					/>
+				</div>
 
-					<div>
-						<label for="email" class="font-terminal mb-1 block text-lg text-phosphor">
-							&gt; reply address:
-						</label>
-						<input
-							type="email"
-							id="email"
-							name="email"
-							class="term-input"
-							placeholder="you@company.com"
-							autocomplete="email"
-							bind:value={formData.email}
-							required
-						/>
-					</div>
+				<div class="field">
+					<label for="email">Email</label>
+					<input
+						id="email"
+						name="email"
+						type="email"
+						autocomplete="email"
+						bind:value={formData.email}
+						required
+					/>
+				</div>
 
-					<div>
-						<label for="service" class="font-terminal mb-1 block text-lg text-phosphor">
-							&gt; mission type:
-						</label>
-						<select id="service" name="service" class="term-input" bind:value={formData.service}>
-							<option value="">General inquiry</option>
-							{#each services as service (service.id)}
-								<option value={service.title}>{service.title}</option>
-							{/each}
-						</select>
-					</div>
+				<div class="field">
+					<label for="service">What do you need?</label>
+					<select id="service" name="service" bind:value={formData.service}>
+						<option value="">General inquiry</option>
+						{#each services as service (service.id)}
+							<option value={service.title}>{service.title}</option>
+						{/each}
+					</select>
+				</div>
 
-					<div>
-						<label for="message" class="font-terminal mb-1 block text-lg text-phosphor">
-							&gt; payload:
-						</label>
-						<textarea
-							id="message"
-							name="message"
-							class="term-input resize-y"
-							rows="4"
-							placeholder="What are you building? Rough scope, timeline, anything weird about it..."
-							bind:value={formData.message}
-							required
-						></textarea>
-					</div>
+				<div class="field">
+					<label for="message">What are you building?</label>
+					<textarea
+						id="message"
+						name="message"
+						rows="4"
+						placeholder="Rough scope, timeline, anything unusual about it."
+						bind:value={formData.message}
+						required
+					></textarea>
+				</div>
 
-					<PixelButton variant="primary" size="md" type="submit" disabled={isSubmitting} class="w-full">
-						{#if isSubmitting}
-							Transmitting ▓▓▓░░
-						{:else}
-							Transmit <span aria-hidden="true">▸</span>
-						{/if}
-					</PixelButton>
+				<Action type="submit" disabled={isSubmitting}>
+					{isSubmitting ? 'Sending…' : 'Send message'}
+				</Action>
 
-					<div aria-live="polite">
-						{#if submitStatus === 'success'}
-							<p class="font-terminal border-2 border-phosphor px-3 py-2 text-base text-phosphor">
-								✓ ACK received. I'll reply within a day — usually faster.
-							</p>
-						{:else if submitStatus === 'error'}
-							<p class="font-terminal border-2 border-alert px-3 py-2 text-base text-alert">
-								✕ Packet lost. Email me directly: {personalInfo.email}
-							</p>
-						{/if}
-					</div>
-				</form>
-			</PixelPanel>
+				<div class="status mono" aria-live="polite">
+					{#if submitStatus === 'success'}
+						<p>Message received. I'll reply within a day — usually faster.</p>
+					{:else if submitStatus === 'error'}
+						<p>
+							Something failed on the way. Email me directly:
+							<a class="link" href="mailto:{personalInfo.email}">{personalInfo.email}</a>
+						</p>
+					{/if}
+				</div>
+			</form>
 		</div>
 	</div>
 </section>
 
 <style>
-	.term-input {
-		width: 100%;
-		border: 3px solid var(--seam);
-		background: var(--void);
-		padding: 0.5rem 0.75rem;
-		font-family: var(--font-terminal);
-		font-size: 1.125rem;
-		line-height: 1.35;
+	.contact {
+		background: var(--paper-2);
+	}
+
+	.grid {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		gap: 44px;
+	}
+
+	.k {
+		margin-top: 26px;
+		font-size: 0.6875rem;
+		color: var(--ink-3);
+	}
+
+	.k:first-child {
+		margin-top: 0;
+	}
+
+	.email {
+		display: inline-block;
+		margin-top: 6px;
+		font-size: clamp(1.05rem, 2vw, 1.35rem);
 		color: var(--ink);
+		text-decoration: none;
+		border-bottom: 1px solid var(--rule-2);
+		padding-bottom: 3px;
+		transition:
+			color 140ms ease,
+			border-color 140ms ease;
 	}
-	.term-input::placeholder {
-		color: var(--moss);
-		opacity: 0.7;
+
+	.email:hover {
+		color: var(--signal);
+		border-color: var(--signal);
 	}
-	.term-input:focus {
-		outline: none;
-		border-color: var(--amber);
+
+	.social {
+		display: inline-block;
+		margin-top: 6px;
+		font-size: 0.9375rem;
 	}
-	select.term-input {
-		appearance: none;
-		background-image: linear-gradient(45deg, transparent 50%, var(--moss) 50%),
-			linear-gradient(135deg, var(--moss) 50%, transparent 50%);
-		background-position:
-			calc(100% - 18px) calc(50% - 2px),
-			calc(100% - 12px) calc(50% - 2px);
-		background-size:
-			6px 6px,
-			6px 6px;
-		background-repeat: no-repeat;
+
+	.meta {
+		margin-top: 36px;
+		display: flex;
+		flex-direction: column;
+		gap: 18px;
+	}
+
+	.meta dt {
+		font-size: 0.6875rem;
+		color: var(--ink-3);
+	}
+
+	.meta dd {
+		margin-top: 4px;
+		font-size: 0.9375rem;
+		color: var(--ink-2);
+	}
+
+	.open {
+		display: flex;
+		align-items: center;
+		gap: 9px;
+		color: var(--ink) !important;
+	}
+
+	.open i {
+		width: 7px;
+		height: 7px;
+		background: var(--live);
+	}
+
+	.faq {
+		margin-top: 44px;
+	}
+
+	.faq-title {
+		border-top: 1px solid var(--rule);
+		padding-top: 14px;
+		font-size: 0.6875rem;
+		font-weight: 400;
+		color: var(--ink-3);
+	}
+
+	details {
+		border-bottom: 1px solid var(--rule);
+	}
+
+	summary {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		gap: 16px;
+		padding: 14px 0;
+		font-size: 0.9375rem;
+		color: var(--ink);
+		cursor: pointer;
+		list-style: none;
+	}
+
+	summary::-webkit-details-marker {
+		display: none;
+	}
+
+	.mark {
+		position: relative;
+		width: 11px;
+		height: 11px;
+		flex: none;
+		margin-top: 5px;
+	}
+
+	.mark::before,
+	.mark::after {
+		content: '';
+		position: absolute;
+		background: var(--signal);
+	}
+
+	.mark::before {
+		top: 5px;
+		left: 0;
+		width: 11px;
+		height: 1.5px;
+	}
+
+	.mark::after {
+		left: 5px;
+		top: 0;
+		width: 1.5px;
+		height: 11px;
+		transition:
+			transform 200ms ease,
+			opacity 200ms ease;
+	}
+
+	details[open] .mark::after {
+		transform: scaleY(0);
+		opacity: 0;
+	}
+
+	details p {
+		padding-bottom: 16px;
+		font-size: 0.875rem;
+		line-height: 1.62;
+		color: var(--ink-2);
+		max-width: 46ch;
+	}
+
+	form {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	.field {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	label {
+		font-size: 0.8125rem;
+		color: var(--ink-2);
+	}
+
+	input,
+	select,
+	textarea {
+		width: 100%;
+		background: var(--paper);
+		border: 1px solid var(--rule-2);
+		padding: 12px 14px;
+		font-family: var(--font-sans);
+		font-size: 0.9375rem;
+		line-height: 1.5;
+		color: var(--ink);
+		transition: border-color 140ms ease;
+	}
+
+	textarea {
+		resize: vertical;
+	}
+
+	input::placeholder,
+	textarea::placeholder {
+		color: var(--ink-3);
+	}
+
+	input:focus,
+	select:focus,
+	textarea:focus {
+		border-color: var(--ink);
+	}
+
+	.status {
+		font-size: 0.75rem;
+		color: var(--ink-2);
+	}
+
+	@media (min-width: 1024px) {
+		.grid {
+			grid-template-columns: minmax(0, 400px) minmax(0, 1fr);
+			gap: 80px;
+		}
 	}
 </style>

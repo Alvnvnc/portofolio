@@ -1,252 +1,190 @@
-/* Fonts: pixel display + CRT terminal + readable mono body (must be first) */
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');
+@import 'tailwindcss';
 
-@import "tailwindcss";
-
-/* ============================================================
-   FIELD CONSOLE — design tokens
-   A backend engineer's portfolio styled as the kind of
-   industrial monitoring console he actually builds.
-   Palette is deliberately small: ink, phosphor, amber, alert.
-   ============================================================ */
-
-:root {
-	/* Surfaces (green-black, not GitHub navy) */
-	--night: #0b0e09;
-	--void: #070905;
-	--panel: #12160e;
-	--slot: #1a2114;
-	--seam: #2b3522;
-
-	/* Ink & text */
-	--ink: #eae6d2;
-	--fog: #b4bda6;
-	--moss: #7d8870;
-
-	/* Accents */
-	--phosphor: #5ee05e;
-	--amber: #ffb938;
-	--alert: #ff6b4a;
-
-	/* Solid pixel shadow */
-	--shadow: #000000;
-
-	/* Dither + scanline tints */
-	--dither: rgba(234, 230, 210, 0.07);
-	--scan: rgba(0, 0, 0, 0.16);
+@font-face {
+	font-family: 'Archivo';
+	font-style: normal;
+	font-weight: 400 900;
+	font-stretch: 75% 125%;
+	font-display: swap;
+	src: url('/fonts/archivo-latin-400900.woff2') format('woff2');
 }
 
-/* Paper-console light theme: warm print on cream, same accents darkened */
-[data-theme='light'] {
-	--night: #ece6d3;
-	--void: #e0d9c2;
-	--panel: #f5f0e0;
-	--slot: #e4ddc7;
-	--seam: #c9c0a4;
+@font-face {
+	font-family: 'Spline Sans Mono';
+	font-style: normal;
+	font-weight: 400 600;
+	font-display: swap;
+	src: url('/fonts/spline-latin.woff2') format('woff2');
+}
 
-	--ink: #23281b;
-	--fog: #424b35;
-	--moss: #6e7a58;
-
-	--phosphor: #157a38;
-	--amber: #a16500;
-	--alert: #bf3a1f;
-
-	--shadow: #23281b;
-
-	--dither: rgba(35, 40, 27, 0.1);
-	--scan: rgba(35, 40, 27, 0.05);
+:root {
+	--paper: #ffffff;
+	--paper-2: #f4f5f7;
+	--paper-3: #e9ebee;
+	--rule: #d8dbdf;
+	--rule-2: #b9bec5;
+	--ink: #0f1114;
+	--ink-2: #4d545d;
+	--ink-3: #6f7780;
+	--signal: #002fa7;
+	--signal-deep: #00206f;
+	--signal-tint: #eef1fb;
+	--live: #d93a1e;
+	--rail-x: 44px;
+	--topbar-h: 64px;
 }
 
 @theme inline {
-	--color-night: var(--night);
-	--color-void: var(--void);
-	--color-panel: var(--panel);
-	--color-slot: var(--slot);
-	--color-seam: var(--seam);
+	--color-paper: var(--paper);
+	--color-paper-2: var(--paper-2);
+	--color-paper-3: var(--paper-3);
+	--color-rule: var(--rule);
+	--color-rule-2: var(--rule-2);
 	--color-ink: var(--ink);
-	--color-fog: var(--fog);
-	--color-moss: var(--moss);
-	--color-phosphor: var(--phosphor);
-	--color-amber: var(--amber);
-	--color-alert: var(--alert);
-	--color-shadow: var(--shadow);
+	--color-ink-2: var(--ink-2);
+	--color-ink-3: var(--ink-3);
+	--color-signal: var(--signal);
+	--color-signal-deep: var(--signal-deep);
+	--color-signal-tint: var(--signal-tint);
+	--color-live: var(--live);
 
-	--font-pixel: 'Press Start 2P', monospace;
-	--font-terminal: 'VT323', monospace;
-	--font-body: 'IBM Plex Mono', monospace;
+	--font-sans: 'Archivo', ui-sans-serif, system-ui, sans-serif;
+	--font-mono: 'Spline Sans Mono', ui-monospace, 'SFMono-Regular', monospace;
 }
 
-/* ============================================================
-   Base
-   ============================================================ */
 html {
 	scroll-behavior: smooth;
+	background-color: var(--paper);
 }
 
 body {
-	font-family: var(--font-body);
-	background-color: var(--night);
-	color: var(--fog);
-	line-height: 1.65;
+	font-family: var(--font-sans);
+	background-color: var(--paper);
+	color: var(--ink);
+	line-height: 1.6;
 	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
 }
 
-/* Pixel font needs extra leading to breathe */
-.font-pixel {
-	font-family: var(--font-pixel);
-	line-height: 1.9;
-	letter-spacing: 0.04em;
-}
-
-.font-terminal {
-	font-family: var(--font-terminal);
-	line-height: 1.35;
-}
-
-/* One global focus style: thick amber outline, keyboard-friendly */
 :focus-visible {
-	outline: 3px solid var(--amber);
-	outline-offset: 3px;
+	outline: 3px solid var(--signal);
+	outline-offset: 2px;
 }
 
 ::selection {
-	background-color: var(--amber);
-	color: var(--night);
+	background-color: var(--signal);
+	color: var(--paper);
 }
 
-/* Square scrollbar, no rounding anywhere */
 ::-webkit-scrollbar {
-	width: 12px;
-	height: 12px;
+	width: 11px;
+	height: 11px;
 }
 ::-webkit-scrollbar-track {
-	background: var(--void);
+	background: var(--paper-2);
 }
 ::-webkit-scrollbar-thumb {
-	background: var(--seam);
-	border: 2px solid var(--void);
+	background: var(--rule-2);
+	border: 3px solid var(--paper-2);
 }
 ::-webkit-scrollbar-thumb:hover {
-	background: var(--moss);
+	background: var(--ink-3);
 }
 
-/* ============================================================
-   Pixel utilities
-   ============================================================ */
-
-/* Crisp upscaling for pixel art */
-.pixel-art {
-	image-rendering: pixelated;
-	image-rendering: crisp-edges;
+.sheet {
+	width: 100%;
+	max-width: 1240px;
+	margin-inline: auto;
+	padding-left: clamp(20px, 4vw, 56px);
+	padding-right: calc(var(--rail-x) + clamp(24px, 4vw, 56px));
 }
 
-/* Solid offset shadows — the whole site uses these, never blur */
-.px-shadow {
-	box-shadow: 5px 5px 0 0 var(--shadow);
-}
-.px-shadow-sm {
-	box-shadow: 3px 3px 0 0 var(--shadow);
-}
-.px-shadow-lg {
-	box-shadow: 8px 8px 0 0 var(--shadow);
+.mono {
+	font-family: var(--font-mono);
+	font-feature-settings: 'tnum' 1;
+	letter-spacing: -0.01em;
 }
 
-/* 2px checkerboard — used for section seams and decorative strips */
-.dither {
-	background-image: conic-gradient(
-		var(--dither) 25%,
-		transparent 0 50%,
-		var(--dither) 0 75%,
-		transparent 0
-	);
-	background-size: 4px 4px;
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
 }
 
-/* Subtle CRT scanlines (hero + thumbnails only, never over body text) */
-.scanlines {
-	background-image: repeating-linear-gradient(
-		0deg,
-		var(--scan),
-		var(--scan) 1px,
-		transparent 1px,
-		transparent 3px
-	);
+.monument {
+	font-stretch: 112%;
+	font-weight: 660;
+	line-height: 0.92;
+	letter-spacing: -0.028em;
+	text-transform: uppercase;
 }
 
-/* Faint blueprint grid for the page backdrop */
-.console-grid {
-	background-image:
-		linear-gradient(var(--dither) 1px, transparent 1px),
-		linear-gradient(90deg, var(--dither) 1px, transparent 1px);
-	background-size: 24px 24px;
+.section {
+	position: relative;
+	padding-block: clamp(84px, 11vh, 140px);
 }
 
-/* Square status LED. Pair with a color class: bg-phosphor etc. */
-.led {
-	display: inline-block;
-	width: 8px;
-	height: 8px;
-	flex: none;
-}
-.led-blink {
-	animation: led-blink 1.4s step-end infinite;
+.lead {
+	font-size: clamp(1.05rem, 1.35vw, 1.3rem);
+	line-height: 1.55;
+	color: var(--ink-2);
+	max-width: 62ch;
 }
 
-@keyframes led-blink {
-	0%,
-	100% {
-		opacity: 1;
-	}
-	50% {
-		opacity: 0.25;
-	}
+.body-copy {
+	font-size: 1rem;
+	line-height: 1.68;
+	color: var(--ink-2);
+	max-width: 68ch;
 }
 
-/* Blinking block cursor for terminal lines */
-.cursor-block::after {
-	content: '▮';
-	margin-left: 2px;
-	color: var(--phosphor);
-	animation: led-blink 1s step-end infinite;
+.link {
+	color: inherit;
+	text-decoration: underline;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 3px;
+	transition: color 120ms ease;
+}
+.link:hover {
+	color: var(--signal);
 }
 
-/* Tiny idle float for decorative sprites */
-.sprite-float {
-	animation: sprite-float 2.4s ease-in-out infinite;
+.skip-link {
+	position: fixed;
+	top: 8px;
+	left: 8px;
+	z-index: 100;
+	transform: translateY(-200%);
+	background: var(--ink);
+	color: var(--paper);
+	padding: 0.6rem 1rem;
+	font-size: 0.85rem;
 }
-@keyframes sprite-float {
-	0%,
-	100% {
-		transform: translateY(0);
-	}
-	50% {
-		transform: translateY(-5px);
+.skip-link:focus {
+	transform: translateY(0);
+}
+
+@media (max-width: 767px) {
+	:root {
+		--rail-x: 22px;
 	}
 }
 
-/* Nudge-on-hover for cards: lift against the solid shadow */
-.px-hover {
-	transition: transform 120ms steps(2, end), box-shadow 120ms steps(2, end);
-}
-.px-hover:hover {
-	transform: translate(-2px, -2px);
-	box-shadow: 7px 7px 0 0 var(--shadow);
-}
-
-/* Respect reduced motion: kill the toys, keep the content */
 @media (prefers-reduced-motion: reduce) {
 	html {
 		scroll-behavior: auto;
 	}
-	.led-blink,
-	.cursor-block::after,
-	.sprite-float {
-		animation: none;
-	}
-	.px-hover,
-	.px-hover:hover {
-		transition: none;
-		transform: none;
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.001ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.001ms !important;
 	}
 }

@@ -1,26 +1,51 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import PixelButton from '$lib/components/ui/PixelButton.svelte';
+	import Action from '$lib/components/ui/Action.svelte';
 </script>
 
 <svelte:head>
 	<title>Error {$page.status} | Alvin Vincent</title>
+	<meta name="robots" content="noindex, follow" />
 </svelte:head>
 
-<div class="console-grid flex min-h-screen items-center justify-center px-4">
-	<div class="px-shadow-lg max-w-md border-[3px] border-ink bg-panel p-8 text-center">
-		<p class="font-pixel mb-2 text-[0.5rem] text-alert uppercase">
-			<span class="led led-blink mr-2 inline-block bg-alert"></span>signal lost
+<section class="error">
+	<div class="sheet inner">
+		<p class="mono code">{String($page.status).padStart(3, '0')}</p>
+		<h1>Signal lost at this address</h1>
+		<p class="lead message">
+			{$page.error?.message ?? 'The route you asked for is not deployed here.'}
 		</p>
-		<h1 class="font-pixel mb-4 text-4xl text-ink">{$page.status}</h1>
-		<p class="font-terminal mb-2 text-xl text-fog">
-			{$page.error?.message ?? 'Sector not found'}
-		</p>
-		<p class="mb-7 text-sm text-moss">
-			The map ends here. Whatever you were looking for, it isn't deployed to this route.
-		</p>
-		<PixelButton variant="primary" size="md" href="/">
-			Respawn at home <span aria-hidden="true">▸</span>
-		</PixelButton>
+		<Action href="/">Back to the portfolio</Action>
 	</div>
-</div>
+</section>
+
+<style>
+	.error {
+		display: flex;
+		align-items: center;
+		min-height: 72svh;
+		padding-block: calc(var(--topbar-h) + 40px) 80px;
+	}
+
+	.code {
+		font-size: 0.75rem;
+		color: var(--signal);
+	}
+
+	h1 {
+		margin-top: 14px;
+		font-size: clamp(1.8rem, 4.6vw, 3.2rem);
+		font-weight: 600;
+		letter-spacing: -0.022em;
+		line-height: 1.08;
+		color: var(--ink);
+	}
+
+	.message {
+		margin-top: 16px;
+	}
+
+	.error :global(.action) {
+		margin-top: 32px;
+	}
+</style>

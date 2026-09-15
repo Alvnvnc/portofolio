@@ -7,7 +7,7 @@ export const GET: RequestHandler = async () => {
 
 	const urls = [
 		{
-			loc: baseUrl,
+			loc: `${baseUrl}/`,
 			lastmod: today,
 			changefreq: 'monthly',
 			priority: '1.0'

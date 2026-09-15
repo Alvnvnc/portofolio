@@ -73,7 +73,10 @@ export type StickerName =
 	| 'shield'
 	| 'sensor'
 	| 'bolt'
-	| 'chip';
+	| 'chip'
+	| 'star'
+	| 'squiggle'
+	| 'dots';
 
 export interface Service {
 	id: string;

@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { personalInfo, sectionMeta, services, faqs } from '$lib/data/portfolio';
-	import SectionHead from '$lib/components/ui/SectionHead.svelte';
 	import Action from '$lib/components/ui/Action.svelte';
 	import Clock from '$lib/components/ui/Clock.svelte';
 	import Sticker from '$lib/components/ui/Sticker.svelte';
+	import { reveal } from '$lib/utils/motion';
 
 	const meta = sectionMeta.find((s) => s.id === 'contact')!;
 
@@ -44,9 +44,15 @@
 	}
 </script>
 
-<section id="contact" class="section">
+<section id="contact" class="section section--pink on-color">
 	<div class="sheet">
-		<SectionHead index={meta.index} label={meta.label} title={meta.title} note={meta.note} />
+		<p class="kicker head mono"><span class="num">{meta.index}</span><span class="sq"></span>{meta.label}</p>
+		<h2 class="statement display" use:reveal={0} data-reveal="mask">
+			<span>Let's build something<br />that stays up</span>
+		</h2>
+		<p class="statement-sub" use:reveal={80} data-reveal>
+			<span class="kicker">Start a project</span> — replies within one working day, usually faster.
+		</p>
 
 		<div class="grid mt-12">
 			<div class="channels">
@@ -153,6 +159,39 @@
 </section>
 
 <style>
+	.head {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		color: var(--ink);
+		font-size: 0.75rem;
+	}
+
+	.num {
+		font-size: 0.6875rem;
+		letter-spacing: 0;
+		color: var(--ink);
+	}
+
+	.sq {
+		width: 6px;
+		height: 6px;
+		background: var(--ink);
+	}
+
+	.statement {
+		margin-top: 18px;
+		font-size: clamp(2.4rem, 9.4vw, 7.6rem);
+		color: var(--ink);
+	}
+
+	.statement-sub {
+		margin-top: 18px;
+		font-size: 1rem;
+		color: var(--ink-2);
+		max-width: 52ch;
+	}
+
 	.grid {
 		display: grid;
 		grid-template-columns: minmax(0, 1fr);

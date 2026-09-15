@@ -3,6 +3,7 @@
 	import SectionHead from '$lib/components/ui/SectionHead.svelte';
 	import Sticker from '$lib/components/ui/Sticker.svelte';
 	import type { StickerName } from '$lib/types';
+	import { reveal } from '$lib/utils/motion';
 
 	const meta = sectionMeta.find((s) => s.id === 'about')!;
 
@@ -47,7 +48,9 @@
 
 <section id="about" class="section">
 	<div class="sheet">
-		<SectionHead index={meta.index} label={meta.label} title={meta.title} note={meta.note} />
+		<div use:reveal={0} data-reveal="mask">
+			<SectionHead index={meta.index} label={meta.label} title={meta.title} note={meta.note} accent="full-stack" />
+		</div>
 
 		<div class="mt-12 grid gap-12 lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-16">
 			<div>
@@ -91,7 +94,7 @@
 				</ul>
 			</div>
 
-			<div class="sheet-panel">
+			<div class="sheet-panel" use:reveal={120} data-reveal>
 				<p class="kicker panel-title">The toolkit</p>
 				<ul class="toolkit">
 					{#each toolkit as tool (tool.label)}

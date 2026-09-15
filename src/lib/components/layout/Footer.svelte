@@ -12,7 +12,7 @@
 	<div class="sheet inner">
 		<div class="brand">
 			<p class="name display">Alvin Vincent</p>
-			<p class="mono line">© {year} {personalInfo.fullName}</p>
+			<p class="mono line">{personalInfo.title} — {personalInfo.location}</p>
 		</div>
 
 		<nav class="links" aria-label="Elsewhere">
@@ -25,7 +25,7 @@
 
 		<div class="tail">
 			<p class="mono line colophon">
-				Hand-built with SvelteKit<span class="sep"> / </span>no template used
+				© {year} — hand-built with SvelteKit <span class="sep">/</span> no template
 			</p>
 			<span class="mark"><Sticker name="shield" size={46} /></span>
 		</div>

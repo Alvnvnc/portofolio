@@ -2,6 +2,7 @@
 	import { skills, skillCategories, levelMeta, sectionMeta } from '$lib/data/portfolio';
 	import SectionHead from '$lib/components/ui/SectionHead.svelte';
 	import Meter from '$lib/components/ui/Meter.svelte';
+	import { reveal } from '$lib/utils/motion';
 
 	const meta = sectionMeta.find((s) => s.id === 'skills')!;
 
@@ -17,11 +18,13 @@
 	];
 </script>
 
-<section id="skills" class="section">
+<section id="skills" class="section section--yellow on-color">
 	<div class="sheet">
-		<SectionHead index={meta.index} label={meta.label} title={meta.title} note={meta.note} />
+		<div use:reveal={0} data-reveal="mask">
+			<SectionHead index={meta.index} label={meta.label} title={meta.title} note={meta.note} accent="calibrated" />
+		</div>
 
-		<div class="board mt-12">
+		<div class="board mt-12" use:reveal={80} data-reveal>
 			<div class="strips">
 				{#each groups as group (group.id)}
 					<div class="strip">

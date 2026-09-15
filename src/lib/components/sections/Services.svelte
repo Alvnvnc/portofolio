@@ -2,6 +2,7 @@
 	import { services, sectionMeta } from '$lib/data/portfolio';
 	import SectionHead from '$lib/components/ui/SectionHead.svelte';
 	import Sticker from '$lib/components/ui/Sticker.svelte';
+	import { reveal } from '$lib/utils/motion';
 
 	const meta = sectionMeta.find((s) => s.id === 'services')!;
 
@@ -20,7 +21,9 @@
 
 <section id="services" class="section">
 	<div class="sheet">
-		<SectionHead index={meta.index} label={meta.label} title={meta.title} note={meta.note} />
+		<div use:reveal={0} data-reveal="mask">
+			<SectionHead index={meta.index} label={meta.label} title={meta.title} note={meta.note} accent="build" />
+		</div>
 
 		<ul class="rows mt-12">
 			{#each services as service (service.id)}

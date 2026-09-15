@@ -109,7 +109,7 @@
 					y: 82,
 					w: 140,
 					h: 80,
-					label: 'violation engine',
+					label: 'violations',
 					sub: 'checked on ingest',
 					fill: 'var(--orange)'
 				},

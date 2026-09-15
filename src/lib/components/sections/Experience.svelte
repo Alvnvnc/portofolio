@@ -1,17 +1,20 @@
 <script lang="ts">
 	import { experiences, education, sectionMeta } from '$lib/data/portfolio';
 	import SectionHead from '$lib/components/ui/SectionHead.svelte';
+	import { reveal } from '$lib/utils/motion';
 
 	const meta = sectionMeta.find((s) => s.id === 'experience')!;
 </script>
 
 <section id="experience" class="section">
 	<div class="sheet">
-		<SectionHead index={meta.index} label={meta.label} title={meta.title} note={meta.note} />
+		<div use:reveal={0} data-reveal="mask">
+			<SectionHead index={meta.index} label={meta.label} title={meta.title} note={meta.note} accent="short" />
+		</div>
 
 		<div class="log mt-12">
 			{#each experiences as job (job.id)}
-				<article class="entry">
+				<article class="entry" use:reveal={40} data-reveal>
 					<p class="years mono">
 						{job.period.start}<span class="dash">—</span>{job.period.end === 'Present'
 							? 'now'
@@ -63,14 +66,24 @@
 	}
 
 	.entry {
+		position: relative;
 		display: grid;
 		grid-template-columns: minmax(0, 1fr);
 		gap: 12px;
-		background: var(--surface);
+		padding: clamp(20px, 3vw, 30px) 0 clamp(20px, 3vw, 30px) 22px;
+		border-top: 2px dashed #cfcfd4;
+	}
+
+	.entry::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: clamp(24px, 3.2vw, 34px);
+		width: 8px;
+		height: 8px;
+		background: var(--yellow);
 		border: 2px solid var(--ink);
-		border-radius: 20px;
-		box-shadow: var(--shadow);
-		padding: clamp(20px, 3vw, 30px);
+		border-radius: 2px;
 	}
 
 	.years {
@@ -136,10 +149,8 @@
 		color: var(--ink-3);
 	}
 
-	.edu {
-		background: transparent;
-		border-style: dashed;
-		box-shadow: none;
+	.edu::before {
+		background: var(--surface);
 	}
 
 	.next {

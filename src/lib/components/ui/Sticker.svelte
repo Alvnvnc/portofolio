@@ -6,6 +6,9 @@
 		size = 112,
 		class: className = ''
 	}: { name: StickerName; size?: number; class?: string } = $props();
+
+	const uid = Math.random().toString(36).slice(2, 7);
+	const dotsId = `dots-${uid}`;
 </script>
 
 <svg
@@ -18,6 +21,13 @@
 	stroke-linecap="round"
 	aria-hidden="true"
 >
+	<defs>
+		<pattern id={dotsId} width="9" height="9" patternUnits="userSpaceOnUse">
+			<rect width="9" height="9" fill="var(--yellow)" />
+			<circle cx="4.5" cy="4.5" r="2.4" fill="var(--ink)" />
+		</pattern>
+	</defs>
+
 	{#if name === 'server'}
 		<rect x="20" y="12" width="56" height="72" rx="11" fill="var(--surface)" stroke="var(--ink)" stroke-width="3" />
 		<rect x="30" y="23" width="36" height="13" rx="6.5" fill="var(--yellow)" stroke="var(--ink)" stroke-width="3" />
@@ -73,5 +83,30 @@
 			stroke="var(--ink)"
 			stroke-width="3"
 		/>
+	{:else if name === 'star'}
+		<path
+			d="M48 8 L60 36 L90 39 L67 59 L74 88 L48 72 L22 88 L29 59 L6 39 L36 36 Z"
+			fill="url(#{dotsId})"
+			stroke="var(--ink)"
+			stroke-width="3"
+		/>
+	{:else if name === 'squiggle'}
+		<path
+			d="M10 62 q12 -34 24 -12 t24 -12 t24 -12"
+			fill="none"
+			stroke="var(--ink)"
+			stroke-width="11"
+			stroke-linecap="round"
+		/>
+		<path
+			d="M10 62 q12 -34 24 -12 t24 -12 t24 -12"
+			fill="none"
+			stroke="var(--pink)"
+			stroke-width="5"
+			stroke-linecap="round"
+		/>
+	{:else if name === 'dots'}
+		<circle cx="48" cy="48" r="38" fill="url(#{dotsId})" stroke="var(--ink)" stroke-width="3" />
+		<circle cx="48" cy="48" r="17" fill="var(--orange)" stroke="var(--ink)" stroke-width="3" />
 	{/if}
 </svg>

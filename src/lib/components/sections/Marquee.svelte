@@ -1,15 +1,29 @@
 <script lang="ts">
 	import Sticker from '$lib/components/ui/Sticker.svelte';
 
+	import type { StickerName } from '$lib/types';
+
 	let {
 		items,
 		tone = 'yellow',
 		duration = 38,
-		reverse = false
-	}: { items: string[]; tone?: 'yellow' | 'blue'; duration?: number; reverse?: boolean } = $props();
+		reverse = false,
+		deco
+	}: {
+		items: string[];
+		tone?: 'yellow' | 'blue';
+		duration?: number;
+		reverse?: boolean;
+		deco?: StickerName;
+	} = $props();
 </script>
 
 <div class="band {tone}" aria-hidden="true">
+	{#if deco}
+		<span class="deco" class:left={reverse}>
+			<Sticker name={deco} size={104} />
+		</span>
+	{/if}
 	<div class="track" class:reverse style="--dur:{duration}s">
 		{#each [0, 1] as set (set)}
 			<div class="set">
@@ -65,6 +79,24 @@
 
 	.mark {
 		display: inline-flex;
+	}
+
+	.deco {
+		position: absolute;
+		top: -34px;
+		right: 7%;
+		transform: rotate(7deg);
+		pointer-events: none;
+	}
+
+	.deco.left {
+		right: auto;
+		left: 6%;
+		transform: rotate(-8deg);
+	}
+
+	.band {
+		position: relative;
 	}
 
 	@keyframes marquee {

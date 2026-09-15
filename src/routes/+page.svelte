@@ -37,11 +37,11 @@
 
 <Hero />
 
-<Marquee items={bandA} tone="yellow" duration={42} />
+<Marquee items={bandA} tone="yellow" duration={42} deco="star" />
 
 <About />
 
-<Marquee items={bandB} tone="blue" duration={46} reverse />
+<Marquee items={bandB} tone="blue" duration={46} reverse deco="squiggle" />
 
 <Services />
 <Skills />

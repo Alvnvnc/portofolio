@@ -3,6 +3,8 @@
 	import type { ProjectStatus } from '$lib/types';
 	import SectionHead from '$lib/components/ui/SectionHead.svelte';
 	import ProjectDiagram from '$lib/components/sections/ProjectDiagram.svelte';
+	import { reveal } from '$lib/utils/motion';
+	import { services } from '$lib/data/portfolio';
 
 	const meta = sectionMeta.find((s) => s.id === 'projects')!;
 
@@ -15,11 +17,19 @@
 
 <section id="projects" class="section">
 	<div class="sheet">
-		<SectionHead index={meta.index} label={meta.label} title={meta.title} note={meta.note} />
+		<div use:reveal={0} data-reveal="mask">
+			<SectionHead
+				index={meta.index}
+				label={meta.label}
+				title={meta.title}
+				note={meta.note}
+				accent="production"
+			/>
+		</div>
 
 		<div class="projects mt-12">
 			{#each projects as project, i (project.id)}
-				<article class="project" class:flip={i % 2 === 1}>
+				<article class="project" class:flip={i % 2 === 1} use:reveal={40} data-reveal>
 					<div class="head">
 						<span class="code mono">{project.code.toLowerCase()}</span>
 						<span class="kind mono">{project.classification}</span>
@@ -85,6 +95,49 @@
 					</div>
 				</article>
 			{/each}
+		</div>
+
+		<div class="index mt-16" use:reveal={60} data-reveal>
+			<h3 class="kicker index-title">Index — everything on this page</h3>
+			<table>
+				<thead>
+					<tr>
+						<th scope="col">#</th>
+						<th scope="col">name</th>
+						<th scope="col">kind</th>
+						<th scope="col">year / status</th>
+						<th scope="col">link</th>
+					</tr>
+				</thead>
+				<tbody>
+					{#each projects as project, i (project.id)}
+						<tr>
+							<td class="mono">{String(i + 1).padStart(2, '0')}</td>
+							<td class="cell-name">{project.title}</td>
+							<td class="mono">{project.classification}</td>
+							<td class="mono">{statusLabel[project.status]}</td>
+							<td>
+								{#if project.links?.demo}
+									<a class="index-link" href={project.links.demo} target="_blank" rel="noopener noreferrer"
+										>live ↗</a
+									>
+								{:else}
+									<span class="mono dim">private</span>
+								{/if}
+							</td>
+						</tr>
+					{/each}
+					{#each services as service, i (service.id)}
+						<tr>
+							<td class="mono">{String(projects.length + i + 1).padStart(2, '0')}</td>
+							<td class="cell-name">{service.title}</td>
+							<td class="mono">{service.techStack.slice(0, 3).join(' / ')}</td>
+							<td class="mono">service</td>
+							<td><a class="index-link" href="/services/{service.id}">spec ↗</a></td>
+						</tr>
+					{/each}
+				</tbody>
+			</table>
 		</div>
 	</div>
 </section>
@@ -163,6 +216,72 @@
 		border: 2px solid var(--ink);
 		border-radius: 16px;
 		padding: 14px;
+		transform: rotate(-1.4deg);
+		transition: transform 260ms cubic-bezier(0.2, 0.7, 0.2, 1);
+	}
+
+	.flip .frame {
+		transform: rotate(1.4deg);
+	}
+
+	.frame:hover {
+		transform: rotate(0deg);
+	}
+
+	.index-title {
+		color: var(--ink-2);
+	}
+
+	.index table {
+		width: 100%;
+		margin-top: 14px;
+		border-collapse: collapse;
+		font-size: 0.8125rem;
+	}
+
+	.index th {
+		text-align: left;
+		font-family: var(--font-mono);
+		font-size: 0.625rem;
+		font-weight: 500;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: var(--ink-3);
+		padding: 0 10px 8px 0;
+		border-bottom: 2px solid var(--ink);
+	}
+
+	.index td {
+		padding: 10px 10px 10px 0;
+		border-bottom: 1px dashed #d4d4d8;
+		color: var(--ink-2);
+		vertical-align: baseline;
+	}
+
+	.cell-name {
+		font-weight: 560;
+		color: var(--ink) !important;
+	}
+
+	.index-link {
+		color: var(--ink);
+		text-decoration: none;
+		border-bottom: 2px solid var(--yellow);
+		white-space: nowrap;
+	}
+
+	.index-link:hover {
+		color: var(--blue);
+		border-color: var(--blue);
+	}
+
+	.dim {
+		color: var(--ink-3);
+	}
+
+	.index td:first-child,
+	.index th:first-child {
+		width: 46px;
 	}
 
 	.plate figcaption {

@@ -72,7 +72,7 @@
 		align-items: center;
 		justify-content: center;
 		min-height: 100svh;
-		padding: calc(var(--topbar-h) + 20px) 0 68px;
+		padding: calc(var(--topbar-h) + 18px) 0 clamp(38px, 7vh, 68px);
 		overflow: hidden;
 	}
 
@@ -86,7 +86,7 @@
 	}
 
 	.name {
-		font-size: clamp(2.4rem, 10.4vw, 9.6rem);
+		font-size: clamp(2.3rem, min(10.4vw, 14.4vh), 9.6rem);
 	}
 
 	.line {
@@ -114,7 +114,7 @@
 	}
 
 	.caption {
-		margin-top: clamp(14px, 2vh, 22px);
+		margin-top: clamp(12px, 2vh, 22px);
 		font-size: 0.875rem;
 		letter-spacing: 0.01em;
 		color: var(--ink-3);
@@ -124,7 +124,7 @@
 
 	.poster-wrap {
 		position: relative;
-		margin-top: clamp(16px, 2.6vh, 28px);
+		margin-top: clamp(14px, 2.4vh, 28px);
 		opacity: 0;
 		animation: fade-up 720ms ease 0.55s both;
 	}

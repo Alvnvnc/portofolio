@@ -28,7 +28,7 @@
 					if (entry.isIntersecting) activeSection.setFromScroll(entry.target.id);
 				});
 			},
-			{ threshold: 0.25, rootMargin: '-88px 0px -55% 0px' }
+			{ threshold: 0, rootMargin: '-45% 0px -50% 0px' }
 		);
 		sections.forEach((section) => observer.observe(section));
 		return () => sections.forEach((section) => observer.unobserve(section));

@@ -99,7 +99,8 @@
 
 		<div class="index mt-16" use:reveal={60} data-reveal>
 			<h3 class="kicker index-title">Index — everything on this page</h3>
-			<table>
+			<div class="index-scroll">
+				<table>
 				<thead>
 					<tr>
 						<th scope="col">#</th>
@@ -136,8 +137,9 @@
 							<td><a class="index-link" href="/services/{service.id}">spec ↗</a></td>
 						</tr>
 					{/each}
-				</tbody>
-			</table>
+					</tbody>
+				</table>
+			</div>
 		</div>
 	</div>
 </section>
@@ -230,6 +232,13 @@
 
 	.index-title {
 		color: var(--ink-2);
+	}
+
+	.index-scroll {
+		overflow-x: auto;
+		overscroll-behavior-x: contain;
+		margin-inline: -4px;
+		padding-inline: 4px;
 	}
 
 	.index table {

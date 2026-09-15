@@ -35,7 +35,6 @@ export interface Project {
 		demo?: string;
 		docs?: string;
 	};
-	thumbnail?: string;
 }
 
 export interface Experience {

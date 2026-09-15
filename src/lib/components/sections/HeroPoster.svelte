@@ -38,7 +38,7 @@
 	.poster {
 		position: relative;
 		margin: 0;
-		width: clamp(208px, 17.5vw, 248px);
+		width: clamp(188px, min(17.5vw, 25.5vh), 248px);
 		background: var(--surface);
 		border: 3px solid var(--ink);
 		border-radius: 20px;
@@ -158,6 +158,37 @@
 			var(--ink) 4px 7px,
 			transparent 7px 9px
 		);
+	}
+
+	@media (max-height: 790px) {
+		.poster {
+			padding: 14px 13px 12px;
+		}
+
+		.lockup {
+			margin-top: 8px;
+			font-size: 1.8rem;
+		}
+
+		.role {
+			display: none;
+		}
+
+		.spec {
+			margin-top: 8px;
+		}
+
+		.spec > div {
+			padding: 4px 0;
+		}
+
+		.tools {
+			margin-top: 8px;
+		}
+
+		.foot {
+			display: none;
+		}
 	}
 
 	.stamp {

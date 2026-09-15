@@ -164,7 +164,6 @@ export const projects: Project[] = [
 		],
 		techStack: ['Go', 'Python', 'Kong', 'gRPC', 'MQTT', 'RabbitMQ', 'PostgreSQL', 'InfluxDB', 'Kubernetes'],
 		links: { demo: 'https://pome.iimlab.id' },
-		thumbnail: '/images/project-backend-template.webp'
 	},
 	{
 		id: 'portal',
@@ -186,7 +185,6 @@ export const projects: Project[] = [
 		],
 		techStack: ['Go', 'Kong', 'Traefik', 'PostgreSQL', 'GORM', 'JWT', 'Docker'],
 		links: { demo: 'https://portal-iot.iimlab.id' },
-		thumbnail: '/images/project-ai-workflow.webp'
 	},
 	{
 		id: 'lecsens',
@@ -208,7 +206,6 @@ export const projects: Project[] = [
 		],
 		techStack: ['Go', 'PostgreSQL', 'InfluxDB', 'Redis', 'Docker', 'Nginx', 'JWT'],
 		links: { demo: 'https://lecsens.iimlab.id' },
-		thumbnail: '/images/project-lecsens.webp'
 	}
 ];
 

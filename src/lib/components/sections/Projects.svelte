@@ -70,14 +70,18 @@
 							<p class="tech mono">{project.techStack.join(' / ')}</p>
 
 							{#if project.links?.demo}
-								<a class="text-action" href={project.links.demo} target="_blank" rel="noopener noreferrer">
-									Open live system
+								<a
+									class="text-action"
+									href={project.links.demo}
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									Open live system — {project.links.demo.replace('https://', '')}
 								</a>
-							{:else}
-								<p class="private mono">
-									Source is private — client contracts. Walkthrough available on a call.
-								</p>
 							{/if}
+							<p class="private mono">
+								Source is private — client contracts. Walkthrough available on a call.
+							</p>
 						</div>
 					</div>
 				</article>

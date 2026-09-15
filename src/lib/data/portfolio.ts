@@ -163,6 +163,7 @@ export const projects: Project[] = [
 			'Multi-stage Docker builds and k8s manifests; Prometheus alerts fire before users notice'
 		],
 		techStack: ['Go', 'Python', 'Kong', 'gRPC', 'MQTT', 'RabbitMQ', 'PostgreSQL', 'InfluxDB', 'Kubernetes'],
+		links: { demo: 'https://pome.iimlab.id' },
 		thumbnail: '/images/project-backend-template.webp'
 	},
 	{
@@ -184,6 +185,7 @@ export const projects: Project[] = [
 			'Invitation and subscription flows built into tenant management'
 		],
 		techStack: ['Go', 'Kong', 'Traefik', 'PostgreSQL', 'GORM', 'JWT', 'Docker'],
+		links: { demo: 'https://portal-iot.iimlab.id' },
 		thumbnail: '/images/project-ai-workflow.webp'
 	},
 	{
@@ -205,6 +207,7 @@ export const projects: Project[] = [
 			'CI/CD pipeline runs Trivy and gosec security scans on every build'
 		],
 		techStack: ['Go', 'PostgreSQL', 'InfluxDB', 'Redis', 'Docker', 'Nginx', 'JWT'],
+		links: { demo: 'https://lecsens.iimlab.id' },
 		thumbnail: '/images/project-lecsens.webp'
 	}
 ];

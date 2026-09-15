@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Action from '$lib/components/ui/Action.svelte';
+	import Sticker from '$lib/components/ui/Sticker.svelte';
 </script>
 
 <svelte:head>
@@ -10,12 +11,13 @@
 
 <section class="error">
 	<div class="sheet inner">
-		<p class="mono code">{String($page.status).padStart(3, '0')}</p>
-		<h1>Signal lost at this address</h1>
+		<span class="mark"><Sticker name="bolt" size={92} /></span>
+		<p class="kicker code mono">{String($page.status).padStart(3, '0')}</p>
+		<h1 class="display title">This route was never deployed</h1>
 		<p class="lead message">
-			{$page.error?.message ?? 'The route you asked for is not deployed here.'}
+			{$page.error?.message ?? 'The page you asked for does not exist on this server.'}
 		</p>
-		<Action href="/">Back to the portfolio</Action>
+		<Action href="/" class="action">Back to the portfolio</Action>
 	</div>
 </section>
 
@@ -23,22 +25,30 @@
 	.error {
 		display: flex;
 		align-items: center;
-		min-height: 72svh;
+		min-height: 78svh;
 		padding-block: calc(var(--topbar-h) + 40px) 80px;
 	}
 
-	.code {
-		font-size: 0.75rem;
-		color: var(--signal);
+	.inner {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
 	}
 
-	h1 {
+	.mark {
+		margin-bottom: 26px;
+		transform: rotate(-8deg);
+	}
+
+	.code {
+		color: var(--blue);
+	}
+
+	.title {
 		margin-top: 14px;
-		font-size: clamp(1.8rem, 4.6vw, 3.2rem);
-		font-weight: 600;
-		letter-spacing: -0.022em;
-		line-height: 1.08;
+		font-size: clamp(2rem, 6vw, 4.4rem);
 		color: var(--ink);
+		max-width: 20ch;
 	}
 
 	.message {

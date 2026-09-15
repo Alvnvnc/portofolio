@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { services, sectionMeta } from '$lib/data/portfolio';
-	import Station from '$lib/components/ui/Station.svelte';
 	import SectionHead from '$lib/components/ui/SectionHead.svelte';
+	import Sticker from '$lib/components/ui/Sticker.svelte';
 
 	const meta = sectionMeta.find((s) => s.id === 'services')!;
 
@@ -19,17 +19,22 @@
 </script>
 
 <section id="services" class="section">
-	<Station id="services" index={meta.index} label={meta.label} />
 	<div class="sheet">
-		<SectionHead title={meta.title} note={meta.note} />
+		<SectionHead index={meta.index} label={meta.label} title={meta.title} note={meta.note} />
 
 		<ul class="rows mt-12">
 			{#each services as service (service.id)}
 				<li class="row">
-					<span class="code mono">{service.code.toLowerCase()}</span>
-					<h3 class="title">{service.title}</h3>
-					<p class="desc">{service.description}</p>
-					<p class="tech mono">{service.techStack.join(' / ')}</p>
+					<span class="icon">
+						<Sticker name={service.sticker} size={66} />
+					</span>
+
+					<div class="body">
+						<h3 class="title">{service.title}</h3>
+						<p class="desc">{service.description}</p>
+						<p class="tech mono">{service.techStack.join(' / ')}</p>
+					</div>
+
 					<span class="acts">
 						<a class="text-action" href="/services/{service.id}">Spec sheet</a>
 						<button class="text-action" onclick={() => requestService(service.title)}>
@@ -40,20 +45,19 @@
 			{/each}
 
 			<li class="row empty">
-				<span class="code mono">svc-07</span>
-				<h3 class="title">Your project</h3>
-				<p class="desc">
-					Reserved for the thing you're building. If it needs an API, a pipeline, or a deploy that
-					doesn't wake anyone up at night, it docks here.
-				</p>
-				<p class="tech mono">open slot</p>
+				<span class="icon">
+					<Sticker name="bolt" size={66} />
+				</span>
+				<div class="body">
+					<h3 class="title">Your project</h3>
+					<p class="desc">
+						Reserved for the thing you're building. If it needs an API, a pipeline, or a deploy that
+						doesn't wake anyone up at night, it docks here.
+					</p>
+					<p class="tech mono">open slot</p>
+				</div>
 				<span class="acts">
-					<button
-						class="text-action on"
-						onclick={() => requestService('custom')}
-					>
-						Claim this slot
-					</button>
+					<button class="text-action" onclick={() => requestService('custom')}>Claim this slot</button>
 				</span>
 			</li>
 		</ul>
@@ -62,68 +66,52 @@
 
 <style>
 	.rows {
-		border-bottom: 1px solid var(--rule);
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
 	}
 
 	.row {
-		position: relative;
 		display: grid;
-		gap: 6px 48px;
-		grid-template-columns: minmax(0, 1fr);
-		padding: 26px 16px;
-		margin: 0 -16px;
-		border-top: 1px solid var(--rule);
-		transition: background-color 180ms ease;
-	}
-
-	.row::after {
-		content: '';
-		position: absolute;
-		left: 0;
-		right: 0;
-		top: -1px;
-		height: 1px;
-		background: var(--signal);
-		transform: scaleX(0);
-		transform-origin: left center;
-		transition: transform 380ms cubic-bezier(0.2, 0.7, 0.2, 1);
+		grid-template-columns: 1fr;
+		gap: 16px;
+		background: var(--surface);
+		border: 2px solid var(--ink);
+		border-radius: 18px;
+		padding: 20px;
+		box-shadow: var(--shadow);
+		transition:
+			transform 180ms cubic-bezier(0.2, 0.7, 0.2, 1),
+			box-shadow 180ms ease;
 	}
 
 	.row:hover {
-		background: var(--paper-2);
+		transform: translate(-3px, -3px);
+		box-shadow: var(--shadow-lg);
 	}
 
-	.row:hover::after {
-		transform: scaleX(1);
-	}
-
-	.code {
-		font-size: 0.6875rem;
-		color: var(--ink-3);
+	.icon {
+		display: inline-flex;
+		align-self: start;
 	}
 
 	.title {
-		font-size: 1.3125rem;
-		font-weight: 600;
-		letter-spacing: -0.012em;
+		font-size: 1.375rem;
+		font-weight: 660;
+		letter-spacing: -0.014em;
 		color: var(--ink);
-		transition: color 180ms ease;
-	}
-
-	.row:hover .title {
-		color: var(--signal);
 	}
 
 	.desc {
 		margin-top: 6px;
-		max-width: 58ch;
+		max-width: 62ch;
 		font-size: 0.9375rem;
 		line-height: 1.6;
 		color: var(--ink-2);
 	}
 
 	.tech {
-		margin-top: 10px;
+		margin-top: 12px;
 		font-size: 0.6875rem;
 		color: var(--ink-3);
 	}
@@ -131,26 +119,32 @@
 	.acts {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 8px 22px;
-		margin-top: 14px;
+		gap: 10px 22px;
+		align-items: center;
 	}
 
 	.text-action {
 		font-size: 0.875rem;
+		font-weight: 520;
 		color: var(--ink);
-		text-decoration: underline;
-		text-decoration-thickness: 1px;
-		text-underline-offset: 3px;
-		transition: color 140ms ease;
+		text-decoration: none;
+		border-bottom: 2px solid var(--yellow);
+		padding-bottom: 2px;
+		transition:
+			border-color 140ms ease,
+			color 140ms ease;
 		cursor: pointer;
 	}
 
 	.text-action:hover {
-		color: var(--signal);
+		color: var(--blue);
+		border-color: var(--blue);
 	}
 
-	.text-action.on {
-		color: var(--signal);
+	.empty {
+		background: transparent;
+		border-style: dashed;
+		box-shadow: none;
 	}
 
 	.empty .title,
@@ -159,47 +153,24 @@
 		color: var(--ink-3);
 	}
 
-	.empty .code::before {
-		content: '· ';
+	.empty:hover {
+		transform: none;
+		box-shadow: none;
+		background: var(--surface);
 	}
 
 	@media (min-width: 900px) {
 		.row {
-			grid-template-columns: 96px minmax(0, 1fr) 180px;
-			align-items: start;
-			padding: 30px 16px;
-		}
-
-		.code {
-			grid-column: 1;
-			padding-top: 7px;
-		}
-
-		.title,
-		.desc,
-		.tech {
-			grid-column: 2;
-		}
-
-		.title {
-			grid-row: 1;
-		}
-
-		.desc {
-			grid-row: 2;
-			margin-top: 8px;
-		}
-
-		.tech {
-			grid-row: 3;
+			grid-template-columns: 96px minmax(0, 1fr) 190px;
+			align-items: center;
+			gap: 24px;
+			padding: 22px 26px;
 		}
 
 		.acts {
-			grid-column: 3;
-			grid-row: 1;
 			justify-content: flex-end;
-			margin-top: 0;
-			padding-top: 2px;
+			flex-direction: column;
+			align-items: flex-end;
 		}
 	}
 </style>

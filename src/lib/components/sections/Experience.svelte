@@ -1,15 +1,13 @@
 <script lang="ts">
 	import { experiences, education, sectionMeta } from '$lib/data/portfolio';
-	import Station from '$lib/components/ui/Station.svelte';
 	import SectionHead from '$lib/components/ui/SectionHead.svelte';
 
 	const meta = sectionMeta.find((s) => s.id === 'experience')!;
 </script>
 
 <section id="experience" class="section">
-	<Station id="experience" index={meta.index} label={meta.label} />
 	<div class="sheet">
-		<SectionHead title={meta.title} note={meta.note} />
+		<SectionHead index={meta.index} label={meta.label} title={meta.title} note={meta.note} />
 
 		<div class="log mt-12">
 			{#each experiences as job (job.id)}
@@ -61,14 +59,18 @@
 	.log {
 		display: flex;
 		flex-direction: column;
+		gap: 16px;
 	}
 
 	.entry {
 		display: grid;
 		grid-template-columns: minmax(0, 1fr);
-		gap: 10px;
-		border-top: 1px solid var(--rule);
-		padding: 30px 0;
+		gap: 12px;
+		background: var(--surface);
+		border: 2px solid var(--ink);
+		border-radius: 20px;
+		box-shadow: var(--shadow);
+		padding: clamp(20px, 3vw, 30px);
 	}
 
 	.years {
@@ -78,13 +80,13 @@
 
 	.dash {
 		margin: 0 6px;
-		color: var(--rule-2);
+		color: #c9cbd0;
 	}
 
 	.role {
-		font-size: 1.25rem;
-		font-weight: 600;
-		letter-spacing: -0.012em;
+		font-size: 1.3125rem;
+		font-weight: 660;
+		letter-spacing: -0.014em;
 		color: var(--ink);
 	}
 
@@ -119,11 +121,13 @@
 	}
 
 	.tick {
-		width: 12px;
-		height: 1px;
-		margin-top: 12px;
+		width: 9px;
+		height: 9px;
+		margin-top: 7px;
 		flex: none;
-		background: var(--rule-2);
+		border-radius: 2px;
+		background: var(--yellow);
+		border: 1.5px solid var(--ink);
 	}
 
 	.tech {
@@ -133,24 +137,26 @@
 	}
 
 	.edu {
-		border-bottom: 1px solid var(--rule);
+		background: transparent;
+		border-style: dashed;
+		box-shadow: none;
 	}
 
 	.next {
-		margin-top: 28px;
+		margin-top: 22px;
 		font-size: 0.75rem;
 		color: var(--ink-3);
 	}
 
 	@media (min-width: 900px) {
 		.entry {
-			grid-template-columns: 180px minmax(0, 1fr);
-			gap: 40px;
-			padding: 38px 0;
+			grid-template-columns: 170px minmax(0, 1fr);
+			gap: 34px;
+			padding: 32px 34px;
 		}
 
 		.years {
-			padding-top: 5px;
+			padding-top: 6px;
 		}
 	}
 </style>

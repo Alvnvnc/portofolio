@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { projects, sectionMeta } from '$lib/data/portfolio';
 	import type { ProjectStatus } from '$lib/types';
-	import Station from '$lib/components/ui/Station.svelte';
 	import SectionHead from '$lib/components/ui/SectionHead.svelte';
-	import Plate from '$lib/components/ui/Plate.svelte';
+	import ProjectDiagram from '$lib/components/sections/ProjectDiagram.svelte';
 
 	const meta = sectionMeta.find((s) => s.id === 'projects')!;
 
@@ -15,33 +14,31 @@
 </script>
 
 <section id="projects" class="section">
-	<Station id="projects" index={meta.index} label={meta.label} />
 	<div class="sheet">
-		<SectionHead title={meta.title} note={meta.note} />
+		<SectionHead index={meta.index} label={meta.label} title={meta.title} note={meta.note} />
 
 		<div class="projects mt-12">
 			{#each projects as project, i (project.id)}
 				<article class="project" class:flip={i % 2 === 1}>
-					<p class="head mono">
-						<span class="code">{project.code.toLowerCase()}</span>
-						<span class="kind">{project.classification}</span>
+					<div class="head">
+						<span class="code mono">{project.code.toLowerCase()}</span>
+						<span class="kind mono">{project.classification}</span>
 						<span class="status" data-status={project.status}>
 							<i></i>{statusLabel[project.status]}
 						</span>
-					</p>
+					</div>
 
-					<h3 class="ptitle">{project.title}</h3>
+					<h3 class="ptitle display">{project.title}</h3>
 
 					<div class="grid">
-						<div class="plate-col">
-							{#if project.thumbnail}
-								<Plate
-									src={project.thumbnail}
-									alt="Pixel-art illustration for {project.title}"
-									caption="plate {String(i + 1).padStart(2, '0')} — {project.id}"
-								/>
-							{/if}
-						</div>
+						<figure class="plate">
+							<div class="frame">
+								<ProjectDiagram kind={project.id as 'pome' | 'portal' | 'lecsens'} />
+							</div>
+							<figcaption class="mono">
+								plate {String(i + 1).padStart(2, '0')} — {project.id}, architecture
+							</figcaption>
+						</figure>
 
 						<div class="notes">
 							<p class="desc">{project.description}</p>
@@ -69,19 +66,21 @@
 
 							<p class="tech mono">{project.techStack.join(' / ')}</p>
 
-							{#if project.links?.demo}
-								<a
-									class="text-action"
-									href={project.links.demo}
-									target="_blank"
-									rel="noopener noreferrer"
-								>
-									Open live system — {project.links.demo.replace('https://', '')}
-								</a>
-							{/if}
-							<p class="private mono">
-								Source is private — client contracts. Walkthrough available on a call.
-							</p>
+							<div class="links">
+								{#if project.links?.demo}
+									<a
+										class="text-action"
+										href={project.links.demo}
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										Open live system — {project.links.demo.replace('https://', '')}
+									</a>
+								{/if}
+								<p class="private mono">
+									Source is private — client contracts. Walkthrough available on a call.
+								</p>
+							</div>
 						</div>
 					</div>
 				</article>
@@ -94,19 +93,22 @@
 	.projects {
 		display: flex;
 		flex-direction: column;
-		gap: clamp(56px, 9vh, 104px);
+		gap: clamp(52px, 8vh, 96px);
 	}
 
 	.project {
-		border-top: 1px solid var(--rule);
-		padding-top: 26px;
+		background: var(--surface);
+		border: 2px solid var(--ink);
+		border-radius: 22px;
+		box-shadow: var(--shadow-lg);
+		padding: clamp(20px, 3vw, 34px);
 	}
 
 	.head {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		gap: 8px 24px;
+		gap: 8px 20px;
 		font-size: 0.6875rem;
 		color: var(--ink-3);
 	}
@@ -115,37 +117,61 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 8px;
+		padding: 4px 12px;
+		border: 2px solid var(--ink);
+		border-radius: 999px;
+		background: var(--surface);
+		color: var(--ink-2);
 	}
 
 	.status i {
-		width: 6px;
-		height: 6px;
-		background: var(--rule-2);
-	}
-
-	.status[data-status='live'] i {
-		background: var(--signal);
+		width: 8px;
+		height: 8px;
+		border-radius: 999px;
+		background: var(--ink-3);
 	}
 
 	.status[data-status='live'] {
-		color: var(--signal);
+		background: var(--yellow);
+		color: var(--ink);
+	}
+
+	.status[data-status='live'] i {
+		background: var(--blue);
 	}
 
 	.ptitle {
 		margin-top: 14px;
-		font-size: clamp(1.6rem, 3.4vw, 2.6rem);
-		font-weight: 600;
-		letter-spacing: -0.02em;
-		line-height: 1.08;
+		font-size: clamp(1.7rem, 4.4vw, 3rem);
 		color: var(--ink);
-		max-width: 26ch;
+		max-width: 30ch;
 	}
 
 	.grid {
 		display: grid;
 		grid-template-columns: minmax(0, 1fr);
-		gap: 32px;
-		margin-top: 28px;
+		gap: 30px;
+		margin-top: 26px;
+	}
+
+	.plate {
+		margin: 0;
+	}
+
+	.frame {
+		background: var(--paper);
+		border: 2px solid var(--ink);
+		border-radius: 16px;
+		padding: 14px;
+	}
+
+	.plate figcaption {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		margin-top: 12px;
+		font-size: 0.6875rem;
+		color: var(--ink-3);
 	}
 
 	.desc {
@@ -193,10 +219,12 @@
 
 	.tick {
 		width: 12px;
-		height: 1px;
-		margin-top: 12px;
+		height: 8px;
+		margin-top: 8px;
 		flex: none;
-		background: var(--rule-2);
+		border-radius: 2px;
+		background: var(--yellow);
+		border: 1.5px solid var(--ink);
 	}
 
 	.tech {
@@ -205,39 +233,46 @@
 		color: var(--ink-3);
 	}
 
-	.private {
-		margin-top: 14px;
-		font-size: 0.75rem;
-		color: var(--ink-3);
+	.links {
+		margin-top: 18px;
 	}
 
 	.text-action {
 		display: inline-block;
-		margin-top: 16px;
 		font-size: 0.875rem;
+		font-weight: 520;
 		color: var(--ink);
-		text-decoration: underline;
-		text-decoration-thickness: 1px;
-		text-underline-offset: 3px;
-		transition: color 140ms ease;
+		text-decoration: none;
+		border-bottom: 2px solid var(--yellow);
+		padding-bottom: 2px;
+		transition:
+			border-color 140ms ease,
+			color 140ms ease;
 	}
 
 	.text-action:hover {
-		color: var(--signal);
+		color: var(--blue);
+		border-color: var(--blue);
+	}
+
+	.private {
+		margin-top: 12px;
+		font-size: 0.75rem;
+		color: var(--ink-3);
 	}
 
 	@media (min-width: 1024px) {
 		.grid {
-			grid-template-columns: minmax(0, 380px) minmax(0, 1fr);
-			gap: 56px;
+			grid-template-columns: minmax(0, 470px) minmax(0, 1fr);
+			gap: 44px;
 			align-items: start;
 		}
 
 		.flip .grid {
-			grid-template-columns: minmax(0, 1fr) minmax(0, 380px);
+			grid-template-columns: minmax(0, 1fr) minmax(0, 470px);
 		}
 
-		.flip .plate-col {
+		.flip .plate {
 			order: 2;
 		}
 

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Action from '$lib/components/ui/Action.svelte';
-	import Plate from '$lib/components/ui/Plate.svelte';
+	import Sticker from '$lib/components/ui/Sticker.svelte';
+	import ProjectDiagram from '$lib/components/sections/ProjectDiagram.svelte';
 	import { services } from '$lib/data/portfolio';
 
 	let { data } = $props();
@@ -61,7 +62,7 @@
 	{#if service.seo?.keywords}
 		<meta name="keywords" content={service.seo.keywords.join(', ')} />
 	{/if}
-	<link rel="canonical" href={`https://alvnvnc.site/services/${service.id}`} />
+	<link rel="canonical" href={url} />
 
 	<meta property="og:title" content={service.seo?.title ?? service.title} />
 	<meta property="og:description" content={service.seo?.description ?? service.description} />
@@ -84,8 +85,12 @@
 <section class="head">
 	<div class="sheet">
 		<a class="back mono" href="/#services">← all services</a>
-		<p class="code mono">{service.code.toLowerCase()} / spec sheet</p>
-		<h1>{service.title}</h1>
+		<p class="kicker code">
+			<span class="mono num">{service.code.toLowerCase()}</span>
+			<span class="sq"></span>
+			spec sheet
+		</p>
+		<h1 class="display title">{service.title}</h1>
 		<p class="lead">{service.description}</p>
 		<p class="tech mono">{service.techStack.join(' / ')}</p>
 	</div>
@@ -93,16 +98,21 @@
 
 <section class="section">
 	<div class="sheet">
-		<h2 class="h2">Details</h2>
-		<p class="body-copy mt-6">{service.longDescription ?? service.description}</p>
+		<div class="panel">
+			<span class="panel-sticker" aria-hidden="true">
+				<Sticker name={service.sticker} size={86} />
+			</span>
+			<h2 class="h2 kicker">Details</h2>
+			<p class="body-copy mt-5">{service.longDescription ?? service.description}</p>
+		</div>
 	</div>
 </section>
 
 {#if service.features?.length}
 	<section class="section">
 		<div class="sheet">
-			<h2 class="h2">What's included</h2>
-			<ul class="features mt-8">
+			<h2 class="h2 kicker">What's included</h2>
+			<ul class="features mt-7">
 				{#each service.features as feature (feature)}
 					<li><span class="tick"></span>{feature}</li>
 				{/each}
@@ -114,8 +124,8 @@
 {#if service.process?.length}
 	<section class="section">
 		<div class="sheet">
-			<h2 class="h2">How it runs</h2>
-			<ol class="steps mt-8">
+			<h2 class="h2 kicker">How it runs</h2>
+			<ol class="steps mt-7">
 				{#each service.process as step, i (step)}
 					<li>
 						<span class="step-index mono">{String(i + 1).padStart(2, '0')}</span>
@@ -130,17 +140,13 @@
 {#if relatedProjects.length > 0}
 	<section class="section">
 		<div class="sheet">
-			<h2 class="h2">Where it already runs</h2>
-			<div class="evidence mt-8">
+			<h2 class="h2 kicker">Where it already runs</h2>
+			<div class="evidence mt-7">
 				{#each relatedProjects as project (project.id)}
 					<a class="evidence-card" href="/#projects">
-						{#if project.thumbnail}
-							<Plate
-								src={project.thumbnail}
-								alt="Pixel-art illustration for {project.title}"
-								caption="{project.code.toLowerCase()} — {project.id}"
-							/>
-						{/if}
+						<span class="frame">
+							<ProjectDiagram kind={project.id as 'pome' | 'portal' | 'lecsens'} />
+						</span>
 						<h3>{project.title}</h3>
 						<p>{project.description}</p>
 					</a>
@@ -153,7 +159,7 @@
 {#if otherServices.length > 0}
 	<section class="section">
 		<div class="sheet">
-			<h2 class="h2">Other services</h2>
+			<h2 class="h2 kicker">Other services</h2>
 			<ul class="others mt-6">
 				{#each otherServices as other (other.id)}
 					<li>
@@ -167,19 +173,21 @@
 {/if}
 
 <section class="cta">
-	<div class="sheet">
-		<h2>Need {service.title.toLowerCase()}?</h2>
-		<p class="lead">
-			Tell me what you're building. You'll get an honest answer about scope, timeline, and whether
-			I'm the right engineer for it.
-		</p>
-		<Action href="/#contact" class="cta-action">Start a project</Action>
+	<div class="sheet cta-inner">
+		<div>
+			<h2 class="display cta-title">Need {service.title.toLowerCase()}?</h2>
+			<p class="lead mt-4">
+				Tell me what you're building. You'll get an honest answer about scope, timeline, and whether
+				I'm the right engineer for it.
+			</p>
+		</div>
+		<Action href="/#contact">Start a project</Action>
 	</div>
 </section>
 
 <style>
 	.head {
-		padding-block: calc(var(--topbar-h) + 48px) clamp(48px, 8vh, 88px);
+		padding-block: calc(var(--topbar-h) + 44px) clamp(36px, 6vh, 64px);
 	}
 
 	.back {
@@ -189,41 +197,64 @@
 	}
 
 	.back:hover {
-		color: var(--signal);
+		color: var(--blue);
 	}
 
 	.code {
-		margin-top: 34px;
-		font-size: 0.6875rem;
-		color: var(--signal);
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		margin-top: 30px;
+		color: var(--ink-2);
 	}
 
-	h1 {
-		margin-top: 12px;
-		font-size: clamp(2rem, 5.4vw, 3.8rem);
-		font-weight: 600;
-		letter-spacing: -0.024em;
-		line-height: 1.04;
+	.num {
+		font-size: 0.6875rem;
+		letter-spacing: 0;
+		color: var(--blue);
+	}
+
+	.sq {
+		width: 6px;
+		height: 6px;
+		background: var(--ink-3);
+	}
+
+	.title {
+		margin-top: 16px;
+		font-size: clamp(2.4rem, 8vw, 6rem);
 		color: var(--ink);
 		max-width: 22ch;
 	}
 
 	.lead {
-		margin-top: 20px;
+		margin-top: 18px;
 	}
 
 	.tech {
-		margin-top: 22px;
+		margin-top: 20px;
 		font-size: 0.6875rem;
 		color: var(--ink-3);
 	}
 
+	.panel {
+		position: relative;
+		background: var(--surface);
+		border: 2px solid var(--ink);
+		border-radius: 22px;
+		box-shadow: var(--shadow);
+		padding: clamp(22px, 3vw, 34px);
+	}
+
+	.panel-sticker {
+		position: absolute;
+		top: -30px;
+		right: 28px;
+		transform: rotate(8deg);
+	}
+
 	.h2 {
-		font-size: 0.75rem;
-		font-weight: 500;
-		color: var(--ink-3);
-		border-top: 1px solid var(--rule);
-		padding-top: 14px;
+		color: var(--ink-2);
 	}
 
 	.features {
@@ -242,44 +273,49 @@
 	}
 
 	.tick {
-		width: 14px;
-		height: 1px;
-		margin-top: 12px;
+		width: 10px;
+		height: 10px;
+		margin-top: 6px;
 		flex: none;
-		background: var(--rule-2);
+		border-radius: 2px;
+		background: var(--yellow);
+		border: 1.5px solid var(--ink);
 	}
 
 	.steps {
 		display: flex;
 		flex-direction: column;
-		gap: 0;
+		gap: 12px;
 		max-width: 72ch;
 	}
 
 	.steps li {
 		display: grid;
-		grid-template-columns: 48px minmax(0, 1fr);
-		gap: 20px;
-		padding: 18px 0;
-		border-bottom: 1px solid var(--rule);
+		grid-template-columns: 52px minmax(0, 1fr);
+		gap: 18px;
+		align-items: center;
+		background: var(--surface);
+		border: 2px solid var(--ink);
+		border-radius: 14px;
+		padding: 14px 18px;
+		box-shadow: 3px 3px 0 var(--ink);
 	}
 
 	.step-index {
 		font-size: 0.75rem;
-		color: var(--signal);
-		padding-top: 2px;
+		color: var(--blue);
 	}
 
 	.step-text {
 		font-size: 0.9375rem;
-		line-height: 1.6;
+		line-height: 1.55;
 		color: var(--ink-2);
 	}
 
 	.evidence {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-		gap: 40px;
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		gap: 30px;
 	}
 
 	.evidence-card {
@@ -288,17 +324,29 @@
 		text-decoration: none;
 	}
 
+	.frame {
+		display: block;
+		background: var(--surface);
+		border: 2px solid var(--ink);
+		border-radius: 16px;
+		padding: 12px;
+		box-shadow: var(--shadow);
+		transition:
+			transform 180ms cubic-bezier(0.2, 0.7, 0.2, 1),
+			box-shadow 180ms ease;
+	}
+
+	.evidence-card:hover .frame {
+		transform: translate(-3px, -3px);
+		box-shadow: var(--shadow-lg);
+	}
+
 	.evidence-card h3 {
 		margin-top: 16px;
 		font-size: 1.0625rem;
-		font-weight: 600;
+		font-weight: 620;
 		letter-spacing: -0.012em;
 		color: var(--ink);
-		transition: color 140ms ease;
-	}
-
-	.evidence-card:hover h3 {
-		color: var(--signal);
 	}
 
 	.evidence-card p {
@@ -307,12 +355,6 @@
 		line-height: 1.6;
 		color: var(--ink-2);
 		max-width: 46ch;
-	}
-
-	.cta {
-		background: var(--paper-2);
-		border-top: 1px solid var(--rule);
-		padding-block: clamp(56px, 9vh, 96px);
 	}
 
 	.others {
@@ -326,19 +368,20 @@
 		align-items: baseline;
 		justify-content: space-between;
 		gap: 20px;
-		padding: 14px 0;
-		border-bottom: 1px solid var(--rule);
+		padding: 14px 4px;
+		border-bottom: 1px dashed #d4d4d8;
 	}
 
 	.others a {
 		font-size: 1rem;
+		font-weight: 520;
 		color: var(--ink);
 		text-decoration: none;
 		transition: color 140ms ease;
 	}
 
 	.others a:hover {
-		color: var(--signal);
+		color: var(--blue);
 	}
 
 	.others .mono {
@@ -346,19 +389,23 @@
 		color: var(--ink-3);
 	}
 
-	.cta h2 {
-		font-size: clamp(1.6rem, 3.6vw, 2.6rem);
-		font-weight: 600;
-		letter-spacing: -0.02em;
+	.cta {
+		background: var(--surface);
+		border-top: 2px solid var(--ink);
+		padding-block: clamp(48px, 8vh, 88px);
+	}
+
+	.cta-inner {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 28px;
+	}
+
+	.cta-title {
+		font-size: clamp(1.7rem, 4.6vw, 3rem);
 		color: var(--ink);
-		max-width: 26ch;
-	}
-
-	.cta .lead {
-		margin-top: 16px;
-	}
-
-	.cta :global(.cta-action) {
-		margin-top: 30px;
+		max-width: 24ch;
 	}
 </style>

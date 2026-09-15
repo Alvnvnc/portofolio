@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { skills, skillCategories, levelMeta, sectionMeta } from '$lib/data/portfolio';
-	import Station from '$lib/components/ui/Station.svelte';
 	import SectionHead from '$lib/components/ui/SectionHead.svelte';
 	import Meter from '$lib/components/ui/Meter.svelte';
 
@@ -19,56 +18,65 @@
 </script>
 
 <section id="skills" class="section">
-	<Station id="skills" index={meta.index} label={meta.label} />
 	<div class="sheet">
-		<SectionHead title={meta.title} note={meta.note} />
+		<SectionHead index={meta.index} label={meta.label} title={meta.title} note={meta.note} />
 
-		<div class="strips mt-12">
-			{#each groups as group (group.id)}
-				<div class="strip">
-					<p class="strip-head mono">
-						{group.name.toLowerCase()}
-						<span class="count">{String(group.items.length).padStart(2, '0')}</span>
-					</p>
-					<ul>
-						{#each group.items as skill (skill.name)}
-							<li>
-								<span class="name">
-									{#if skill.primary}<span class="main" title="Daily driver"></span>{/if}
-									{skill.name}
-								</span>
-								<Meter level={levelMeta[skill.level].dots} />
-							</li>
-						{/each}
-					</ul>
-				</div>
-			{/each}
-		</div>
-
-		<div class="legend mt-14">
-			<div class="legend-list">
-				{#each legend as item (item.level)}
-					<div class="legend-item">
-						<div class="legend-scale">
-							<Meter level={item.dots} />
-							<span class="mono legend-label">{item.label}</span>
-						</div>
-						<p>{item.hint}</p>
+		<div class="board mt-12">
+			<div class="strips">
+				{#each groups as group (group.id)}
+					<div class="strip">
+						<p class="strip-head kicker">
+							{group.name}
+							<span class="count mono">{String(group.items.length).padStart(2, '0')}</span>
+						</p>
+						<ul>
+							{#each group.items as skill (skill.name)}
+								<li>
+									<span class="name">
+										{#if skill.primary}<span class="main" title="Daily driver"></span>{/if}
+										{skill.name}
+									</span>
+									<Meter level={levelMeta[skill.level].dots} />
+								</li>
+							{/each}
+						</ul>
 					</div>
 				{/each}
 			</div>
-			<p class="legend-note mono">
-				<span class="main"></span>daily driver — first reach, whatever the meter says
-			</p>
+
+			<div class="legend">
+				<div class="legend-list">
+					{#each legend as item (item.level)}
+						<div class="legend-item">
+							<div class="legend-scale">
+								<Meter level={item.dots} />
+								<span class="mono legend-label">{item.label}</span>
+							</div>
+							<p>{item.hint}</p>
+						</div>
+					{/each}
+				</div>
+				<p class="legend-note mono">
+					<span class="main"></span>daily driver — first reach, whatever the meter says
+				</p>
+			</div>
 		</div>
 	</div>
 </section>
 
 <style>
+	.board {
+		background: var(--surface);
+		border: 2px solid var(--ink);
+		border-radius: 20px;
+		box-shadow: var(--shadow-lg);
+		padding: clamp(20px, 3vw, 34px);
+	}
+
 	.strips {
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 36px 32px;
+		gap: 30px 28px;
 	}
 
 	.strip-head {
@@ -76,18 +84,19 @@
 		align-items: baseline;
 		justify-content: space-between;
 		gap: 10px;
-		border-top: 1px solid var(--rule-2);
+		border-top: 2px solid var(--ink);
 		padding-top: 10px;
-		font-size: 0.6875rem;
-		color: var(--ink-2);
+		color: var(--ink);
 	}
 
 	.count {
+		font-size: 0.6875rem;
+		letter-spacing: 0;
 		color: var(--ink-3);
 	}
 
 	.strip ul {
-		margin-top: 14px;
+		margin-top: 12px;
 	}
 
 	.strip li {
@@ -96,7 +105,7 @@
 		justify-content: space-between;
 		gap: 12px;
 		padding: 7px 0;
-		border-bottom: 1px solid var(--rule);
+		border-bottom: 1px dashed #dcdce0;
 	}
 
 	.strip li:last-child {
@@ -114,24 +123,27 @@
 
 	.main {
 		align-self: center;
-		width: 6px;
-		height: 6px;
+		width: 8px;
+		height: 8px;
 		flex: none;
-		background: var(--signal);
+		border-radius: 2px;
+		background: var(--yellow);
+		border: 1.5px solid var(--ink);
 	}
 
 	.legend {
+		margin-top: 30px;
+		border-top: 2px dashed #dcdce0;
+		padding-top: 22px;
 		display: grid;
 		grid-template-columns: minmax(0, 1fr);
-		gap: 22px;
-		border-top: 1px solid var(--rule);
-		padding-top: 24px;
+		gap: 18px;
 	}
 
 	.legend-list {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-		gap: 18px 40px;
+		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+		gap: 16px 34px;
 	}
 
 	.legend-scale {
@@ -150,7 +162,7 @@
 		font-size: 0.8125rem;
 		line-height: 1.55;
 		color: var(--ink-3);
-		max-width: 36ch;
+		max-width: 34ch;
 	}
 
 	.legend-note {

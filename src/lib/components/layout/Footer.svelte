@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { personalInfo } from '$lib/data/portfolio';
+	import Sticker from '$lib/components/ui/Sticker.svelte';
 	import { cn } from '$lib/utils';
 
 	let { class: className = '' }: { class?: string } = $props();
@@ -9,44 +10,44 @@
 
 <footer class={cn('footer', className)}>
 	<div class="sheet inner">
-		<div>
-			<p class="brand">Alvin Vincent</p>
+		<div class="brand">
+			<p class="name display">Alvin Vincent</p>
 			<p class="mono line">© {year} {personalInfo.fullName}</p>
 		</div>
 
 		<nav class="links" aria-label="Elsewhere">
 			<a class="link" href="mailto:{personalInfo.email}">email</a>
 			{#if personalInfo.linkedin}
-				<a class="link" href={personalInfo.linkedin} target="_blank" rel="noopener noreferrer"
-					>linkedin</a
-				>
+				<a class="link" href={personalInfo.linkedin} target="_blank" rel="noopener noreferrer">linkedin</a>
 			{/if}
 			<a class="link" href="#hero">top</a>
 		</nav>
 
-		<p class="mono line colophon">
-			Hand-built with SvelteKit<span class="sep"> / </span>no template used
-		</p>
+		<div class="tail">
+			<p class="mono line colophon">
+				Hand-built with SvelteKit<span class="sep"> / </span>no template used
+			</p>
+			<span class="mark"><Sticker name="shield" size={46} /></span>
+		</div>
 	</div>
 </footer>
 
 <style>
 	.footer {
 		background: var(--paper-2);
-		border-top: 1px solid var(--rule);
+		border-top: 2px solid var(--ink);
 	}
 
 	.inner {
 		display: flex;
 		flex-direction: column;
-		gap: 18px;
+		gap: 20px;
 		padding-top: 34px;
-		padding-bottom: 40px;
+		padding-bottom: 38px;
 	}
 
-	.brand {
-		font-size: 0.9375rem;
-		font-weight: 600;
+	.name {
+		font-size: clamp(1.3rem, 2.6vw, 1.9rem);
 		color: var(--ink);
 	}
 
@@ -55,27 +56,30 @@
 		color: var(--ink-3);
 	}
 
-	.line:first-child {
-		margin-top: 0;
-	}
-
-	.brand + .line {
-		margin-top: 6px;
+	.brand .line {
+		margin-top: 8px;
 	}
 
 	.links {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 10px 26px;
+		gap: 10px 24px;
 		font-size: 0.875rem;
+		font-weight: 500;
 	}
 
-	.colophon {
-		color: var(--ink-3);
+	.tail {
+		display: flex;
+		align-items: center;
+		gap: 18px;
+	}
+
+	.mark {
+		display: none;
 	}
 
 	.sep {
-		color: var(--rule-2);
+		color: #c9cbd0;
 	}
 
 	@media (min-width: 900px) {
@@ -86,8 +90,12 @@
 			gap: 40px;
 		}
 
-		.colophon {
+		.tail {
 			text-align: right;
+		}
+
+		.mark {
+			display: inline-flex;
 		}
 	}
 </style>

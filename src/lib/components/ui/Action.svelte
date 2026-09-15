@@ -13,7 +13,7 @@
 		class: className = ''
 	}: {
 		href?: string;
-		variant?: 'primary' | 'ghost';
+		variant?: 'primary' | 'yellow' | 'ghost';
 		type?: 'button' | 'submit';
 		disabled?: boolean;
 		external?: boolean;
@@ -28,59 +28,66 @@
 		{href}
 		target={external ? '_blank' : undefined}
 		rel={external ? 'noopener noreferrer' : undefined}
-		class={cn('action', variant, className)}
+		class={cn('pill', variant, className)}
 		{onclick}
 	>
 		{@render children()}
 	</a>
 {:else}
-	<button {type} {disabled} class={cn('action', variant, className)} {onclick}>
+	<button {type} {disabled} class={cn('pill', variant, className)} {onclick}>
 		{@render children()}
 	</button>
 {/if}
 
 <style>
-	.action {
+	.pill {
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
 		gap: 0.5rem;
-		padding: 0.8rem 1.35rem;
-		border: 1px solid transparent;
-		font-size: 0.9375rem;
-		font-weight: 500;
-		line-height: 1.2;
-		letter-spacing: 0.004em;
+		padding: 0.85rem 1.5rem;
+		border: var(--border);
+		border-radius: 999px;
+		box-shadow: var(--shadow);
+		font-family: 'Roboto Flex', sans-serif;
+		font-weight: 560;
+		font-size: 0.95rem;
+		line-height: 1.1;
 		text-decoration: none;
 		cursor: pointer;
 		transition:
-			background-color 140ms ease,
-			border-color 140ms ease,
-			color 140ms ease;
+			transform 160ms cubic-bezier(0.2, 0.7, 0.2, 1),
+			box-shadow 160ms ease,
+			background-color 160ms ease;
 	}
 
-	.action:disabled {
+	.pill:hover:not(:disabled) {
+		transform: translate(-2px, -2px);
+		box-shadow: var(--shadow-lg);
+	}
+
+	.pill:active:not(:disabled) {
+		transform: translate(1px, 1px);
+		box-shadow: 2px 2px 0 var(--ink);
+	}
+
+	.pill:disabled {
 		opacity: 0.55;
 		cursor: not-allowed;
 	}
 
 	.primary {
-		background: var(--signal);
-		color: var(--paper);
+		background: var(--blue);
+		color: var(--surface);
 	}
 
-	.primary:hover:not(:disabled) {
-		background: var(--signal-deep);
+	.yellow {
+		background: var(--yellow);
+		color: var(--ink);
 	}
 
 	.ghost {
-		border-color: var(--rule-2);
+		background: var(--surface);
 		color: var(--ink);
-		background: transparent;
-	}
-
-	.ghost:hover:not(:disabled) {
-		border-color: var(--ink);
-		background: var(--paper-2);
 	}
 </style>

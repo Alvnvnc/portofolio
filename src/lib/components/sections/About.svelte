@@ -1,16 +1,28 @@
 <script lang="ts">
 	import { personalInfo, sectionMeta } from '$lib/data/portfolio';
-	import Station from '$lib/components/ui/Station.svelte';
 	import SectionHead from '$lib/components/ui/SectionHead.svelte';
-	import Plate from '$lib/components/ui/Plate.svelte';
+	import Sticker from '$lib/components/ui/Sticker.svelte';
+	import type { StickerName } from '$lib/types';
 
 	const meta = sectionMeta.find((s) => s.id === 'about')!;
 
 	const facts = [
-		{ label: 'role', value: 'Backend engineer' },
+		{ label: 'role', value: 'Full-stack developer' },
 		{ label: 'based', value: 'Surabaya, Indonesia' },
 		{ label: 'study', value: 'Informatics, ITS — 2026' },
 		{ label: 'status', value: 'Available for work' }
+	];
+
+	const toolkit: { name: StickerName; label: string; rot: string }[] = [
+		{ name: 'server', label: 'services', rot: '-6deg' },
+		{ name: 'terminal', label: 'go + sveltekit', rot: '4deg' },
+		{ name: 'database', label: 'postgresql', rot: '-3deg' },
+		{ name: 'sensor', label: 'iot / mqtt', rot: '5deg' },
+		{ name: 'queue', label: 'async jobs', rot: '-5deg' },
+		{ name: 'chip', label: 'ml / llm', rot: '3deg' },
+		{ name: 'shield', label: 'auth / rbac', rot: '-4deg' },
+		{ name: 'cloud', label: 'deploys', rot: '6deg' },
+		{ name: 'bolt', label: 'ci / cd', rot: '-7deg' }
 	];
 
 	const traits = [
@@ -34,32 +46,30 @@
 </script>
 
 <section id="about" class="section">
-	<Station id="about" index={meta.index} label={meta.label} />
 	<div class="sheet">
-		<SectionHead title={meta.title} note={meta.note} />
+		<SectionHead index={meta.index} label={meta.label} title={meta.title} note={meta.note} />
 
-		<div class="mt-14 grid gap-12 lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-16">
+		<div class="mt-12 grid gap-12 lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-16">
 			<div>
 				<div class="body-copy space-y-4">
 					<p>
-						I'm Alvin. Most days I work in <strong class="font-medium text-ink">Go</strong> — APIs,
-						queues, schemas, and the deploy scripts that keep them honest.
-						<strong class="font-medium text-ink">PostgreSQL</strong> for the facts,
-						<strong class="font-medium text-ink">InfluxDB</strong> for whatever the sensors said
-						five seconds ago, <strong class="font-medium text-ink">Redis</strong> so nobody has to
-						ask twice.
+						I'm Alvin. Most days I work in <strong class="strong">Go</strong> — APIs, queues, schemas,
+						and the deploy scripts that keep them honest.
+						<strong class="strong">PostgreSQL</strong> for the facts,
+						<strong class="strong">InfluxDB</strong> for whatever the sensors said five seconds ago,
+						<strong class="strong">Redis</strong> so nobody has to ask twice.
 					</p>
 					<p>
 						I study Informatics at ITS Surabaya and ship production systems on the side: industrial
-						IoT monitoring, multi-tenant gateways, ML inference services. Recent work goes all the
-						way up the stack — dashboards in <strong class="font-medium text-ink">SvelteKit</strong>
-						and <strong class="font-medium text-ink">TypeScript</strong> on top of the APIs, so the
-						product is finished, not just callable. This site is one of them. Design, implement,
-						deploy: I stay for the whole loop.
+						IoT monitoring, multi-tenant gateways, ML inference services. Recent work goes all the way
+						up the stack — dashboards in <strong class="strong">SvelteKit</strong> and
+						<strong class="strong">TypeScript</strong> on top of the APIs, so the product is finished,
+						not just callable. This site is one of them. Design, implement, deploy: I stay for the
+						whole loop.
 					</p>
 				</div>
 
-				<dl class="facts mt-12">
+				<dl class="facts mt-10">
 					{#each facts as fact (fact.label)}
 						<div class="fact">
 							<dt class="mono">{fact.label}</dt>
@@ -81,30 +91,42 @@
 				</ul>
 			</div>
 
-			<div>
-				<Plate
-					src="/images/hero-character.webp"
-					alt="Pixel-art portrait of Alvin working at a terminal with headphones on"
-					caption="fig. 01 — pixel self-portrait"
-				/>
-				<p class="mono mt-6 text-[0.6875rem] leading-relaxed text-ink-3">
-					{personalInfo.fullName}<br />{personalInfo.title}
-				</p>
+			<div class="sheet-panel">
+				<p class="kicker panel-title">The toolkit</p>
+				<ul class="toolkit">
+					{#each toolkit as tool (tool.label)}
+						<li>
+							<span class="tool-sticker" style="--rot:{tool.rot}">
+								<Sticker name={tool.name} size={64} />
+							</span>
+							<span class="mono tool-label">{tool.label}</span>
+						</li>
+					{/each}
+				</ul>
+				<p class="mono panel-note">{personalInfo.fullName}<br />{personalInfo.title}</p>
 			</div>
 		</div>
 	</div>
 </section>
 
 <style>
+	.strong {
+		font-weight: 620;
+		color: var(--ink);
+	}
+
 	.facts {
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 22px 32px;
+		gap: 14px;
 	}
 
 	.fact {
-		border-top: 1px solid var(--rule-2);
-		padding-top: 12px;
+		background: var(--surface);
+		border: 2px solid var(--ink);
+		border-radius: 12px;
+		padding: 12px 14px;
+		box-shadow: 3px 3px 0 var(--ink);
 	}
 
 	.fact dt {
@@ -113,8 +135,9 @@
 	}
 
 	.fact dd {
-		margin-top: 5px;
-		font-size: 0.9375rem;
+		margin-top: 4px;
+		font-size: 0.875rem;
+		font-weight: 520;
 		color: var(--ink);
 	}
 
@@ -130,16 +153,17 @@
 	}
 
 	.sq {
-		width: 6px;
-		height: 6px;
-		margin-top: 8px;
+		width: 8px;
+		height: 8px;
+		margin-top: 7px;
 		flex: none;
-		background: var(--signal);
+		background: var(--blue);
+		border-radius: 2px;
 	}
 
 	.trait-title {
 		font-size: 0.9375rem;
-		font-weight: 600;
+		font-weight: 640;
 		color: var(--ink);
 	}
 
@@ -149,6 +173,59 @@
 		line-height: 1.6;
 		color: var(--ink-2);
 		max-width: 42ch;
+	}
+
+	.sheet-panel {
+		align-self: start;
+		background: var(--surface);
+		border: 2px solid var(--ink);
+		border-radius: 20px;
+		box-shadow: var(--shadow-lg);
+		padding: 22px;
+	}
+
+	.panel-title {
+		color: var(--ink-2);
+	}
+
+	.toolkit {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 18px 10px;
+		margin-top: 20px;
+	}
+
+	.toolkit li {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 8px;
+		text-align: center;
+	}
+
+	.tool-sticker {
+		display: block;
+		transform: rotate(var(--rot, 0deg));
+		transition: transform 240ms cubic-bezier(0.2, 0.7, 0.2, 1);
+	}
+
+	.toolkit li:hover .tool-sticker {
+		transform: rotate(0deg) scale(1.12);
+	}
+
+	.tool-label {
+		font-size: 0.625rem;
+		line-height: 1.3;
+		color: var(--ink-2);
+	}
+
+	.panel-note {
+		margin-top: 20px;
+		border-top: 2px dashed #d4d4d8;
+		padding-top: 14px;
+		font-size: 0.6875rem;
+		line-height: 1.7;
+		color: var(--ink-3);
 	}
 
 	@media (min-width: 640px) {

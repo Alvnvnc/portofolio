@@ -64,11 +64,23 @@ export interface Education {
 	achievements?: string[];
 }
 
+export type StickerName =
+	| 'server'
+	| 'database'
+	| 'queue'
+	| 'terminal'
+	| 'cloud'
+	| 'shield'
+	| 'sensor'
+	| 'bolt'
+	| 'chip';
+
 export interface Service {
 	id: string;
 	code: string;
 	title: string;
 	description: string;
+	sticker: StickerName;
 	techStack: string[];
 	longDescription?: string;
 	features?: string[];

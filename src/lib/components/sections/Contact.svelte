@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { personalInfo, sectionMeta, services, faqs } from '$lib/data/portfolio';
-	import Station from '$lib/components/ui/Station.svelte';
 	import SectionHead from '$lib/components/ui/SectionHead.svelte';
 	import Action from '$lib/components/ui/Action.svelte';
 	import Clock from '$lib/components/ui/Clock.svelte';
+	import Sticker from '$lib/components/ui/Sticker.svelte';
 
 	const meta = sectionMeta.find((s) => s.id === 'contact')!;
 
@@ -44,10 +44,9 @@
 	}
 </script>
 
-<section id="contact" class="section contact">
-	<Station id="contact" index={meta.index} label={meta.label} />
+<section id="contact" class="section">
 	<div class="sheet">
-		<SectionHead title={meta.title} note={meta.note} />
+		<SectionHead index={meta.index} label={meta.label} title={meta.title} note={meta.note} />
 
 		<div class="grid mt-12">
 			<div class="channels">
@@ -56,11 +55,8 @@
 
 				{#if personalInfo.linkedin}
 					<p class="k mono">linkedin</p>
-					<a
-						class="link social"
-						href={personalInfo.linkedin}
-						target="_blank"
-						rel="noopener noreferrer">linkedin.com/in/alvin-reba</a
+					<a class="link social" href={personalInfo.linkedin} target="_blank" rel="noopener noreferrer"
+						>linkedin.com/in/alvin-reba</a
 					>
 				{/if}
 
@@ -80,7 +76,7 @@
 				</dl>
 
 				<div class="faq">
-					<h3 class="mono faq-title">Common questions</h3>
+					<h3 class="kicker faq-title">Common questions</h3>
 					{#each faqs as faq (faq.question)}
 						<details>
 							<summary>
@@ -94,16 +90,13 @@
 			</div>
 
 			<form onsubmit={handleSubmit}>
+				<span class="form-sticker" aria-hidden="true">
+					<Sticker name="bolt" size={78} />
+				</span>
+
 				<div class="field">
 					<label for="name">Your name</label>
-					<input
-						id="name"
-						name="name"
-						type="text"
-						autocomplete="name"
-						bind:value={formData.name}
-						required
-					/>
+					<input id="name" name="name" type="text" autocomplete="name" bind:value={formData.name} required />
 				</div>
 
 				<div class="field">
@@ -160,18 +153,14 @@
 </section>
 
 <style>
-	.contact {
-		background: var(--paper-2);
-	}
-
 	.grid {
 		display: grid;
 		grid-template-columns: minmax(0, 1fr);
-		gap: 44px;
+		gap: 40px;
 	}
 
 	.k {
-		margin-top: 26px;
+		margin-top: 24px;
 		font-size: 0.6875rem;
 		color: var(--ink-3);
 	}
@@ -184,18 +173,19 @@
 		display: inline-block;
 		margin-top: 6px;
 		font-size: clamp(1.05rem, 2vw, 1.35rem);
+		font-weight: 560;
 		color: var(--ink);
 		text-decoration: none;
-		border-bottom: 1px solid var(--rule-2);
-		padding-bottom: 3px;
+		border-bottom: 3px solid var(--yellow);
+		padding-bottom: 2px;
 		transition:
 			color 140ms ease,
 			border-color 140ms ease;
 	}
 
 	.email:hover {
-		color: var(--signal);
-		border-color: var(--signal);
+		color: var(--blue);
+		border-color: var(--blue);
 	}
 
 	.social {
@@ -205,7 +195,7 @@
 	}
 
 	.meta {
-		margin-top: 36px;
+		margin-top: 32px;
 		display: flex;
 		flex-direction: column;
 		gap: 18px;
@@ -225,30 +215,30 @@
 	.open {
 		display: flex;
 		align-items: center;
-		gap: 9px;
+		gap: 10px;
 		color: var(--ink) !important;
 	}
 
 	.open i {
-		width: 7px;
-		height: 7px;
-		background: var(--live);
+		width: 9px;
+		height: 9px;
+		border-radius: 999px;
+		background: var(--yellow);
+		border: 2px solid var(--ink);
 	}
 
 	.faq {
-		margin-top: 44px;
+		margin-top: 40px;
 	}
 
 	.faq-title {
-		border-top: 1px solid var(--rule);
+		border-top: 2px solid var(--ink);
 		padding-top: 14px;
-		font-size: 0.6875rem;
-		font-weight: 400;
-		color: var(--ink-3);
+		color: var(--ink-2);
 	}
 
 	details {
-		border-bottom: 1px solid var(--rule);
+		border-bottom: 1px dashed #d4d4d8;
 	}
 
 	summary {
@@ -258,6 +248,7 @@
 		gap: 16px;
 		padding: 14px 0;
 		font-size: 0.9375rem;
+		font-weight: 500;
 		color: var(--ink);
 		cursor: pointer;
 		list-style: none;
@@ -269,8 +260,8 @@
 
 	.mark {
 		position: relative;
-		width: 11px;
-		height: 11px;
+		width: 12px;
+		height: 12px;
 		flex: none;
 		margin-top: 5px;
 	}
@@ -279,21 +270,21 @@
 	.mark::after {
 		content: '';
 		position: absolute;
-		background: var(--signal);
+		background: var(--blue);
 	}
 
 	.mark::before {
-		top: 5px;
+		top: 5.25px;
 		left: 0;
-		width: 11px;
-		height: 1.5px;
+		width: 12px;
+		height: 2px;
 	}
 
 	.mark::after {
 		left: 5px;
 		top: 0;
-		width: 1.5px;
-		height: 11px;
+		width: 2px;
+		height: 12px;
 		transition:
 			transform 200ms ease,
 			opacity 200ms ease;
@@ -313,9 +304,22 @@
 	}
 
 	form {
+		position: relative;
 		display: flex;
 		flex-direction: column;
-		gap: 20px;
+		gap: 18px;
+		background: var(--surface);
+		border: 2px solid var(--ink);
+		border-radius: 22px;
+		box-shadow: var(--shadow-lg);
+		padding: clamp(22px, 3vw, 34px);
+	}
+
+	.form-sticker {
+		position: absolute;
+		top: -34px;
+		right: 26px;
+		transform: rotate(9deg);
 	}
 
 	.field {
@@ -326,6 +330,7 @@
 
 	label {
 		font-size: 0.8125rem;
+		font-weight: 520;
 		color: var(--ink-2);
 	}
 
@@ -334,13 +339,17 @@
 	textarea {
 		width: 100%;
 		background: var(--paper);
-		border: 1px solid var(--rule-2);
+		border: 2px solid var(--ink);
+		border-radius: 12px;
 		padding: 12px 14px;
 		font-family: var(--font-sans);
+		font-weight: 420;
 		font-size: 0.9375rem;
 		line-height: 1.5;
 		color: var(--ink);
-		transition: border-color 140ms ease;
+		transition:
+			background-color 140ms ease,
+			box-shadow 140ms ease;
 	}
 
 	textarea {
@@ -355,7 +364,8 @@
 	input:focus,
 	select:focus,
 	textarea:focus {
-		border-color: var(--ink);
+		background: var(--surface);
+		box-shadow: 3px 3px 0 var(--ink);
 	}
 
 	.status {
@@ -366,7 +376,7 @@
 	@media (min-width: 1024px) {
 		.grid {
 			grid-template-columns: minmax(0, 400px) minmax(0, 1fr);
-			gap: 80px;
+			gap: 72px;
 		}
 	}
 </style>

@@ -263,6 +263,7 @@ export const services: Service[] = [
 	{
 		id: 'backend-dev',
 		code: 'SVC-01',
+		sticker: 'server',
 		title: 'Backend Development',
 		description:
 			'APIs and services built to be maintained, not just shipped — Clean Architecture, tests, and logs you can actually read.',
@@ -299,6 +300,7 @@ export const services: Service[] = [
 	{
 		id: 'api-design',
 		code: 'SVC-02',
+		sticker: 'queue',
 		title: 'API Design & Integration',
 		description:
 			'REST endpoints with auth, rate limits, and docs — your web or mobile team plugs in and stops thinking about it.',
@@ -335,6 +337,7 @@ export const services: Service[] = [
 	{
 		id: 'iot-data',
 		code: 'SVC-03',
+		sticker: 'sensor',
 		title: 'IoT & Data Systems',
 		description:
 			'Sensor-to-dashboard pipelines: MQTT in, time-series storage, alerts out. Built on real industrial deployments.',
@@ -371,6 +374,7 @@ export const services: Service[] = [
 	{
 		id: 'ai-integration',
 		code: 'SVC-04',
+		sticker: 'chip',
 		title: 'AI / LLM Integration',
 		description:
 			'LLM features wired into real backends — RAG, vector search, structured outputs, with fallbacks and a cost ceiling.',
@@ -407,6 +411,7 @@ export const services: Service[] = [
 	{
 		id: 'devops',
 		code: 'SVC-05',
+		sticker: 'cloud',
 		title: 'DevOps & Deployment',
 		description:
 			'Docker, CI/CD, security scans, zero-downtime deploys — the unglamorous work that keeps the pager quiet.',
@@ -443,6 +448,7 @@ export const services: Service[] = [
 	{
 		id: 'full-stack',
 		code: 'SVC-06',
+		sticker: 'terminal',
 		title: 'Full-stack delivery',
 		description:
 			'One engineer for the whole build: schema, API, dashboard, and deploy. You get a running product, not a pile of handoffs.',

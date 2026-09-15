@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import { cn } from '$lib/utils';
+	import { goToSection } from '$lib/utils/scroll';
 
 	let {
 		href,
@@ -21,6 +22,14 @@
 		children: Snippet;
 		class?: string;
 	} = $props();
+
+	function handleClick(event: MouseEvent) {
+		if (onclick) {
+			onclick(event);
+			return;
+		}
+		if (href?.startsWith('#')) goToSection(event, href);
+	}
 </script>
 
 {#if href}
@@ -29,7 +38,7 @@
 		target={external ? '_blank' : undefined}
 		rel={external ? 'noopener noreferrer' : undefined}
 		class={cn('pill', variant, className)}
-		{onclick}
+		onclick={handleClick}
 	>
 		{@render children()}
 	</a>

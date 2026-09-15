@@ -4,6 +4,7 @@
 	import Sticker from '$lib/components/ui/Sticker.svelte';
 	import HeroPoster from '$lib/components/sections/HeroPoster.svelte';
 	import { parallax } from '$lib/utils/motion';
+	import { goToSection } from '$lib/utils/scroll';
 </script>
 
 <section id="hero" class="hero">
@@ -42,7 +43,7 @@
 
 		<div class="poster-wrap">
 			<HeroPoster />
-			<a class="badge" href="#contact">
+			<a class="badge" href="#contact" onclick={(event) => goToSection(event, '#contact')}>
 				<span class="kicker">open for freelance</span>
 				<span aria-hidden="true">→</span>
 			</a>

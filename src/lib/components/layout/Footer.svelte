@@ -2,6 +2,7 @@
 	import { personalInfo } from '$lib/data/portfolio';
 	import Sticker from '$lib/components/ui/Sticker.svelte';
 	import { cn } from '$lib/utils';
+	import { goToSection } from '$lib/utils/scroll';
 
 	let { class: className = '' }: { class?: string } = $props();
 
@@ -20,7 +21,7 @@
 			{#if personalInfo.linkedin}
 				<a class="link" href={personalInfo.linkedin} target="_blank" rel="noopener noreferrer">linkedin</a>
 			{/if}
-			<a class="link" href="#hero">top</a>
+			<a class="link" href="#hero" onclick={(event) => goToSection(event, '#hero')}>top</a>
 		</nav>
 
 		<div class="tail">

@@ -5,6 +5,7 @@
 	import { goto } from '$app/navigation';
 	import { cn } from '$lib/utils';
 	import Clock from '$lib/components/ui/Clock.svelte';
+	import { goToSection } from '$lib/utils/scroll';
 
 	let { class: className = '' }: { class?: string } = $props();
 
@@ -21,11 +22,11 @@
 	});
 
 	function go(event: MouseEvent, href: string) {
-		event.preventDefault();
 		open = false;
 		if (isHome) {
-			document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
+			goToSection(event, href);
 		} else {
+			event.preventDefault();
 			goto(`/${href}`);
 		}
 	}

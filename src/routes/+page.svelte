@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Hero, Marquee, About, Services, Skills, Projects, Experience, Contact } from '$lib/components';
 	import { activeSection } from '$lib/stores';
+	import { applyInitialHash, syncUrlToSection } from '$lib/utils/scroll';
 	import { onMount } from 'svelte';
 
 	const bandA = [
@@ -21,11 +22,15 @@
 	];
 
 	onMount(() => {
+		applyInitialHash();
+
 		const sections = document.querySelectorAll('section[id]');
 		const observer = new IntersectionObserver(
 			(entries) => {
 				entries.forEach((entry) => {
-					if (entry.isIntersecting) activeSection.setFromScroll(entry.target.id);
+					if (!entry.isIntersecting) return;
+					activeSection.setFromScroll(entry.target.id);
+					syncUrlToSection(entry.target.id);
 				});
 			},
 			{ threshold: 0, rootMargin: '-45% 0px -50% 0px' }

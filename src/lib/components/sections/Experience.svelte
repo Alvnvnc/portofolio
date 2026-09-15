@@ -2,6 +2,7 @@
 	import { experiences, education, sectionMeta } from '$lib/data/portfolio';
 	import SectionHead from '$lib/components/ui/SectionHead.svelte';
 	import { reveal } from '$lib/utils/motion';
+	import { goToSection } from '$lib/utils/scroll';
 
 	const meta = sectionMeta.find((s) => s.id === 'experience')!;
 </script>
@@ -53,7 +54,10 @@
 		</div>
 
 		<p class="next mono">
-			Next entry — <a class="link" href="#contact">could be your project</a>.
+			Next entry —
+			<a class="link" href="#contact" onclick={(event) => goToSection(event, '#contact')}
+				>could be your project</a
+			>.
 		</p>
 	</div>
 </section>
